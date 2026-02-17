@@ -1,13 +1,18 @@
-class CutsceneText: ...
+from dataclasses import dataclass
+
+
+@dataclass
+class LevelData:
+    startCutsceneID: str
+    endCutsceneID: str
+    inputCount: int
 
 
 class GameLevel:
     id: str
     reward: float
     end: bool
-    startCutscene: CutsceneText
-    endCutscene: CutsceneText
     variables: list[float]
-    inputCount: int
+    levelData: LevelData
 
     def tick(self, inputs: list[float]) -> None: ...
