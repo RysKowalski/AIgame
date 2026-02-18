@@ -18,6 +18,12 @@ class GameLevel:
 
     def tick(self, inputs: tuple) -> None: ...
 
+    def check_and_set_end(self) -> None:
+        if self.reward > self.levelData.rewardTreshhold:
+            self.end = True
+        else:
+            self.end = False
+
 
 class Level1Tutorial(GameLevel):
     levelData = LevelData("none", "none", 1, 100)
@@ -29,9 +35,11 @@ class Level1Tutorial(GameLevel):
         self.reward = 0
 
     def tick(self, inputs: tuple[float]) -> None:
-        self.variables[0] += inputs[0]
-        self.variables[1] -= inputs[0] / 2
+        input: float = self.process_input(inputs)
+        self.variables[0] += input
+        self.variables[1] -= input / 2
         self.reward = sum(self.variables)
+        self.check_and_set_end()
 
     def process_input(self, inputs: tuple[float]) -> float:
         maxValue: float = 10
@@ -41,7 +49,7 @@ class Level1Tutorial(GameLevel):
 if __name__ == "__main__":
     level: GameLevel = Level1Tutorial()
     print(level.levelData)
-    for i in range(20):
+    while not level.end:
         print(level.variables, level.reward)
         print()
-        level.tick((5.0,))
+        level.tick((1,))
