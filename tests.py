@@ -68,3 +68,7 @@ def test_script_calculate_expression_variable_addition() -> None:
     output = engine.calculate_expression(expression)
 
     assert output == correctOutput
+
+
+def test_script_calculate_expression_power() -> None:
+    level: TestLevel = TestLevel()
