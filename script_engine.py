@@ -23,4 +23,18 @@ class ScriptEngine:
         """
         $1 + $2 / 3
         """
-        ...
+        code: list[str] = expression.split()
+        codeLenght: int = len(code)
+
+        match code:
+            case [token]:
+                if token[0] == "$":
+                    return self.get_variable(token)
+                else:
+                    return float(token)
+            case _:
+                return 0.0
+
+    def get_variable(self, variable: str) -> float:
+        variableIndex: int = int(variable[1:])
+        return self.game.variables[variableIndex]
