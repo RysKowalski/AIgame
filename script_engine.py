@@ -20,20 +20,18 @@ class ScriptEngine:
         self.globalVariables: dict[str, float] = {}
 
     def calculate_expression(self, expression: str) -> float:
-        """
-        $1 + $2 / 3
-        """
         code: list[str] = expression.split()
-        codeLenght: int = len(code)
 
-        match code:
-            case [token]:
-                if token[0] == "$":
-                    return self.get_variable(token)
-                else:
-                    return float(token)
-            case _:
-                return 0.0
+        if len(code) == 1:
+            if code[0][0] == "$":
+                return self.get_variable(code[0])
+            else:
+                try:
+                    return float(code[0])
+                except ValueError:
+                    return 0.0
+
+        return 0.0
 
     def get_variable(self, variable: str) -> float:
         variableIndex: int = int(variable[1:])

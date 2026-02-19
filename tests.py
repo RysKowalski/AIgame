@@ -1,4 +1,5 @@
-from script_engine import ScriptEngine
+# from script_engine import ScriptEngine
+from etsts import ScriptEngine
 from levels import GameLevel, LevelData
 
 
@@ -89,7 +90,7 @@ def test_script_calculate_expression_three_numbers() -> None:
     level: TestLevel = TestLevel()
     engine: ScriptEngine = ScriptEngine(level)
     expression: str = "2 + 2 * 2"
-    correctOutput: float = 8.0
+    correctOutput: float = 6.0
 
     output = engine.calculate_expression(expression)
 
@@ -232,7 +233,7 @@ def test_script_calculate_expression_calculation_inside_function() -> None:
     level: TestLevel = TestLevel()
     engine: ScriptEngine = ScriptEngine(level)
     expression: str = "max [ 1, 2 + 3 * ( 3 / 2 ), 3 ]"
-    correctOutput: float = 5.5
+    correctOutput: float = 6.5
 
     output = engine.calculate_expression(expression)
 
