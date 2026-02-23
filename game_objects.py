@@ -1,3 +1,4 @@
+from __future__ import annotations
 import pygame
 from levels import Level1Tutorial
 from script_engine import ScriptSquareData, ScriptEngine, ScriptTextDisplayData
@@ -54,6 +55,9 @@ class TextDisplayObject(GameObject):
     this.red
     this.green
     this.blue
+    this.text_red
+    this.text_green
+    this.text_blue
     """
 
     def __init__(
@@ -71,7 +75,10 @@ class TextDisplayObject(GameObject):
     def draw(self) -> None:
         textDisplayData: ScriptTextDisplayData = self._get_data()
         textSurface: pygame.Surface = self.font.render(
-            textDisplayData.value, False, textDisplayData.backgroundColor
+            textDisplayData.value,
+            False,
+            textDisplayData.textColor,
+            textDisplayData.backgroundColor,
         )
 
         self.screen.blit(textSurface, (textDisplayData.x, textDisplayData.y))

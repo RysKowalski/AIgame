@@ -1,3 +1,4 @@
+from __future__ import annotations
 from dataclasses import dataclass
 from levels import GameLevel
 
@@ -19,6 +20,7 @@ class ScriptTextDisplayData:
     x: float
     y: float
     backgroundColor: tuple[int, int, int]
+    textColor: tuple[int, int, int]
     value: str
 
 
@@ -272,9 +274,12 @@ class ScriptEngine:
         lines: list[str] = script.splitlines()
         x: float = -1
         y: float = -1
-        backgroundRed: float = -1
-        backgroundGreen: float = -1
-        backgroundBlue: float = -1
+        backgroundRed: int = -1
+        backgroundGreen: int = -1
+        backgroundBlue: int = -1
+        textRed: int = -1
+        textGreen: int = -1
+        textBlue: int = -1
         textValue: str = ""
 
         for _line in lines:
@@ -294,13 +299,19 @@ class ScriptEngine:
                     case "y":
                         y = value
                     case "red":
-                        backgroundRed = value
+                        backgroundRed = int(value)
                     case "green":
-                        backgroundGreen = value
+                        backgroundGreen = int(value)
                     case "blue":
-                        backgroundBlue = value
+                        backgroundBlue = int(value)
                     case "value":
                         textValue = str(value)
+                    case "text_red":
+                        textRed = int(value)
+                    case "text_green":
+                        textGreen = int(value)
+                    case "text_blue":
+                        textBlue = int(value)
                     case _:
                         continue
 
@@ -308,9 +319,14 @@ class ScriptEngine:
             x=x,
             y=y,
             backgroundColor=(
-                int(backgroundRed),
-                int(backgroundGreen),
-                int(backgroundBlue),
+                backgroundRed,
+                backgroundGreen,
+                backgroundBlue,
+            ),
+            textColor=(
+                textRed,
+                textGreen,
+                textBlue,
             ),
             value=textValue,
         )
