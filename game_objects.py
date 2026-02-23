@@ -115,6 +115,9 @@ if __name__ == "__main__":
         this.red = 255
         this.green = 0
         this.blue = 0
+        this.text_red = 0
+        this.text_green = 0
+        this.text_blue = 0
         this.value = $0
     """
     rectElement: SquareObject = SquareObject(rectScript, screen, scriptEngine)
