@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from pygame import Color
 from levels import GameLevel
 
 
@@ -20,7 +19,7 @@ class ScriptTextDisplayData:
     x: float
     y: float
     backgroundColor: tuple[int, int, int]
-    value: float
+    value: str
 
 
 class ScriptEngine:
@@ -268,3 +267,51 @@ class ScriptEngine:
             borderColor=(int(borderRed), int(borderGreen), int(borderBlue)),
         )
         return squareData
+
+    def calculate_text_display(self, script: str) -> ScriptTextDisplayData:
+        lines: list[str] = script.splitlines()
+        x: float = -1
+        y: float = -1
+        backgroundRed: float = -1
+        backgroundGreen: float = -1
+        backgroundBlue: float = -1
+        textValue: str = ""
+
+        for _line in lines:
+            line: str = _line.strip()
+            if line == "":
+                continue
+
+            if line.startswith("this."):
+                # TODO: possible optimalization by adding start and end
+                firstSpaceIndex: int = line.find(" ")
+                value: float = self.calculate_expression(
+                    line[firstSpaceIndex + 3 :]  # cut out " = "
+                )
+                match line[5:firstSpaceIndex]:
+                    case "x":
+                        x = value
+                    case "y":
+                        y = value
+                    case "red":
+                        backgroundRed = value
+                    case "green":
+                        backgroundGreen = value
+                    case "blue":
+                        backgroundBlue = value
+                    case "value":
+                        textValue = str(value)
+                    case _:
+                        continue
+
+        textDisplayData: ScriptTextDisplayData = ScriptTextDisplayData(
+            x=x,
+            y=y,
+            backgroundColor=(
+                int(backgroundRed),
+                int(backgroundGreen),
+                int(backgroundBlue),
+            ),
+            value=textValue,
+        )
+        return textDisplayData

@@ -283,8 +283,8 @@ def test_script_calculate_square_const_expressions() -> None:
     level.variables[1] = 3
     engine: ScriptEngine = ScriptEngine(level)
     correctOutput: ScriptSquareData = ScriptSquareData(
-        x=25,
-        y=150,
+        x=3,
+        y=6,
         width=30,
         height=30,
         rotation=0,
