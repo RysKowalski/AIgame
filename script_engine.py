@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from pygame import Color
 from levels import GameLevel
 
 
@@ -9,9 +10,17 @@ class ScriptSquareData:
     width: float
     height: float
     rotation: float
-    backgroundColor: tuple[float, float, float]
+    backgroundColor: tuple[int, int, int]
     borderWidth: float
-    borderColor: tuple[float, float, float]
+    borderColor: tuple[int, int, int]
+
+
+@dataclass(frozen=True)
+class ScriptTextDisplayData:
+    x: float
+    y: float
+    backgroundColor: tuple[int, int, int]
+    value: float
 
 
 class ScriptEngine:
@@ -250,8 +259,12 @@ class ScriptEngine:
             width=width,
             height=height,
             rotation=rotation,
-            backgroundColor=(backgroundRed, backgroundGreen, backgroundBlue),
+            backgroundColor=(
+                int(backgroundRed),
+                int(backgroundGreen),
+                int(backgroundBlue),
+            ),
             borderWidth=borderWidth,
-            borderColor=(borderRed, borderGreen, borderBlue),
+            borderColor=(int(borderRed), int(borderGreen), int(borderBlue)),
         )
         return squareData

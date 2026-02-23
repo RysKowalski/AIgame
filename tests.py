@@ -279,8 +279,8 @@ def test_script_calculate_square_const_numbers() -> None:
 
 def test_script_calculate_square_const_expressions() -> None:
     level: TestLevel = TestLevel()
-    level.variables[0] = 50
-    level.variables[1] = 75
+    level.variables[0] = 6
+    level.variables[1] = 3
     engine: ScriptEngine = ScriptEngine(level)
     correctOutput: ScriptSquareData = ScriptSquareData(
         x=25,
@@ -294,7 +294,7 @@ def test_script_calculate_square_const_expressions() -> None:
             50,
         ),
         borderWidth=4,
-        borderColor=(110, 56, 2 / 3),
+        borderColor=(110, 56, 2),
     )
     script: str = """
         this.x = $0 / 2
