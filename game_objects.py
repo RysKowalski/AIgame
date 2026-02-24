@@ -1,5 +1,6 @@
 from __future__ import annotations
 import pygame
+import pygame.freetype
 from levels import Level1Tutorial
 from script_engine import ScriptSquareData, ScriptEngine, ScriptTextDisplayData
 
@@ -65,23 +66,22 @@ class TextDisplayObject(GameObject):
         script: str,
         screen: pygame.Surface,
         scriptEngine: ScriptEngine,
-        font: pygame.font.Font,
+        font: pygame.freetype.Font,
     ) -> None:
         self.script: str = script
         self.screen = screen
         self.scriptEngine: ScriptEngine = scriptEngine
-        self.font: pygame.font.Font = font
+        self.font: pygame.freetype.Font = font
 
     def draw(self) -> None:
         textDisplayData: ScriptTextDisplayData = self._get_data()
-        textSurface: pygame.Surface = self.font.render(
+        self.font.render_to(
+            self.screen,
+            (textDisplayData.x, textDisplayData.y),
             textDisplayData.value,
-            False,
             textDisplayData.textColor,
             textDisplayData.backgroundColor,
         )
-
-        self.screen.blit(textSurface, (textDisplayData.x, textDisplayData.y))
 
     def _get_data(self) -> ScriptTextDisplayData:
         return self.scriptEngine.calculate_text_display(self.script)
@@ -89,11 +89,10 @@ class TextDisplayObject(GameObject):
 
 if __name__ == "__main__":
     pygame.init()
-    pygame.font.init()
     screen = pygame.display.set_mode((800, 600))
     level: Level1Tutorial = Level1Tutorial()
     scriptEngine: ScriptEngine = ScriptEngine(level)
-    font: pygame.font.Font = pygame.font.SysFont("Comic Sans MS", 30)
+    font: pygame.freetype.Font = pygame.freetype.Font("font.ttf", 24)
 
     rectScript = """
         this.x = 50
@@ -135,5 +134,5 @@ if __name__ == "__main__":
         screen.fill((255, 255, 255))
         rectElement.draw()
         textDisplayElement.draw()
-        level.tick((scriptEngine.calculate_expression("1"),))
+        level.tick((scriptEngine.calculate_expression("0.3"),))
         pygame.display.flip()
