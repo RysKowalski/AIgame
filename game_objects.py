@@ -1,4 +1,3 @@
-from __future__ import annotations
 import pygame
 import pygame.freetype
 from levels import Level1Tutorial
