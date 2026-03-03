@@ -1,9 +1,12 @@
 import pygame
+
+pygame.init()
 import pygame.freetype
 import levels
 from levels import GameLevel
 from script_engine import ScriptEngine
 import game_objects
+import menus
 
 
 def main() -> None:
@@ -14,20 +17,48 @@ def main() -> None:
     level: GameLevel = levels.Level1Tutorial()
     scriptEngine: ScriptEngine = ScriptEngine(level)
 
+    rectScript = """
+        this.x = 50
+        this.y = $0
+        this.width = 15 + 15
+        this.height = 12 + 18
+        this.rotation = 3 / 2 - 1.5
+        this.red = 100 + 100 + 55
+        this.green = 100 + 55 + 100
+        this.blue = 100 / 2
+        this.border_width = 2 + 2
+        this.border_red = 55 + 55
+        this.border_green = 66 - 10
+        this.border_blue = $0 / $1
+    """
+
     uiObjects: list[game_objects.GameObject] = []
     screen: pygame.Surface = initialize_pygame(WINDOW_SIZE)
+    uiObjects.append(game_objects.SquareObject(rectScript, screen, scriptEngine))
 
+    ticks: int = 0
     running: bool = True
     while running:
+        ticks += 1
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
 
+        screen.fill((255, 255, 255))
+
+        if ticks == 120:
+            menus.add_element_menu(screen, uiObjects)
         for uiObject in uiObjects:
             uiObject.draw()
 
+        level.tick((0.3,))
+        pygame.display.flip()
+
 
 def initialize_pygame(window_size: tuple[int, int]) -> pygame.Surface:
-    pygame.init()
     screen: pygame.Surface = pygame.display.set_mode(window_size)
     return screen
+
+
+if __name__ == "__main__":
+    main()
