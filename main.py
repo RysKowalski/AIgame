@@ -16,6 +16,7 @@ def main() -> None:
 
     level: GameLevel = levels.Level1Tutorial()
     scriptEngine: ScriptEngine = ScriptEngine(level)
+    font: pygame.font.Font = pygame.freetype
 
     rectScript = """
         this.x = 50
@@ -36,6 +37,10 @@ def main() -> None:
     screen: pygame.Surface = initialize_pygame(WINDOW_SIZE)
     uiObjects.append(game_objects.SquareObject(rectScript, screen, scriptEngine))
 
+    addElementMenu: menus.AddElementMenu = menus.AddElementMenu(
+        screen, uiObjects, font, {"square": game_objects.SquareObject}
+    )
+
     ticks: int = 0
     running: bool = True
     while running:
@@ -43,15 +48,18 @@ def main() -> None:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+            addElementMenu.process_event(event)
 
         screen.fill((255, 255, 255))
 
         if ticks == 120:
-            menus.add_element_menu(screen, uiObjects)
+            addElementMenu.show()
         for uiObject in uiObjects:
             uiObject.draw()
 
+        addElementMenu.draw()
         level.tick((0.3,))
+
         pygame.display.flip()
 
 
