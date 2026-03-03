@@ -1,10 +1,11 @@
+from abc import ABC, abstractmethod
 import pygame
 import pygame.freetype
 from levels import Level1Tutorial
 from script_engine import ScriptSquareData, ScriptEngine, ScriptTextDisplayData
 
 
-class GameObject:
+class GameObject(ABC):
     id: str
     script: str
     screen: pygame.Surface
@@ -17,6 +18,7 @@ class GameObject:
         self.screen = screen
         self.scriptEngine: ScriptEngine = scriptEngine
 
+    @abstractmethod
     def draw(self) -> None: ...
 
 

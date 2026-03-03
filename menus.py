@@ -1,19 +1,23 @@
 import pygame
+import pygame.freetype
 from game_objects import GameObject
+from script_engine import ScriptEngine
 
 
 class AddElementMenu:
     def __init__(
         self,
         screen: pygame.Surface,
+        font: pygame.freetype.Font,
+        scriptEngine: ScriptEngine,
         gameObjectList: list[GameObject],
-        font: pygame.font.Font,
-        elements: dict[str, GameObject],
+        elements: dict[str, type[GameObject]],
     ) -> None:
         self.screen: pygame.Surface = screen
+        self.font: pygame.freetype.Font = font
+        self.scriptEngine: ScriptEngine = scriptEngine
         self.gameObjectList: list[GameObject] = gameObjectList
-        self.font: pygame.font.Font = font
-        self.elements: dict[str, GameObject] = elements
+        self.elements: dict[str, type[GameObject]] = elements
         self.visible: bool = False
 
     def show(self) -> None:

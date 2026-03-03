@@ -10,13 +10,15 @@ import menus
 
 
 def main() -> None:
-    GAME_FONT: pygame.freetype.Font = pygame.freetype.Font("font.ttf", 24)
     WINDOW_SIZE: tuple[int, int] = (800, 600)
     FRAMERATE: float = 60
 
+    font: pygame.freetype.Font = pygame.freetype.Font("font.ttf", 24)
     level: GameLevel = levels.Level1Tutorial()
     scriptEngine: ScriptEngine = ScriptEngine(level)
-    font: pygame.font.Font = pygame.freetype
+    uiObjects: list[game_objects.GameObject] = []
+    screen: pygame.Surface = initialize_pygame(WINDOW_SIZE)
+    clock: pygame.time.Clock = pygame.time.Clock()
 
     rectScript = """
         this.x = 50
@@ -33,12 +35,14 @@ def main() -> None:
         this.border_blue = $0 / $1
     """
 
-    uiObjects: list[game_objects.GameObject] = []
-    screen: pygame.Surface = initialize_pygame(WINDOW_SIZE)
     uiObjects.append(game_objects.SquareObject(rectScript, screen, scriptEngine))
 
     addElementMenu: menus.AddElementMenu = menus.AddElementMenu(
-        screen, uiObjects, font, {"square": game_objects.SquareObject}
+        screen,
+        font,
+        scriptEngine,
+        uiObjects,
+        {"square": game_objects.SquareObject},
     )
 
     ticks: int = 0
@@ -60,6 +64,7 @@ def main() -> None:
         addElementMenu.draw()
         level.tick((0.3,))
 
+        clock.tick(FRAMERATE)
         pygame.display.flip()
 
 
