@@ -2,6 +2,13 @@ import pygame
 import pygame.freetype
 from game_objects import GameObject
 from script_engine import ScriptEngine
+from dataclasses import dataclass
+
+
+# TODO:
+@dataclass
+class AddSettings:
+    backgroundColor: pygame.Color
 
 
 class AddElementMenu:
@@ -40,6 +47,10 @@ class AddElementMenu:
 
     def _calculate_size(self) -> pygame.Rect:
         fontRect: pygame.Rect = self.font.get_rect(self._get_longest_menu_entry())
+
+        height: float = fontRect.height * len(self.elements) * 1.4
+        width: int = fontRect.width
+        return pygame.Rect(self.position[0], self.position[1], width, height)
 
     def _get_longest_menu_entry(self) -> str:
         return max(self.elements.keys(), key=len)

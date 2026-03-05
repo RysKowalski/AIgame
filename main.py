@@ -54,7 +54,7 @@ def main() -> None:
                 running = False
             addElementMenu.process_event(event)
 
-        screen.fill((255, 255, 255))
+        screen.fill((0, 0, 0))
 
         if ticks == 120:
             addElementMenu.show((100, 100))
