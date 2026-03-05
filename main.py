@@ -57,7 +57,7 @@ def main() -> None:
         screen.fill((255, 255, 255))
 
         if ticks == 120:
-            addElementMenu.show()
+            addElementMenu.show((100, 100))
         for uiObject in uiObjects:
             uiObject.draw()
 

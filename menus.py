@@ -19,9 +19,12 @@ class AddElementMenu:
         self.gameObjectList: list[GameObject] = gameObjectList
         self.elements: dict[str, type[GameObject]] = elements
         self.visible: bool = False
+        self.position: tuple[int, int] = (0, 0)
+        self.texts: list[pygame.Rect]
 
-    def show(self) -> None:
+    def show(self, position: tuple[int, int]) -> None:
         self.visible = True
+        self.position = position
 
     def hide(self) -> None:
         self.visible = False
@@ -33,3 +36,10 @@ class AddElementMenu:
     def draw(self) -> None:
         if not self.visible:
             return
+        pygame.draw.rect(self.screen, (30, 30, 30), self._calculate_size())
+
+    def _calculate_size(self) -> pygame.Rect:
+        fontRect: pygame.Rect = self.font.get_rect(self._get_longest_menu_entry())
+
+    def _get_longest_menu_entry(self) -> str:
+        return max(self.elements.keys(), key=len)
