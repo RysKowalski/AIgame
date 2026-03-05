@@ -6,6 +6,9 @@ from typing import Dict, List, Tuple, Type
 import pygame
 import pygame.freetype
 
+from game_objects import GameObject
+from script_engine import ScriptEngine
+
 
 @dataclass
 class AddSettings:
@@ -131,7 +134,7 @@ class AddElementMenu:
             name: str = self.entries[self.hover_index]
             cls: Type["GameObject"] = self.elements[name]
 
-            obj: "GameObject" = cls()
+            obj: "GameObject" = cls("default", self.screen, self.scriptEngine)
             self.gameObjectList.append(obj)
 
             self.hide()

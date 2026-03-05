@@ -6,7 +6,7 @@ import levels
 from levels import GameLevel
 from script_engine import ScriptEngine
 import game_objects
-import menus
+import chat_menu as menus
 
 
 def main() -> None:
@@ -37,12 +37,21 @@ def main() -> None:
 
     uiObjects.append(game_objects.SquareObject(rectScript, screen, scriptEngine))
 
+    menuSettings: menus.AddSettings = menus.AddSettings(
+        pygame.Color(100, 100, 100),
+        pygame.Color(150, 150, 150),
+        pygame.Color(200, 200, 200),
+        10,
+        3,
+        2,
+    )
     addElementMenu: menus.AddElementMenu = menus.AddElementMenu(
         screen,
         font,
         scriptEngine,
         uiObjects,
         {"square": game_objects.SquareObject},
+        menuSettings,
     )
 
     ticks: int = 0
@@ -54,7 +63,7 @@ def main() -> None:
                 running = False
             addElementMenu.process_event(event)
 
-        screen.fill((0, 0, 0))
+        screen.fill((255, 255, 255))
 
         if ticks == 120:
             addElementMenu.show((100, 100))

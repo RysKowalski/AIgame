@@ -14,12 +14,19 @@ class GameObject(ABC):
     def __init__(
         self, script: str, screen: pygame.Surface, scriptEngine: ScriptEngine
     ) -> None:
-        self.script: str = script
+        """if script == 'default' default script is set"""
+        if script == "default":
+            self.script: str = self.get_default_script()
+        else:
+            self.script: str = script
         self.screen = screen
         self.scriptEngine: ScriptEngine = scriptEngine
 
     @abstractmethod
     def draw(self) -> None: ...
+
+    @abstractmethod
+    def get_default_script(self) -> str: ...
 
 
 class SquareObject(GameObject):
@@ -47,6 +54,22 @@ class SquareObject(GameObject):
 
     def _get_data(self) -> ScriptSquareData:
         return self.scriptEngine.calculate_square(self.script)
+
+    def get_default_script(self) -> str:
+        return """
+                this.x = 0
+                this.y = 0
+                this.width = 1
+                this.height = 1
+                this.rotation = 0
+                this.red = 0
+                this.green = 0
+                this.blue = 0
+                this.border_width = 0
+                this.border_red = 0
+                this.border_green = 0
+                this.border_blue = 0
+                """
 
 
 class TextDisplayObject(GameObject):
@@ -86,6 +109,19 @@ class TextDisplayObject(GameObject):
 
     def _get_data(self) -> ScriptTextDisplayData:
         return self.scriptEngine.calculate_text_display(self.script)
+
+    def get_default_script(self) -> str:
+        return """
+                this.x = 0
+                this.y = 0
+                this.value = 0
+                this.red = 0
+                this.green = 0
+                this.blue = 0
+                this.text_red = 255
+                this.text_green = 255
+                this.text_blue = 255
+                """
 
 
 if __name__ == "__main__":
