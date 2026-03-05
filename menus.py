@@ -5,10 +5,14 @@ from script_engine import ScriptEngine
 from dataclasses import dataclass
 
 
-# TODO:
 @dataclass
 class AddSettings:
     backgroundColor: pygame.Color
+    entryColor: pygame.Color
+    hoverEntryColor: pygame.Color
+    entryPadding: int
+    textPadding: int
+    entrySpacing: int
 
 
 class AddElementMenu:
@@ -19,6 +23,7 @@ class AddElementMenu:
         scriptEngine: ScriptEngine,
         gameObjectList: list[GameObject],
         elements: dict[str, type[GameObject]],
+        settings: AddSettings,
     ) -> None:
         self.screen: pygame.Surface = screen
         self.font: pygame.freetype.Font = font
