@@ -62,9 +62,9 @@ class SquareObject(GameObject):
                 this.width = 100
                 this.height = 100
                 this.rotation = 0
-                this.red = 0
-                this.green = 0
-                this.blue = 0
+                this.red = 255
+                this.green = 255
+                this.blue = 255
                 this.border_width = 0
                 this.border_red = 0
                 this.border_green = 0
@@ -118,9 +118,9 @@ class TextDisplayObject(GameObject):
                 this.x = 0
                 this.y = 0
                 this.value = 0
-                this.red = 1
-                this.green = 1
-                this.blue = 1
+                this.red = 155
+                this.green = 155
+                this.blue = 155
                 this.text_red = 255
                 this.text_green = 255
                 this.text_blue = 255
