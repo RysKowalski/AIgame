@@ -1,4 +1,3 @@
-from typing import Callable
 import pygame
 
 pygame.init()
@@ -15,6 +14,7 @@ def main() -> None:
     FRAMERATE: float = 60
 
     font: pygame.freetype.Font = pygame.freetype.Font("font.ttf", 24)
+    menuFont: pygame.freetype.Font = pygame.freetype.Font("font.ttf", 50)
     level: GameLevel = levels.Level1Tutorial()
     scriptEngine: ScriptEngine = ScriptEngine(level)
     uiObjects: list[game_objects.GameObject] = []
@@ -22,16 +22,20 @@ def main() -> None:
     clock: pygame.time.Clock = pygame.time.Clock()
 
     menuSettings: menus.AddSettings = menus.AddSettings(
-        pygame.Color(100, 100, 100),
-        pygame.Color(150, 150, 150),
-        pygame.Color(200, 200, 200),
-        10,
-        3,
-        2,
+        backgroundColor=pygame.Color(18, 18, 18),  # #121212
+        entryBackgroundColor=pygame.Color(18, 18, 18),  # #121212
+        hoverEntryBackgroundColor=pygame.Color(50, 50, 50),
+        borderColor=pygame.Color(211, 211, 211),  # #D3D3D3
+        entryBorderColor=pygame.Color(211, 211, 211),  # #D3D3D3
+        borderWidth=3,
+        entryBorderWidth=3,
+        entryPadding=30,
+        textPadding=8,
+        entrySpacing=0,
     )
     addElementMenu: menus.AddElementMenu = menus.AddElementMenu(
         screen,
-        font,
+        menuFont,
         uiObjects,
         {
             "square": lambda: game_objects.SquareObject(
@@ -56,7 +60,7 @@ def main() -> None:
                     addElementMenu.show(event.pos)
             addElementMenu.process_event(event)
 
-        screen.fill((255, 255, 255))
+        screen.fill((0, 0, 0))
 
         for uiObject in uiObjects:
             uiObject.draw()

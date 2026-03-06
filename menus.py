@@ -12,8 +12,12 @@ from game_objects import GameObject
 @dataclass
 class AddSettings:
     backgroundColor: pygame.Color
-    entryColor: pygame.Color
-    hoverEntryColor: pygame.Color
+    entryBackgroundColor: pygame.Color
+    hoverEntryBackgroundColor: pygame.Color
+    borderColor: pygame.Color
+    entryBorderColor: pygame.Color
+    borderWidth: int
+    entryBorderWidth: int
     entryPadding: int
     textPadding: int
     entrySpacing: int
@@ -139,6 +143,10 @@ class AddElementMenu:
 
             self.hide()
 
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
+                self.hide()
+
     def draw(self) -> None:
         """Render the menu."""
 
@@ -150,17 +158,28 @@ class AddElementMenu:
             self.settings.backgroundColor,
             self.menu_rect,
         )
+        self._draw_rect(
+            self.menu_rect,
+            self.settings.backgroundColor,
+            self.settings.borderColor,
+            self.settings.borderWidth,
+        )
 
         for i, rect in enumerate(self.entry_rects):
             draw_rect: pygame.Rect = rect.move(self.menu_rect.topleft)
 
             color: pygame.Color = (
-                self.settings.hoverEntryColor
+                self.settings.hoverEntryBackgroundColor
                 if i == self.hover_index
-                else self.settings.entryColor
+                else self.settings.entryBackgroundColor
             )
 
-            pygame.draw.rect(self.screen, color, draw_rect)
+            self._draw_rect(
+                draw_rect,
+                color,
+                self.settings.borderColor,
+                self.settings.entryBorderWidth,
+            )
 
             text_surface, text_rect = self.text_surfaces[i]
 
@@ -170,3 +189,13 @@ class AddElementMenu:
             )
 
             self.screen.blit(text_surface, text_pos)
+
+    def _draw_rect(
+        self,
+        rect: pygame.Rect,
+        backgroundColor: pygame.Color,
+        borderColor: pygame.Color,
+        borderWidth: int,
+    ):
+        pygame.draw.rect(self.screen, backgroundColor, rect)
+        pygame.draw.rect(self.screen, borderColor, rect, borderWidth)
