@@ -1,3 +1,4 @@
+from typing import Callable
 import pygame
 
 pygame.init()
@@ -6,7 +7,7 @@ import levels
 from levels import GameLevel
 from script_engine import ScriptEngine
 import game_objects
-import chat_menu as menus
+import menus
 
 
 def main() -> None:
@@ -20,23 +21,6 @@ def main() -> None:
     screen: pygame.Surface = initialize_pygame(WINDOW_SIZE)
     clock: pygame.time.Clock = pygame.time.Clock()
 
-    rectScript = """
-        this.x = 50
-        this.y = $0
-        this.width = 15 + 15
-        this.height = 12 + 18
-        this.rotation = 3 / 2 - 1.5
-        this.red = 100 + 100 + 55
-        this.green = 100 + 55 + 100
-        this.blue = 100 / 2
-        this.border_width = 2 + 2
-        this.border_red = 55 + 55
-        this.border_green = 66 - 10
-        this.border_blue = $0 / $1
-    """
-
-    uiObjects.append(game_objects.SquareObject(rectScript, screen, scriptEngine))
-
     menuSettings: menus.AddSettings = menus.AddSettings(
         pygame.Color(100, 100, 100),
         pygame.Color(150, 150, 150),
@@ -48,9 +32,15 @@ def main() -> None:
     addElementMenu: menus.AddElementMenu = menus.AddElementMenu(
         screen,
         font,
-        scriptEngine,
         uiObjects,
-        {"square": game_objects.SquareObject},
+        {
+            "square": lambda: game_objects.SquareObject(
+                script="default", screen=screen, scriptEngine=scriptEngine
+            ),
+            "text": lambda: game_objects.TextDisplayObject(
+                script="default", screen=screen, scriptEngine=scriptEngine, font=font
+            ),
+        },
         menuSettings,
     )
 
@@ -61,12 +51,13 @@ def main() -> None:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 2:
+                    addElementMenu.show(event.pos)
             addElementMenu.process_event(event)
 
         screen.fill((255, 255, 255))
 
-        if ticks == 120:
-            addElementMenu.show((100, 100))
         for uiObject in uiObjects:
             uiObject.draw()
 
