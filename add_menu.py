@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Dict, List, Tuple, Type, Callable
+from typing import List, Tuple, Callable
 
 import pygame
 import pygame.freetype

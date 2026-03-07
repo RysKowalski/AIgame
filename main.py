@@ -6,11 +6,11 @@ import levels
 from levels import GameLevel
 from script_engine import ScriptEngine
 import game_objects
-import menus
+import add_menu
 
 
 def main() -> None:
-    WINDOW_SIZE: tuple[int, int] = (800, 600)
+    WINDOW_SIZE: tuple[int, int] = (0, 0)
     FRAMERATE: float = 60
 
     font: pygame.freetype.Font = pygame.freetype.Font("font.ttf", 24)
@@ -18,13 +18,13 @@ def main() -> None:
     level: GameLevel = levels.Level1Tutorial()
     scriptEngine: ScriptEngine = ScriptEngine(level)
     uiObjects: list[game_objects.GameObject] = []
-    screen: pygame.Surface = initialize_pygame(WINDOW_SIZE)
+    screen: pygame.Surface = pygame.display.set_mode(WINDOW_SIZE, pygame.FULLSCREEN)
     clock: pygame.time.Clock = pygame.time.Clock()
 
-    menuSettings: menus.AddSettings = menus.AddSettings(
+    menuSettings: add_menu.AddSettings = add_menu.AddSettings(
         backgroundColor=pygame.Color(18, 18, 18),  # #121212
         entryBackgroundColor=pygame.Color(18, 18, 18),  # #121212
-        hoverEntryBackgroundColor=pygame.Color(50, 50, 50),
+        hoverEntryBackgroundColor=pygame.Color(50, 50, 50),  # #323232
         borderColor=pygame.Color(211, 211, 211),  # #D3D3D3
         entryBorderColor=pygame.Color(211, 211, 211),  # #D3D3D3
         borderWidth=3,
@@ -33,7 +33,8 @@ def main() -> None:
         textPadding=8,
         entrySpacing=0,
     )
-    addElementMenu: menus.AddElementMenu = menus.AddElementMenu(
+
+    addElementMenu: add_menu.AddElementMenu = add_menu.AddElementMenu(
         screen,
         menuFont,
         uiObjects,
@@ -70,11 +71,6 @@ def main() -> None:
 
         clock.tick(FRAMERATE)
         pygame.display.flip()
-
-
-def initialize_pygame(window_size: tuple[int, int]) -> pygame.Surface:
-    screen: pygame.Surface = pygame.display.set_mode(window_size)
-    return screen
 
 
 if __name__ == "__main__":
