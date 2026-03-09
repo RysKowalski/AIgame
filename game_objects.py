@@ -56,20 +56,18 @@ class SquareObject(GameObject):
         return self.scriptEngine.calculate_square(self.script)
 
     def get_default_script(self) -> str:
-        return """
-                this.x = 0
-                this.y = 0
-                this.width = 100
-                this.height = 100
-                this.rotation = 0
-                this.red = 255
-                this.green = 255
-                this.blue = 255
-                this.border_width = 0
-                this.border_red = 0
-                this.border_green = 0
-                this.border_blue = 0
-                """
+        return """this.x = 0
+this.y = 0
+this.width = 100
+this.height = 100
+this.rotation = 0
+this.red = 255
+this.green = 255
+this.blue = 255
+this.border_width = 0
+this.border_red = 0
+this.border_green = 0
+this.border_blue = 0"""
 
 
 class TextDisplayObject(GameObject):
@@ -114,17 +112,15 @@ class TextDisplayObject(GameObject):
         return self.scriptEngine.calculate_text_display(self.script)
 
     def get_default_script(self) -> str:
-        return """
-                this.x = 0
-                this.y = 0
-                this.value = 0
-                this.red = 155
-                this.green = 155
-                this.blue = 155
-                this.text_red = 255
-                this.text_green = 255
-                this.text_blue = 255
-                """
+        return """this.x = 0
+this.y = 0
+this.value = 0
+this.red = 155
+this.green = 155
+this.blue = 155
+this.text_red = 255
+this.text_green = 255
+this.text_blue = 255"""
 
 
 if __name__ == "__main__":

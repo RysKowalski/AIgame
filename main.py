@@ -1,4 +1,8 @@
+from dataclasses import dataclass
 import pygame
+from pygame.event import pump
+
+from edit_menu import EditElementMenu, EditSettings
 
 pygame.init()
 import pygame.freetype
@@ -9,12 +13,16 @@ import game_objects
 import add_menu
 
 
+class Fonts:
+    addMenuFont: pygame.freetype.Font = pygame.freetype.Font("font.ttf", 50)
+    editMenuFont: pygame.freetype.Font = pygame.freetype.Font("font.ttf", 22)
+    uiTextDisplayFont: pygame.freetype.Font = pygame.freetype.Font("font.ttf", 24)
+
+
 def main() -> None:
     WINDOW_SIZE: tuple[int, int] = (0, 0)
     FRAMERATE: float = 60
 
-    font: pygame.freetype.Font = pygame.freetype.Font("font.ttf", 24)
-    menuFont: pygame.freetype.Font = pygame.freetype.Font("font.ttf", 50)
     level: GameLevel = levels.Level1Tutorial()
     scriptEngine: ScriptEngine = ScriptEngine(level)
     uiObjects: list[game_objects.GameObject] = []
@@ -36,17 +44,33 @@ def main() -> None:
 
     addElementMenu: add_menu.AddElementMenu = add_menu.AddElementMenu(
         screen,
-        menuFont,
+        Fonts.addMenuFont,
         uiObjects,
         {
             "square": lambda: game_objects.SquareObject(
                 script="default", screen=screen, scriptEngine=scriptEngine
             ),
             "text": lambda: game_objects.TextDisplayObject(
-                script="default", screen=screen, scriptEngine=scriptEngine, font=font
+                script="default",
+                screen=screen,
+                scriptEngine=scriptEngine,
+                font=Fonts.uiTextDisplayFont,
             ),
         },
         menuSettings,
+    )
+
+    editSettings: EditSettings = EditSettings(
+        backgroundColor=pygame.Color(30, 30, 30),
+        borderColor=pygame.Color(150, 150, 150),
+        editingBorderColor=pygame.Color(255, 255, 255),
+        borderWidth=3,
+        menuHorizontalPadding=5,
+        topPadding=4,
+        bottomPadding=4,
+    )
+    editElementMenu: EditElementMenu = EditElementMenu(
+        screen, Fonts.editMenuFont, editSettings
     )
 
     ticks: int = 0
@@ -59,7 +83,10 @@ def main() -> None:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 2:
                     addElementMenu.show(event.pos)
+                if event.button == 3:
+                    editElementMenu.show(uiObjects[0], event.pos)
             addElementMenu.process_event(event)
+            editElementMenu.process_event(event)
 
         screen.fill((0, 0, 0))
 
@@ -67,6 +94,7 @@ def main() -> None:
             uiObject.draw()
 
         addElementMenu.draw()
+        editElementMenu.draw()
         level.tick((0.3,))
 
         clock.tick(FRAMERATE)
