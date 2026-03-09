@@ -68,6 +68,7 @@ def main() -> None:
         menuHorizontalPadding=5,
         topPadding=4,
         bottomPadding=4,
+        textPadding=8,
     )
     editElementMenu: EditElementMenu = EditElementMenu(
         screen, Fonts.editMenuFont, editSettings

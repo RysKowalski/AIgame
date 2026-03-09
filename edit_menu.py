@@ -16,6 +16,7 @@ class EditSettings:
     menuHorizontalPadding: int
     topPadding: int
     bottomPadding: int
+    textPadding: int
 
 
 class TextBox:
@@ -31,6 +32,7 @@ class TextBox:
         text: str,
         applyFunc: Callable[[], None],
         textBoxes: list["TextBox"],
+        padding: int,
     ) -> None:
         self.screen: pygame.Surface = screen
         self.font: pygame.freetype.Font = font
@@ -38,14 +40,13 @@ class TextBox:
         self.text: str = text
         self.applyFunc: Callable[[], None] = applyFunc
         self.textBoxes: list[TextBox] = textBoxes
+        self.padding: int = padding
 
         self.active: bool = False
         self.cursor_pos: int = len(text)
         self.cursor_visible: bool = True
         self.cursor_timer: float = 0.0
         self.cursor_interval: float = 0.5
-
-        self.padding: int = 6
 
     def focus(self) -> None:
         """Activate this textbox and deactivate others."""
@@ -72,7 +73,7 @@ class TextBox:
             return
 
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_RETURN:
+            if event.key == pygame.K_RETURN or event.key == pygame.K_ESCAPE:
                 self.deactivate()
 
             elif event.key == pygame.K_BACKSPACE:
@@ -161,6 +162,7 @@ class EditElementMenu:
         self.position: tuple[int, int] = (0, 0)
         self.textBoxes: list[TextBox] = []
         self.gameObject: GameObject
+        self.fontHeight: int = font.get_rect("").height
 
     def show(self, gameObject: GameObject, position: tuple[int, int]) -> None:
         self.visible = True
@@ -172,7 +174,10 @@ class EditElementMenu:
         self.textBoxes.clear()
         for i, line in enumerate(self.gameObject.script.splitlines()):
             textBoxRect: pygame.Rect = pygame.Rect(
-                self.position[0], self.position[1] + i * 24, 300, 50
+                self.position[0],
+                self.position[1] + i * self.fontHeight,
+                500,
+                self.fontHeight,
             )
             self.textBoxes.append(
                 TextBox(
@@ -182,14 +187,12 @@ class EditElementMenu:
                     line,
                     self._apply_change,
                     self.textBoxes,
+                    self.settings.textPadding,
                 )
             )
 
     def _apply_change(self) -> None:
-        script: str = ""
-        for textbox in self.textBoxes:
-            script += "\n" + textbox.text
-        self.gameObject.script = script
+        self.gameObject.script = "\n".join(textbox.text for textbox in self.textBoxes)
 
     def draw(self) -> None:
         if not self.visible:
