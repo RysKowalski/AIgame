@@ -19,6 +19,46 @@ class EditSettings:
     textPadding: int
 
 
+class TextDisplay:
+    def __init__(
+        self,
+        screen: pygame.Surface,
+        font: pygame.freetype.Font,
+        rect: pygame.Rect,
+        text: str,
+        padding: int,
+        borderWidth: int,
+        borderColor: pygame.Color,
+        backgroundColor: pygame.Color,
+        textColor: pygame.Color,
+    ) -> None:
+        self.screen: pygame.Surface = screen
+        self.font: pygame.freetype.Font = font
+        self.rect: pygame.Rect = rect
+        self.text: str = text
+        self.padding: int = padding
+        self.borderWidth: int = borderWidth
+        self.borderColor: pygame.Color = borderColor
+        self.backgroundColor: pygame.Color = backgroundColor
+        self.textColor: pygame.Color = textColor
+
+        self._create()
+
+    def _create(self) -> None:
+        pass
+
+    def draw(self) -> None:
+        pygame.draw.rect(self.screen, self.backgroundColor, self.rect)
+        pygame.draw.rect(self.screen, self.borderColor, self.rect, self.borderWidth)
+
+        text_pos: tuple[int, int] = (
+            self.rect.x + self.padding + self.borderWidth,
+            self.rect.centery - self.padding - self.borderWidth,
+        )
+
+        self.font.render_to(self.screen, text_pos, self.text, self.textColor)
+
+
 class TextBox:
     """Simple focusable text input widget for pygame.
     VIBECODED :sob:
@@ -160,7 +200,7 @@ class EditElementMenu:
 
         self.visible: bool = False
         self.position: tuple[int, int] = (0, 0)
-        self.textBoxes: list[TextBox] = []
+        self.options: list[tuple[TextDisplay, TextBox]] = []
         self.gameObject: GameObject
         self.fontHeight: int = font.get_rect("").height
 
@@ -168,42 +208,62 @@ class EditElementMenu:
         self.visible = True
         self.gameObject = gameObject
         self.position = position
-        self._generate_textboxes()
+        self._generate_options()
 
-    def _generate_textboxes(self) -> None:
-        self.textBoxes.clear()
+    def _generate_options(self) -> None:
+        self.options.clear()
         for i, line in enumerate(self.gameObject.script.splitlines()):
+            posY: float = self.position[1] + i * self.fontHeight
+
             textBoxRect: pygame.Rect = pygame.Rect(
                 self.position[0],
-                self.position[1] + i * self.fontHeight,
+                posY,
                 500,
                 self.fontHeight,
             )
-            self.textBoxes.append(
-                TextBox(
-                    self.screen,
-                    self.font,
-                    textBoxRect,
-                    line,
-                    self._apply_change,
-                    self.textBoxes,
-                    self.settings.textPadding,
+
+            optionNameRect: pygame.Rect = pygame.Rect(
+                self.position[0] - 100, posY, 100, self.fontHeight
+            )
+            optionText: str = "test name"
+            self.options.append(
+                (
+                    TextDisplay(
+                        self.screen,
+                        self.font,
+                        optionNameRect,
+                        optionText,
+                        5,
+                        3,
+                        pygame.Color(255, 255, 255),
+                        pygame.Color(0, 0, 0),
+                        pygame.Color(255, 255, 255),
+                    ),
+                    TextBox(
+                        self.screen,
+                        self.font,
+                        textBoxRect,
+                        line,
+                        self._apply_change,
+                        [opt[1] for opt in self.options],
+                        self.settings.textPadding,
+                    ),
                 )
             )
 
     def _apply_change(self) -> None:
-        self.gameObject.script = "\n".join(textbox.text for textbox in self.textBoxes)
+        self.gameObject.script = "\n".join(textbox[1].text for textbox in self.options)
 
     def draw(self) -> None:
         if not self.visible:
             return
 
-        for textbox in self.textBoxes:
-            textbox.draw()
+        for textbox in self.options:
+            textbox[1].draw()
 
     def process_event(self, event: pygame.event.Event) -> None:
         if not self.visible:
             return
 
-        for textbox in self.textBoxes:
-            textbox.process_events(event)
+        for textbox in self.options:
+            textbox[1].process_events(event)
