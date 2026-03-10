@@ -203,11 +203,17 @@ class EditElementMenu:
         self.options: list[tuple[TextDisplay, TextBox]] = []
         self.gameObject: GameObject
         self.fontHeight: int = font.get_rect("").height
+        self.maxOptionWidth: int = 1
 
     def show(self, gameObject: GameObject, position: tuple[int, int]) -> None:
         self.visible = True
         self.gameObject = gameObject
         self.position = position
+
+        self.maxOptionWidth = self.font.get_rect(
+            get_longest_option(self.gameObject.script) + " = "
+        ).width
+
         self._generate_options()
 
     def _generate_options(self) -> None:
@@ -223,16 +229,19 @@ class EditElementMenu:
             )
 
             optionNameRect: pygame.Rect = pygame.Rect(
-                self.position[0] - 100, posY, 100, self.fontHeight
+                self.position[0] - self.maxOptionWidth,
+                posY,
+                self.maxOptionWidth,
+                self.fontHeight,
             )
-            optionText: str = "test name"
+
             self.options.append(
                 (
                     TextDisplay(
                         self.screen,
                         self.font,
                         optionNameRect,
-                        optionText,
+                        get_option_name(line) + " = ",
                         5,
                         3,
                         pygame.Color(255, 255, 255),
@@ -243,7 +252,7 @@ class EditElementMenu:
                         self.screen,
                         self.font,
                         textBoxRect,
-                        line,
+                        get_option_expression(line),
                         self._apply_change,
                         [opt[1] for opt in self.options],
                         self.settings.textPadding,
@@ -252,13 +261,18 @@ class EditElementMenu:
             )
 
     def _apply_change(self) -> None:
-        self.gameObject.script = "\n".join(textbox[1].text for textbox in self.options)
+        script: list[str] = []
+
+        for option in self.options:
+            script.append("this." + option[0].text + option[1].text)
+        self.gameObject.script = "\n".join(script)
 
     def draw(self) -> None:
         if not self.visible:
             return
 
         for textbox in self.options:
+            textbox[0].draw()
             textbox[1].draw()
 
     def process_event(self, event: pygame.event.Event) -> None:
@@ -267,3 +281,22 @@ class EditElementMenu:
 
         for textbox in self.options:
             textbox[1].process_events(event)
+
+
+def get_longest_option(script: str) -> str:
+    lines: list[str] = script.splitlines()
+
+    return max([get_option_name(line) for line in lines], key=len)
+
+
+def get_option_name(line: str) -> str:
+    try:
+        return line.split()[0].removeprefix("this.")
+    except IndexError:
+        return "empty"
+
+
+def get_option_expression(line: str) -> str:
+    lineSplit: list[str] = line.split()
+    expression: str = " ".join(lineSplit[2:])
+    return expression

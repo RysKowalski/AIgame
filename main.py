@@ -1,6 +1,4 @@
-from dataclasses import dataclass
 import pygame
-from pygame.event import pump
 
 from edit_menu import EditElementMenu, EditSettings
 
