@@ -7,6 +7,7 @@ from script_engine import ScriptSquareData, ScriptEngine, ScriptTextDisplayData
 
 class GameObject(ABC):
     id: str
+    name: str
     script: str
     screen: pygame.Surface
     scriptEngine: ScriptEngine
@@ -45,6 +46,8 @@ class SquareObject(GameObject):
     this.border_blue
     """
 
+    name = "Square"
+
     def draw(self) -> None:
         squareData: ScriptSquareData = self._get_data()
         rect: pygame.Rect = pygame.Rect(
@@ -82,6 +85,8 @@ class TextDisplayObject(GameObject):
     this.text_green
     this.text_blue
     """
+
+    name = "Text"
 
     def __init__(
         self,

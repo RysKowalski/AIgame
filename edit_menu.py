@@ -207,7 +207,7 @@ class EditElementMenu:
         self.maxOptionWidth: int = 1
 
         self.wholeMenu: pygame.Rect = pygame.Rect(1, 1, 1, 1)
-        self.name: tuple[pygame.Surface, pygame.Rect]
+        self.name: TextDisplay
 
     def show(self, gameObject: GameObject, position: tuple[int, int]) -> None:
         self.visible = True
@@ -274,7 +274,21 @@ class EditElementMenu:
         self.gameObject.script = "\n".join(script)
 
     def _generate_name(self) -> None:
-        self.name = self.font.render(self.gameObject.id, size=self.settings.nameSize)
+        rect: pygame.Rect = self.font.get_rect(
+            self.gameObject.name, size=self.settings.nameSize
+        )
+
+        self.name = TextDisplay(
+            self.screen,
+            self.font,
+            rect,
+            self.gameObject.name,
+            4,
+            3,
+            pygame.Color(255, 255, 255),
+            pygame.Color(0, 0, 0),
+            pygame.Color(255, 255, 255),
+        )
 
     def generate_whole_menu(self) -> None:
         self.wholeMenu = pygame.Rect(
@@ -286,12 +300,14 @@ class EditElementMenu:
             self.options[0][0].rect.height * len(self.options)
             + self.settings.bottomPadding
             + self.settings.topPadding
-            + self.name[1].height,
+            + self.name.rect.height,
         )
 
     def draw(self) -> None:
         if not self.visible:
             return
+
+        self.name.draw()
 
         for textbox in self.options:
             textbox[0].draw()
