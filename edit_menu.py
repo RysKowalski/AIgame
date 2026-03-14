@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from typing import Callable
+from enum import Enum
 
 import pygame
 import pygame.freetype
@@ -14,10 +15,30 @@ class EditSettings:
     editingBorderColor: pygame.Color
     borderWidth: int
     menuHorizontalPadding: int
+    nameBottomGap: int
     topPadding: int
     bottomPadding: int
     textPadding: int
     nameSize: int
+
+
+class TextAlign(Enum):
+    LEFT = "left"
+    CENTER = "center"
+    RIGHT = "right"
+
+
+@dataclass
+class TextDisplaySettings:
+    padding: int
+    borderWidth: int
+    borderColor: pygame.Color
+    backgroundColor: pygame.Color
+    textColor: pygame.Color
+    fontSize: float
+    minWidth: int
+    minHeight: int
+    textAlign: TextAlign = TextAlign.LEFT
 
 
 class TextDisplay:
@@ -25,39 +46,74 @@ class TextDisplay:
         self,
         screen: pygame.Surface,
         font: pygame.freetype.Font,
-        rect: pygame.Rect,
+        position: tuple[float, float],
         text: str,
-        padding: int,
-        borderWidth: int,
-        borderColor: pygame.Color,
-        backgroundColor: pygame.Color,
-        textColor: pygame.Color,
+        settings: TextDisplaySettings,
     ) -> None:
         self.screen: pygame.Surface = screen
         self.font: pygame.freetype.Font = font
-        self.rect: pygame.Rect = rect
         self.text: str = text
-        self.padding: int = padding
-        self.borderWidth: int = borderWidth
-        self.borderColor: pygame.Color = borderColor
-        self.backgroundColor: pygame.Color = backgroundColor
-        self.textColor: pygame.Color = textColor
+        self.settings: TextDisplaySettings = settings
+        self.rect: pygame.Rect = self._generate_rect(position)
 
-        self._create()
+    def _generate_rect(self, position: tuple[float, float]) -> pygame.Rect:
+        rect: pygame.Rect = self.font.get_rect(self.text, size=self.settings.fontSize)
 
-    def _create(self) -> None:
-        pass
-
-    def draw(self) -> None:
-        pygame.draw.rect(self.screen, self.backgroundColor, self.rect)
-        pygame.draw.rect(self.screen, self.borderColor, self.rect, self.borderWidth)
-
-        text_pos: tuple[int, int] = (
-            self.rect.x + self.padding + self.borderWidth,
-            self.rect.centery - self.padding - self.borderWidth,
+        rect.height = max(
+            rect.height + self.settings.padding * 2,
+            self.settings.minHeight,
+        )
+        rect.width = max(
+            rect.width + self.settings.padding * 2,
+            self.settings.minWidth,
         )
 
-        self.font.render_to(self.screen, text_pos, self.text, self.textColor)
+        rect.x, rect.y = (int(position[0]), int(position[1]))
+
+        return rect
+
+    def _compute_text_x(self, text_rect: pygame.Rect) -> int:
+        inner_left: int = (
+            self.rect.x + self.settings.padding + self.settings.borderWidth
+        )
+        inner_right: int = (
+            self.rect.right - self.settings.padding - self.settings.borderWidth
+        )
+        inner_width: int = inner_right - inner_left
+
+        if self.settings.textAlign == TextAlign.LEFT:
+            return inner_left
+
+        if self.settings.textAlign == TextAlign.CENTER:
+            return inner_left + (inner_width - text_rect.width) // 2
+
+        return inner_right - text_rect.width
+
+    def draw(self) -> None:  # TODO: vibecoded
+        pygame.draw.rect(self.screen, self.settings.backgroundColor, self.rect)
+
+        pygame.draw.rect(
+            self.screen,
+            self.settings.borderColor,
+            self.rect,
+            self.settings.borderWidth,
+        )
+
+        text_rect: pygame.Rect = self.font.get_rect(
+            self.text,
+            size=self.settings.fontSize,
+        )
+
+        text_rect.x = self._compute_text_x(text_rect)
+        text_rect.centery = self.rect.centery
+
+        self.font.render_to(
+            self.screen,
+            text_rect.topleft,
+            self.text,
+            self.settings.textColor,
+            size=self.settings.fontSize,
+        )
 
 
 class TextBox:
@@ -96,7 +152,7 @@ class TextBox:
         self.active = True
         self.cursor_pos = len(self.text)
 
-    def deactivate(self) -> None:
+    def unfocus(self) -> None:
         """Deactivate the textbox and apply the current value."""
         if self.active:
             self.applyFunc()
@@ -108,14 +164,14 @@ class TextBox:
             if self.rect.collidepoint(event.pos):
                 self.focus()
             else:
-                self.deactivate()
+                self.unfocus()
 
         if not self.active:
             return
 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_RETURN or event.key == pygame.K_ESCAPE:
-                self.deactivate()
+                self.unfocus()
 
             elif event.key == pygame.K_BACKSPACE:
                 if self.cursor_pos > 0:
@@ -155,11 +211,11 @@ class TextBox:
 
     def draw(self) -> None:
         """Render textbox, text, and cursor."""
-        bg_color: tuple[int, int, int] = (40, 40, 40)
+        bg_color: tuple[int, int, int] = (10, 10, 10)
         border_color: tuple[int, int, int] = (
-            (200, 200, 200) if self.active else (120, 120, 120)
+            (150, 150, 255) if self.active else (220, 220, 220)
         )
-        text_color: tuple[int, int, int] = (240, 240, 240)
+        text_color: tuple[int, int, int] = (255, 255, 255)
 
         pygame.draw.rect(self.screen, bg_color, self.rect)
         pygame.draw.rect(self.screen, border_color, self.rect, 2)
@@ -208,17 +264,20 @@ class EditElementMenu:
 
         self.wholeMenu: pygame.Rect = pygame.Rect(1, 1, 1, 1)
         self.name: TextDisplay
+        self.width: int = 0
 
     def show(self, gameObject: GameObject, position: tuple[int, int]) -> None:
         self.visible = True
         self.gameObject = gameObject
         self.position = position
 
-        self.maxOptionWidth = self.font.get_rect(
-            get_longest_option(self.gameObject.script) + " = "
-        ).width
+        self.maxOptionWidth = (
+            self.font.get_rect(get_longest_option(self.gameObject.script) + " = ").width
+            + 2 * self.settings.textPadding
+        )
 
         self._generate_options()
+        self._calculate_width()
         self._generate_name()
         self.generate_whole_menu()
 
@@ -234,25 +293,24 @@ class EditElementMenu:
                 self.fontHeight,
             )
 
-            optionNameRect: pygame.Rect = pygame.Rect(
-                self.position[0] - self.maxOptionWidth,
-                posY,
-                self.maxOptionWidth,
-                self.fontHeight,
-            )
-
             self.options.append(
                 (
                     TextDisplay(
                         self.screen,
                         self.font,
-                        optionNameRect,
+                        (self.position[0] - self.maxOptionWidth, posY),
                         get_option_name(line) + " = ",
-                        5,
-                        3,
-                        pygame.Color(255, 255, 255),
-                        pygame.Color(0, 0, 0),
-                        pygame.Color(255, 255, 255),
+                        TextDisplaySettings(
+                            padding=5,
+                            borderWidth=2,
+                            borderColor=pygame.Color(255, 255, 255),
+                            backgroundColor=pygame.Color(0, 0, 0),
+                            textColor=pygame.Color(255, 255, 255),
+                            fontSize=22,
+                            minWidth=self.maxOptionWidth,
+                            minHeight=textBoxRect.height,
+                            textAlign=TextAlign.RIGHT,
+                        ),
                     ),
                     TextBox(
                         self.screen,
@@ -273,45 +331,75 @@ class EditElementMenu:
             script.append("this." + option[0].text + option[1].text)
         self.gameObject.script = "\n".join(script)
 
-    def _generate_name(self) -> None:
-        rect: pygame.Rect = self.font.get_rect(
-            self.gameObject.name, size=self.settings.nameSize
+    def _calculate_width(self) -> None:
+        self.width = (
+            self.options[0][0].rect.width
+            + self.options[0][1].rect.width
+            + 2 * self.settings.menuHorizontalPadding
         )
 
+    def _generate_name(self) -> None:
         self.name = TextDisplay(
             self.screen,
             self.font,
-            rect,
+            (
+                1,
+                self.position[1] - self.settings.nameBottomGap,
+            ),
             self.gameObject.name,
-            4,
-            3,
-            pygame.Color(255, 255, 255),
-            pygame.Color(0, 0, 0),
-            pygame.Color(255, 255, 255),
+            TextDisplaySettings(
+                padding=10,
+                borderWidth=3,
+                borderColor=pygame.Color(255, 255, 255),
+                backgroundColor=pygame.Color(0, 0, 0),
+                textColor=pygame.Color(255, 255, 255),
+                fontSize=35,
+                minWidth=int(self.width * 0.75),  # FIXME:
+                minHeight=22,
+                textAlign=TextAlign.CENTER,
+            ),
+        )
+        self.name.rect.centerx = int(
+            self.position[0] + self.options[0][1].rect.width - self.width / 2
+        )
+        self.name.rect.y = int(
+            self.position[1] - self.settings.nameBottomGap - self.name.rect.height
         )
 
     def generate_whole_menu(self) -> None:
-        self.wholeMenu = pygame.Rect(
-            10,
-            10,
-            self.options[0][0].rect.width
-            + self.options[0][1].rect.width
-            + 2 * self.settings.menuHorizontalPadding,
-            self.options[0][0].rect.height * len(self.options)
-            + self.settings.bottomPadding
+        left: int = self.options[0][0].rect.left - self.settings.menuHorizontalPadding
+        top: int = self.name.rect.y - self.settings.menuHorizontalPadding
+        width: int = self.width
+        height: int = (
+            self.settings.bottomPadding
+            + (self.options[0][0].rect.height * len(self.options))
+            + self.settings.nameBottomGap
+            + self.name.rect.height
             + self.settings.topPadding
-            + self.name.rect.height,
         )
+
+        self.wholeMenu = pygame.Rect(left, top, width, height)
 
     def draw(self) -> None:
         if not self.visible:
             return
+
+        self._draw_whole_menu()
 
         self.name.draw()
 
         for textbox in self.options:
             textbox[0].draw()
             textbox[1].draw()
+
+    def _draw_whole_menu(self) -> None:
+        pygame.draw.rect(self.screen, self.settings.backgroundColor, self.wholeMenu)
+        pygame.draw.rect(
+            self.screen,
+            self.settings.borderColor,
+            self.wholeMenu,
+            width=self.settings.borderWidth,
+        )
 
     def process_event(self, event: pygame.event.Event) -> None:
         if not self.visible:

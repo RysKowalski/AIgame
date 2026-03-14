@@ -59,13 +59,14 @@ def main() -> None:
     )
 
     editSettings: EditSettings = EditSettings(
-        backgroundColor=pygame.Color(30, 30, 30),
-        borderColor=pygame.Color(150, 150, 150),
+        backgroundColor=pygame.Color(10, 10, 10),
+        borderColor=pygame.Color(255, 255, 255),
         editingBorderColor=pygame.Color(255, 255, 255),
         borderWidth=3,
-        menuHorizontalPadding=5,
-        topPadding=4,
-        bottomPadding=4,
+        menuHorizontalPadding=30,
+        nameBottomGap=40,
+        topPadding=30,
+        bottomPadding=30,
         textPadding=8,
         nameSize=30,
     )
