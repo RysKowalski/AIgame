@@ -340,6 +340,8 @@ class EditElementMenu:
         for textbox in self.options:
             textbox[1].process_events(event)
 
+        self.deleteButton.process_event(event)
+
 
 def get_longest_option(script: str) -> str:
     lines: list[str] = script.splitlines()

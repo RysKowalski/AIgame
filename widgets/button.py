@@ -69,4 +69,6 @@ class Button:
         self.screen.blit(self.surface, self.rect)
 
     def process_event(self, event: pygame.event.Event):
-        pass
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if self.rect.collidepoint(event.pos):
+                self.onClick()
