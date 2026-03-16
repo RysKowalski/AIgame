@@ -23,10 +23,29 @@ class SquareObject(GameObject):
 
     def draw(self) -> None:
         squareData: ScriptSquareData = self._get_data()
-        rect: pygame.Rect = pygame.Rect(
-            int(squareData.x), int(squareData.y), squareData.width, squareData.height
+
+        surface: pygame.Surface = pygame.Surface(
+            (squareData.width, squareData.height), pygame.SRCALPHA
         )
-        pygame.draw.rect(self.screen, squareData.backgroundColor, rect)
+
+        rect: pygame.Rect = pygame.Rect(0, 0, squareData.width, squareData.height)
+
+        pygame.draw.rect(surface, squareData.backgroundColor, rect)
+        pygame.draw.rect(
+            surface, squareData.borderColor, rect, int(squareData.borderWidth)
+        )
+
+        rotatedSurface: pygame.Surface = pygame.transform.rotate(
+            surface, squareData.rotation
+        )
+        center: tuple[float, float] = (
+            squareData.x + squareData.width / 2,
+            squareData.y + squareData.height / 2,
+        )
+
+        rotatedRect: pygame.Rect = rotatedSurface.get_rect(center=center)
+
+        self.screen.blit(rotatedSurface, rotatedRect)
 
     def _get_data(self) -> ScriptSquareData:
         return self.scriptEngine.calculate_square(self.script)
