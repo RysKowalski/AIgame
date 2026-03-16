@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from typing import Callable
-from widgets.text_display import TextDisplay, TextAlign, TextDisplaySettings
+from widgets import TextDisplay, TextAlign, TextDisplaySettings
+from widgets.button import Button, ButtonSettings
 
 import pygame
 import pygame.freetype
@@ -172,6 +173,24 @@ class EditElementMenu:
         self.name: TextDisplay
         self.width: int = 0
 
+        self.deleteButton: Button = Button(
+            screen,
+            font,
+            "delete",
+            ButtonSettings(
+                10,
+                10,
+                10,
+                10,
+                2,
+                5,
+                pygame.Color(25, 25, 25),
+                pygame.Color(255, 255, 255),
+                pygame.Color(255, 255, 255),
+            ),
+            lambda: None,
+        )
+
     def show(self, gameObject: GameObject, position: tuple[int, int]) -> None:
         self.visible = True
         self.gameObject = gameObject
@@ -293,6 +312,7 @@ class EditElementMenu:
         self._draw_whole_menu()
 
         self.name.draw()
+        self.deleteButton.draw()
 
         for textbox in self.options:
             textbox[0].draw()

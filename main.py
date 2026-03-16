@@ -1,8 +1,8 @@
 import pygame
 
-from edit_menu import EditElementMenu, EditSettings
-
 pygame.init()
+
+from edit_menu import EditElementMenu, EditSettings
 import pygame.freetype
 import levels
 from levels import GameLevel
