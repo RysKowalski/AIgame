@@ -1,0 +1,59 @@
+import pygame
+import pygame.freetype
+from script_engine import ScriptEngine, ScriptTextDisplayData
+from game_objects import GameObject
+
+
+class TextDisplayObject(GameObject):
+    """
+    this.x
+    this.y
+    this.value
+    this.red
+    this.green
+    this.blue
+    this.text_red
+    this.text_green
+    this.text_blue
+    """
+
+    name = "Text"
+
+    def __init__(
+        self,
+        script: str,
+        screen: pygame.Surface,
+        scriptEngine: ScriptEngine,
+        font: pygame.freetype.Font,
+    ) -> None:
+        if script == "default":
+            self.script: str = self.get_default_script()
+        else:
+            self.script: str = script
+        self.screen = screen
+        self.scriptEngine: ScriptEngine = scriptEngine
+        self.font: pygame.freetype.Font = font
+
+    def draw(self) -> None:
+        textDisplayData: ScriptTextDisplayData = self._get_data()
+        self.font.render_to(
+            self.screen,
+            (textDisplayData.x, textDisplayData.y),
+            textDisplayData.value,
+            textDisplayData.textColor,
+            textDisplayData.backgroundColor,
+        )
+
+    def _get_data(self) -> ScriptTextDisplayData:
+        return self.scriptEngine.calculate_text_display(self.script)
+
+    def get_default_script(self) -> str:
+        return """this.x = 0
+this.y = 0
+this.value = 0
+this.red = 155
+this.green = 155
+this.blue = 155
+this.text_red = 255
+this.text_green = 255
+this.text_blue = 255"""
