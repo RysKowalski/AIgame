@@ -39,6 +39,7 @@ class Button:
 
     def recalculate_layout(self) -> None:
         self.rect = self._create_rect()
+        self.surface = self._create_surface()
 
     def _create_rect(self) -> pygame.Rect:
         return pygame.Rect(
