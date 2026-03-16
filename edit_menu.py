@@ -178,17 +178,17 @@ class EditElementMenu:
             font,
             "delete",
             ButtonSettings(
-                10,
-                10,
-                10,
-                10,
-                2,
-                5,
-                pygame.Color(25, 25, 25),
-                pygame.Color(255, 255, 255),
-                pygame.Color(255, 255, 255),
+                x=10,
+                y=10,
+                width=270,
+                height=30,
+                borderWidth=2,
+                fontSize=5,
+                backgroundColor=pygame.Color(25, 25, 25),
+                borderColor=pygame.Color(255, 255, 255),
+                textColor=pygame.Color(255, 255, 255),
             ),
-            lambda: None,
+            lambda: print("clicked"),
         )
 
     def show(self, gameObject: GameObject, position: tuple[int, int]) -> None:
