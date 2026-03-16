@@ -50,7 +50,11 @@ class Button:
         surface: pygame.Surface = pygame.Surface(
             (self.settings.width, self.settings.height)
         )
-        pygame.draw.rect(surface, self.settings.backgroundColor, self.rect)
+        pygame.draw.rect(
+            surface,
+            self.settings.backgroundColor,
+            pygame.Rect(0, 0, self.settings.width, self.settings.height),
+        )
         self.font.render_to(
             surface,
             (5, 5),
