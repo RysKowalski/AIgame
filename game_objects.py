@@ -6,7 +6,7 @@ from script_engine import ScriptSquareData, ScriptEngine, ScriptTextDisplayData
 
 
 class GameObject(ABC):
-    id: str
+    id: int
     name: str
     script: str
     screen: pygame.Surface
