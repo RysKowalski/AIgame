@@ -173,23 +173,7 @@ class EditElementMenu:
         self.name: TextDisplay
         self.width: int = 0
 
-        self.deleteButton: Button = Button(
-            screen,
-            font,
-            "delete",
-            ButtonSettings(
-                x=10,
-                y=10,
-                width=270,
-                height=30,
-                borderWidth=2,
-                fontSize=22,
-                backgroundColor=pygame.Color(25, 25, 25),
-                borderColor=pygame.Color(255, 255, 255),
-                textColor=pygame.Color(255, 255, 255),
-            ),
-            lambda: print("clicked"),
-        )
+        self.deleteButton: Button
 
     def show(self, gameObject: GameObject, position: tuple[int, int]) -> None:
         self.visible = True
@@ -289,6 +273,25 @@ class EditElementMenu:
         )
         self.name.rect.y = int(
             self.position[1] - self.settings.nameBottomGap - self.name.rect.height
+        )
+
+    def generate_delete_button(self) -> None:
+        self.deleteButton: Button = Button(
+            self.screen,
+            self.font,
+            "delete",
+            ButtonSettings(
+                x=self.options[0][0].rect.x,
+                y=self.options[-1][0].rect.y + self.settings.bottomPadding,
+                width=200,
+                height=50,
+                borderWidth=2,
+                fontSize=24,
+                backgroundColor=pygame.Color(25, 25, 25),
+                borderColor=pygame.Color(255, 255, 255),
+                textColor=pygame.Color(255, 255, 255),
+            ),
+            lambda: print("clicked"),
         )
 
     def generate_whole_menu(self) -> None:
