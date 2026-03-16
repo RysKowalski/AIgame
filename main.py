@@ -8,6 +8,7 @@ import levels
 from levels import GameLevel
 from script_engine import ScriptEngine
 import game_objects
+from game_objects_store import GameObjectStore
 import add_menu
 
 
@@ -23,7 +24,7 @@ def main() -> None:
 
     level: GameLevel = levels.Level1Tutorial()
     scriptEngine: ScriptEngine = ScriptEngine(level)
-    uiObjects: list[game_objects.GameObject] = []
+    uiObjects: GameObjectStore = GameObjectStore()
     screen: pygame.Surface = pygame.display.set_mode(WINDOW_SIZE, pygame.FULLSCREEN)
     clock: pygame.time.Clock = pygame.time.Clock()
 
@@ -85,14 +86,13 @@ def main() -> None:
                 if event.button == 2:
                     addElementMenu.show(event.pos)
                 if event.button == 3:
-                    editElementMenu.show(uiObjects[0], event.pos)
+                    editElementMenu.show(uiObjects.get(0), event.pos)
             addElementMenu.process_event(event)
             editElementMenu.process_event(event)
 
         screen.fill((0, 0, 0))
 
-        for uiObject in uiObjects:
-            uiObject.draw()
+        uiObjects.draw()
 
         addElementMenu.draw()
         editElementMenu.draw()

@@ -7,6 +7,7 @@ import pygame
 import pygame.freetype
 
 from game_objects import GameObject
+from game_objects_store import GameObjectStore
 
 
 @dataclass
@@ -33,13 +34,13 @@ class AddElementMenu:
         self,
         screen: pygame.Surface,
         font: pygame.freetype.Font,
-        gameObjectList: List["GameObject"],
+        gameObjects: GameObjectStore,
         elements: dict[str, GameObjectFactory],
         settings: AddSettings,
     ) -> None:
         self.screen: pygame.Surface = screen
         self.font: pygame.freetype.Font = font
-        self.gameObjectList: List["GameObject"] = gameObjectList
+        self.gameObjects: GameObjectStore = gameObjects
         self.elements: dict[str, GameObjectFactory] = elements
         self.settings: AddSettings = settings
 
@@ -139,7 +140,7 @@ class AddElementMenu:
             factory: GameObjectFactory = self.elements[name]
 
             obj: "GameObject" = factory()
-            self.gameObjectList.append(obj)
+            self.gameObjects.add(obj)
 
             self.hide()
 

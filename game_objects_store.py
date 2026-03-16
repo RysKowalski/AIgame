@@ -11,6 +11,12 @@ class GameObjectStore:
         self.gameObjects[self.idCounter] = gameObject
         self.idCounter += 1
 
-    def delete(self, id: int) -> None: ...
+    def delete(self, id: int) -> None:
+        del self.gameObjects[id]
 
-    def get(self, id: int) -> GameObject: ...
+    def get(self, id: int) -> GameObject:
+        return self.gameObjects[id]
+
+    def draw(self) -> None:
+        for gameObject in self.gameObjects.values():
+            gameObject.draw()
