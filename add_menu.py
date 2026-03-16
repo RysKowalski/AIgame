@@ -7,7 +7,7 @@ import pygame
 import pygame.freetype
 
 from game_objects import GameObject
-from game_objects_store import GameObjectStore
+from game_objects import GameObjectStore
 
 
 @dataclass

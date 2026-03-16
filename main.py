@@ -8,7 +8,6 @@ import levels
 from levels import GameLevel
 from script_engine import ScriptEngine
 import game_objects
-from game_objects_store import GameObjectStore
 import add_menu
 
 
@@ -24,7 +23,7 @@ def main() -> None:
 
     level: GameLevel = levels.Level1Tutorial()
     scriptEngine: ScriptEngine = ScriptEngine(level)
-    uiObjects: GameObjectStore = GameObjectStore()
+    uiObjects: game_objects.GameObjectStore = game_objects.GameObjectStore()
     screen: pygame.Surface = pygame.display.set_mode(WINDOW_SIZE, pygame.FULLSCREEN)
     clock: pygame.time.Clock = pygame.time.Clock()
 
