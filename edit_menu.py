@@ -183,7 +183,7 @@ class EditElementMenu:
                 width=270,
                 height=30,
                 borderWidth=2,
-                fontSize=5,
+                fontSize=22,
                 backgroundColor=pygame.Color(25, 25, 25),
                 borderColor=pygame.Color(255, 255, 255),
                 textColor=pygame.Color(255, 255, 255),
