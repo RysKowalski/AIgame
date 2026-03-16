@@ -188,7 +188,8 @@ class EditElementMenu:
         self._generate_options()
         self._calculate_width()
         self._generate_name()
-        self.generate_whole_menu()
+        self._generate_delete_button()
+        self._generate_whole_menu()
 
     def _generate_options(self) -> None:
         self.options.clear()
@@ -275,7 +276,7 @@ class EditElementMenu:
             self.position[1] - self.settings.nameBottomGap - self.name.rect.height
         )
 
-    def generate_delete_button(self) -> None:
+    def _generate_delete_button(self) -> None:
         self.deleteButton: Button = Button(
             self.screen,
             self.font,
@@ -294,12 +295,14 @@ class EditElementMenu:
             lambda: print("clicked"),
         )
 
-    def generate_whole_menu(self) -> None:
+    def _generate_whole_menu(self) -> None:
         left: int = self.options[0][0].rect.left - self.settings.menuHorizontalPadding
         top: int = self.name.rect.y - self.settings.menuHorizontalPadding
         width: int = self.width
         height: int = (
             self.settings.bottomPadding
+            + self.deleteButton.rect.height
+            + self.settings.bottomPadding
             + (self.options[0][0].rect.height * len(self.options))
             + self.settings.nameBottomGap
             + self.name.rect.height
