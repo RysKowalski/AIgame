@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from typing import Callable
+import game_objects
 from widgets import TextDisplay, TextAlign, TextDisplaySettings
 from widgets.button import Button, ButtonSettings
 
@@ -157,10 +158,12 @@ class EditElementMenu:
         screen: pygame.Surface,
         font: pygame.freetype.Font,
         settings: EditSettings,
+        gameObjects: game_objects.GameObjectStore,
     ) -> None:
         self.screen: pygame.Surface = screen
         self.font: pygame.freetype.Font = font
         self.settings: EditSettings = settings
+        self.gameObjects: game_objects.GameObjectStore = gameObjects
 
         self.visible: bool = False
         self.position: tuple[int, int] = (0, 0)
@@ -175,9 +178,9 @@ class EditElementMenu:
 
         self.deleteButton: Button
 
-    def show(self, gameObject: GameObject, position: tuple[int, int]) -> None:
+    def show(self, gameObjectId: int, position: tuple[int, int]) -> None:
         self.visible = True
-        self.gameObject = gameObject
+        self.gameObject = self.gameObjects.get(gameObjectId)
         self.position = position
 
         self.maxOptionWidth = (
@@ -264,13 +267,15 @@ class EditElementMenu:
                 backgroundColor=pygame.Color(0, 0, 0),
                 textColor=pygame.Color(255, 255, 255),
                 fontSize=35,
-                minWidth=int(self.width * 0.75),  # FIXME:
+                minWidth=int(self.width * 0.75),
                 minHeight=22,
                 textAlign=TextAlign.CENTER,
             ),
         )
         self.name.rect.centerx = int(
-            self.position[0] + self.options[0][1].rect.width - self.width / 2
+            self.position[0]
+            - self.options[0][0].rect.width / 2
+            + self.options[0][1].rect.width / 2
         )
         self.name.rect.y = int(
             self.position[1] - self.settings.nameBottomGap - self.name.rect.height
@@ -282,18 +287,22 @@ class EditElementMenu:
             self.font,
             "delete",
             ButtonSettings(
-                x=self.options[0][0].rect.x,
-                y=self.options[-1][0].rect.y + self.settings.bottomPadding,
-                width=200,
-                height=50,
+                x=self.options[0][0].rect.right - 150,
+                y=self.options[-1][0].rect.bottom + self.settings.bottomPadding,
+                width=150,
+                height=31,
                 borderWidth=2,
                 fontSize=24,
                 backgroundColor=pygame.Color(25, 25, 25),
                 borderColor=pygame.Color(255, 255, 255),
-                textColor=pygame.Color(255, 255, 255),
+                textColor=pygame.Color(217, 90, 90),
             ),
-            lambda: print("clicked"),
+            self._delete_game_object,
         )
+
+    def _delete_game_object(self) -> None:
+        self.visible = False
+        self.gameObjects.delete(self.gameObject.id)
 
     def _generate_whole_menu(self) -> None:
         left: int = self.options[0][0].rect.left - self.settings.menuHorizontalPadding

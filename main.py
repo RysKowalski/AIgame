@@ -23,7 +23,7 @@ def main() -> None:
 
     level: GameLevel = levels.Level1Tutorial()
     scriptEngine: ScriptEngine = ScriptEngine(level)
-    uiObjects: game_objects.GameObjectStore = game_objects.GameObjectStore()
+    gameObjects: game_objects.GameObjectStore = game_objects.GameObjectStore()
     screen: pygame.Surface = pygame.display.set_mode(WINDOW_SIZE, pygame.FULLSCREEN)
     clock: pygame.time.Clock = pygame.time.Clock()
 
@@ -43,7 +43,7 @@ def main() -> None:
     addElementMenu: add_menu.AddElementMenu = add_menu.AddElementMenu(
         screen,
         Fonts.addMenuFont,
-        uiObjects,
+        gameObjects,
         {
             "square": lambda: game_objects.SquareObject(
                 script="default", screen=screen, scriptEngine=scriptEngine
@@ -71,7 +71,7 @@ def main() -> None:
         nameSize=30,
     )
     editElementMenu: EditElementMenu = EditElementMenu(
-        screen, Fonts.editMenuFont, editSettings
+        screen, Fonts.editMenuFont, editSettings, gameObjects
     )
 
     ticks: int = 0
@@ -85,13 +85,13 @@ def main() -> None:
                 if event.button == 2:
                     addElementMenu.show(event.pos)
                 if event.button == 3:
-                    editElementMenu.show(uiObjects.get(0), event.pos)
+                    editElementMenu.show(0, event.pos)
             addElementMenu.process_event(event)
             editElementMenu.process_event(event)
 
         screen.fill((0, 0, 0))
 
-        uiObjects.draw()
+        gameObjects.draw()
 
         addElementMenu.draw()
         editElementMenu.draw()

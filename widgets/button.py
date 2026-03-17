@@ -55,9 +55,22 @@ class Button:
             self.settings.backgroundColor,
             pygame.Rect(0, 0, self.settings.width, self.settings.height),
         )
+
+        pygame.draw.rect(
+            surface,
+            self.settings.borderColor,
+            pygame.Rect(0, 0, self.settings.width, self.settings.height),
+            width=self.settings.borderWidth,
+        )
+
+        fontRect: pygame.Rect = self.font.get_rect(
+            self.text, size=self.settings.fontSize
+        )
+        fontRect.center = (int(self.settings.width / 2), int(self.settings.height / 2))
+
         self.font.render_to(
             surface,
-            (5, 5),
+            fontRect,
             self.text,
             fgcolor=self.settings.textColor,
             size=self.settings.fontSize,
