@@ -63,3 +63,23 @@ this.border_width = 5
 this.border_red = 0
 this.border_green = 0
 this.border_blue = 0"""
+
+    def contains_point(self, pos: tuple[int, int]) -> bool:
+        squareData: ScriptSquareData = self._get_data()
+
+        surface: pygame.Surface = pygame.Surface(
+            (squareData.width, squareData.height), pygame.SRCALPHA
+        )
+
+        rotatedSurface: pygame.Surface = pygame.transform.rotate(
+            surface, squareData.rotation
+        )
+
+        center: tuple[float, float] = (
+            squareData.x + squareData.width / 2,
+            squareData.y + squareData.height / 2,
+        )
+
+        rotatedRect: pygame.Rect = rotatedSurface.get_rect(center=center)
+
+        return rotatedRect.collidepoint(pos)

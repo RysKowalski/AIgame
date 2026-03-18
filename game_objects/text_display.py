@@ -57,3 +57,7 @@ this.blue = 155
 this.text_red = 255
 this.text_green = 255
 this.text_blue = 255"""
+
+    def contains_point(self, pos: tuple[int, int]) -> bool:
+        print("NOT IMPLEMENTED")
+        return True if pos == (25, 25) else False

@@ -26,3 +26,6 @@ class GameObject(ABC):
 
     @abstractmethod
     def get_default_script(self) -> str: ...
+
+    @abstractmethod
+    def contains_point(self, pos: tuple[int, int]) -> bool: ...

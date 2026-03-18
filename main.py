@@ -82,10 +82,16 @@ def main() -> None:
             if event.type == pygame.QUIT:
                 running = False
             if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    keys: pygame.key.ScancodeWrapper = pygame.key.get_pressed()
+                    ctrl_pressed: bool = keys[pygame.K_LCTRL] or keys[pygame.K_RCTRL]
+                    if ctrl_pressed:
+                        obj_id: int | None = gameObjects.get_on_pos(event.pos)
+                        if obj_id is not None:
+                            editElementMenu.show(obj_id, screen.get_rect().center)
+
                 if event.button == 2:
                     addElementMenu.show(event.pos)
-                if event.button == 3:
-                    editElementMenu.show(0, event.pos)
             addElementMenu.process_event(event)
             editElementMenu.process_event(event)
 

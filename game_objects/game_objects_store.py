@@ -20,3 +20,9 @@ class GameObjectStore:
     def draw(self) -> None:
         for gameObject in self.gameObjects.values():
             gameObject.draw()
+
+    def get_on_pos(self, pos: tuple[int, int]) -> int | None:
+        for obj_id in reversed(self.gameObjects):
+            obj: GameObject = self.gameObjects[obj_id]
+            if obj.contains_point(pos):
+                return obj_id
