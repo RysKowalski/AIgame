@@ -33,6 +33,7 @@ class TextDisplayObject(GameObject):
         self.screen = screen
         self.scriptEngine: ScriptEngine = scriptEngine
         self.font: pygame.freetype.Font = font
+        self.rect: pygame.Rect = pygame.Rect(1, 1, 1, 1)
 
     def draw(self) -> None:
         textDisplayData: ScriptTextDisplayData = self._get_data()
@@ -43,6 +44,11 @@ class TextDisplayObject(GameObject):
             textDisplayData.textColor,
             textDisplayData.backgroundColor,
         )
+        fontRect: pygame.Rect = self.font.get_rect(textDisplayData.value)
+        self.rect.x = int(textDisplayData.x)
+        self.rect.y = int(textDisplayData.y)
+        self.rect.width = fontRect.width
+        self.rect.height = fontRect.height
 
     def _get_data(self) -> ScriptTextDisplayData:
         return self.scriptEngine.calculate_text_display(self.script)
@@ -59,5 +65,4 @@ this.text_green = 255
 this.text_blue = 255"""
 
     def contains_point(self, pos: tuple[int, int]) -> bool:
-        print("NOT IMPLEMENTED")
-        return True if pos == (25, 25) else False
+        return self.rect.collidepoint(pos)
