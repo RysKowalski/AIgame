@@ -188,6 +188,9 @@ class EditElementMenu:
             + 2 * self.settings.textPadding
         )
 
+        self._recalculate_layout()
+
+    def _recalculate_layout(self) -> None:
         self._generate_options()
         self._calculate_width()
         self._generate_name()
@@ -346,11 +349,13 @@ class EditElementMenu:
         if not self.visible:
             return
 
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            if event.button == 3:
-                self.show(self.gameObject.id, event.pos)
-            elif not self.wholeMenu.collidepoint(event.pos):
-                self.visible = self.visible
+        if pygame.mouse.get_pressed()[2]:
+            self.position = event.pos
+            self._recalculate_layout()
+
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            if not self.wholeMenu.collidepoint(event.pos):
+                self.visible = False
 
         for textbox in self.options:
             textbox[1].process_events(event)
