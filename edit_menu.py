@@ -346,6 +346,12 @@ class EditElementMenu:
         if not self.visible:
             return
 
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if event.button == 3:
+                self.show(self.gameObject.id, event.pos)
+            elif not self.wholeMenu.collidepoint(event.pos):
+                self.visible = self.visible
+
         for textbox in self.options:
             textbox[1].process_events(event)
 

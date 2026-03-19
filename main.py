@@ -89,6 +89,7 @@ def main() -> None:
                         obj_id: int | None = gameObjects.get_on_pos(event.pos)
                         if obj_id is not None:
                             editElementMenu.show(obj_id, screen.get_rect().center)
+                            continue
 
                 if event.button == 2:
                     addElementMenu.show(event.pos)
