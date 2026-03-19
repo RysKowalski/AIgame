@@ -2,13 +2,12 @@ import pygame
 
 pygame.init()
 
-from edit_menu import EditElementMenu, EditSettings
+import menus
 import pygame.freetype
 import levels
 from levels import GameLevel
 from script_engine import ScriptEngine
 import game_objects
-import add_menu
 
 
 class Fonts:
@@ -27,7 +26,7 @@ def main() -> None:
     screen: pygame.Surface = pygame.display.set_mode(WINDOW_SIZE, pygame.FULLSCREEN)
     clock: pygame.time.Clock = pygame.time.Clock()
 
-    menuSettings: add_menu.AddSettings = add_menu.AddSettings(
+    menuSettings: menus.AddSettings = menus.AddSettings(
         backgroundColor=pygame.Color(18, 18, 18),  # #121212
         entryBackgroundColor=pygame.Color(18, 18, 18),  # #121212
         hoverEntryBackgroundColor=pygame.Color(50, 50, 50),  # #323232
@@ -40,7 +39,7 @@ def main() -> None:
         entrySpacing=0,
     )
 
-    addElementMenu: add_menu.AddElementMenu = add_menu.AddElementMenu(
+    addElementMenu: menus.AddElementMenu = menus.AddElementMenu(
         screen,
         Fonts.addMenuFont,
         gameObjects,
@@ -58,7 +57,7 @@ def main() -> None:
         menuSettings,
     )
 
-    editSettings: EditSettings = EditSettings(
+    editSettings: menus.EditSettings = menus.EditSettings(
         backgroundColor=pygame.Color(10, 10, 10),
         borderColor=pygame.Color(255, 255, 255),
         editingBorderColor=pygame.Color(255, 255, 255),
@@ -70,7 +69,7 @@ def main() -> None:
         textPadding=8,
         nameSize=30,
     )
-    editElementMenu: EditElementMenu = EditElementMenu(
+    editElementMenu: menus.EditElementMenu = menus.EditElementMenu(
         screen, Fonts.editMenuFont, editSettings, gameObjects
     )
 
