@@ -272,6 +272,7 @@ class ScriptEngine:
 
     def calculate_text_display(self, script: str) -> ScriptTextDisplayData:
         lines: list[str] = script.splitlines()
+
         x: float = -1
         y: float = -1
         backgroundRed: int = -1
@@ -280,7 +281,9 @@ class ScriptEngine:
         textRed: int = -1
         textGreen: int = -1
         textBlue: int = -1
-        textValue: str = ""
+        textValue: float = -1
+        roundDigits: int = 1
+        finalValue: str = ""
 
         for _line in lines:
             line: str = _line.strip()
@@ -305,7 +308,9 @@ class ScriptEngine:
                     case "blue":
                         backgroundBlue = int(value)
                     case "value":
-                        textValue = str(value)
+                        textValue = value
+                    case "round":
+                        roundDigits = int(value)
                     case "text_red":
                         textRed = int(value)
                     case "text_green":
@@ -314,6 +319,11 @@ class ScriptEngine:
                         textBlue = int(value)
                     case _:
                         continue
+
+        if roundDigits > 0:
+            finalValue = str(round(textValue, roundDigits))
+        else:
+            finalValue = str(round(textValue))
 
         textDisplayData: ScriptTextDisplayData = ScriptTextDisplayData(
             x=x,
@@ -328,6 +338,6 @@ class ScriptEngine:
                 textGreen,
                 textBlue,
             ),
-            value=textValue,
+            value=finalValue,
         )
         return textDisplayData
