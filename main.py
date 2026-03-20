@@ -2,6 +2,9 @@ import pygame
 
 pygame.init()
 
+from pathlib import Path
+import sys
+
 import menus
 import pygame.freetype
 import levels
@@ -10,10 +13,21 @@ from script_engine import ScriptEngine
 import game_objects
 
 
+def resource_path(relative_path: str) -> str:
+    base_path: str = getattr(sys, "_MEIPASS", Path(__file__).parent.as_posix())
+    return str(Path(base_path) / relative_path)
+
+
 class Fonts:
-    addMenuFont: pygame.freetype.Font = pygame.freetype.Font("font.ttf", 50)
-    editMenuFont: pygame.freetype.Font = pygame.freetype.Font("font.ttf", 22)
-    uiTextDisplayFont: pygame.freetype.Font = pygame.freetype.Font("font.ttf", 24)
+    addMenuFont: pygame.freetype.Font = pygame.freetype.Font(
+        resource_path("font.ttf"), 50
+    )
+    editMenuFont: pygame.freetype.Font = pygame.freetype.Font(
+        resource_path("font.ttf"), 22
+    )
+    uiTextDisplayFont: pygame.freetype.Font = pygame.freetype.Font(
+        resource_path("font.ttf"), 24
+    )
 
 
 def main() -> None:

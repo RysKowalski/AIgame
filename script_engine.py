@@ -192,6 +192,8 @@ class ScriptEngine:
         return token.startswith("$")
 
     def _resolve_variable(self, token: str) -> float:
+        if token == "$reward":
+            return self.level.reward
         return self.level.variables[int(token[1:])]
 
     def _is_operator(self, token: str) -> bool:

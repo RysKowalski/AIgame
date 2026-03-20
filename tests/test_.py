@@ -1,4 +1,3 @@
-# from script_engine import ScriptEngine
 from script_engine import ScriptEngine, ScriptSquareData
 from levels import GameLevel, LevelData
 
@@ -336,5 +335,17 @@ def test_script_calculate_square_missing_assignations() -> None:
     script: str = ""
 
     output: ScriptSquareData = engine.calculate_square(script)
+
+    assert output == correctOutput
+
+
+def test_script_expression_variable_reward() -> None:
+    level: TestLevel = TestLevel()
+    engine: ScriptEngine = ScriptEngine(level)
+    level.reward = 123.456
+    correctOutput: float = 123.456
+    script: str = "$reward"
+
+    output: float = engine.calculate_expression(script)
 
     assert output == correctOutput
