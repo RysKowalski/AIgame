@@ -1,19 +1,5 @@
 from script_engine import ScriptEngine, ScriptSquareData
-from levels import GameLevel, LevelData
-
-
-class TestLevel(GameLevel):
-    levelData = LevelData("none", "none", 2, 100)
-    id = "test"
-
-    def __init__(self) -> None:
-        self.end = False
-        self.variables = [0, 0]
-        self.reward = 0
-
-    def process_input(self, inputs: tuple[float]) -> float:
-        maxValue: float = 10
-        return min(inputs[0], maxValue)
+from tests.utils import TestLevel
 
 
 def test_script_calculate_expression_empty() -> None:
