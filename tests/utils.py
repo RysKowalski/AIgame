@@ -1,3 +1,4 @@
+import pygame
 from script_engine import ScriptEngine
 from levels import GameLevel, LevelData
 from game_objects import GameObject
@@ -30,3 +31,7 @@ class ExampleObject(GameObject):
 
 def test_script_engine() -> ScriptEngine:
     return ScriptEngine(TestLevel())
+
+
+def test_surface() -> pygame.Surface:
+    return pygame.Surface((1, 1))
