@@ -27,3 +27,22 @@ def test_add_and_get_many() -> None:
 
     for gameObjectId in addedObjects:
         assert objectStore.get(gameObjectId) is addedObjects[gameObjectId]
+
+
+# def test_get_nonexistent() -> None:
+#     objectStore: GameObjectStore = GameObjectStore()
+#     nonexistentId: int = 0
+#
+#     try:
+#         objectStore.get(nonexistentId)
+#         raise
+#     except:
+#         return
+
+
+# def test_delete() -> None:
+#     objectStore: GameObjectStore = GameObjectStore()
+#     exampleObject: GameObject = ExampleObject("default", test_surface(), test_script_engine())
+#
+#     id: int = objectStore.add(exampleObject)
+#     objectStore.delet
