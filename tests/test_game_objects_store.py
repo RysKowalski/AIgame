@@ -1,5 +1,10 @@
-from game_objects import GameObjectStore, GameObject
-from tests.utils import ExampleObject, test_script_engine, test_surface
+from game_objects import GameObjectStore, GameObject, ObjectDoesNotExistError
+from tests.utils import (
+    ExampleObject,
+    get_example_object,
+    test_script_engine,
+    test_surface,
+)
 
 
 def test_add_and_get() -> None:
@@ -29,20 +34,95 @@ def test_add_and_get_many() -> None:
         assert objectStore.get(gameObjectId) is addedObjects[gameObjectId]
 
 
-# def test_get_nonexistent() -> None:
-#     objectStore: GameObjectStore = GameObjectStore()
-#     nonexistentId: int = 0
-#
-#     try:
-#         objectStore.get(nonexistentId)
-#         raise
-#     except:
-#         return
+def test_get_nonexistent_raises_exception() -> None:
+    objectStore: GameObjectStore = GameObjectStore()
+    nonexistentId: int = -1
+    failed: bool = True
+
+    try:
+        objectStore.get(nonexistentId)
+    except ObjectDoesNotExistError:
+        failed = False
+
+    assert not failed
 
 
-# def test_delete() -> None:
-#     objectStore: GameObjectStore = GameObjectStore()
-#     exampleObject: GameObject = ExampleObject("default", test_surface(), test_script_engine())
-#
-#     id: int = objectStore.add(exampleObject)
-#     objectStore.delet
+def test_delete_get_raises_exception() -> None:
+    objectStore: GameObjectStore = GameObjectStore()
+    exampleObject: GameObject = ExampleObject(
+        "default", test_surface(), test_script_engine()
+    )
+    failed: bool = True
+
+    id: int = objectStore.add(exampleObject)
+    objectStore.delete(id)
+
+    try:
+        objectStore.get(id)
+    except ObjectDoesNotExistError:
+        failed = False
+
+    assert not failed
+
+
+def test_delete_nonexistent_raises_exception() -> None:
+    objectStore: GameObjectStore = GameObjectStore()
+    nonexistentId: int = -1
+    failed: bool = True
+
+    try:
+        objectStore.delete(nonexistentId)
+    except ObjectDoesNotExistError:
+        failed = False
+
+    assert not failed
+
+
+def test_draw_correct_call() -> None:
+    objectStore: GameObjectStore = GameObjectStore()
+    gameObject: GameObject = get_example_object()
+    objectStore.add(gameObject)
+
+    objectStore.draw()
+
+    assert gameObject.draw_call_count == 1
+
+
+def test_draw_correct_call_many() -> None:
+    objectStore: GameObjectStore = GameObjectStore()
+    gameObjects: list[ExampleObject] = [get_example_object() for _ in range(1000)]
+    for gameObject in gameObjects:
+        objectStore.add(gameObject)
+
+    objectStore.draw()
+
+    for gameObject in gameObjects:
+        assert gameObject.draw_call_count == 1
+
+
+def test_draw_no_game_objects() -> None:
+    objectStore: GameObjectStore = GameObjectStore()
+
+    objectStore.draw()
+
+
+def test_get_on_pos_found() -> None:
+    objectStore: GameObjectStore = GameObjectStore()
+    gameObject: ExampleObject = get_example_object()
+    gameObject.contains_point_returns = True
+    id: int = objectStore.add(gameObject)
+
+    containsID: int | None = objectStore.get_on_pos((0, 0))
+
+    assert id == containsID
+
+
+def test_get_on_pos_not_found() -> None:
+    objectStore: GameObjectStore = GameObjectStore()
+    gameObject: ExampleObject = get_example_object()
+    gameObject.contains_point_returns = False
+    objectStore.add(gameObject)
+
+    id: int | None = objectStore.get_on_pos((0, 0))
+
+    assert id is None

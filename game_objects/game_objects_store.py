@@ -1,29 +1,43 @@
 from game_objects import GameObject
 
 
+class ObjectDoesNotExistError(Exception):
+    def __init__(self, objectId: int) -> None:
+        self.objectId: int = objectId
+        super().__init__(f"object with ID {objectId} does not exist")
+
+
 class GameObjectStore:
     def __init__(self) -> None:
-        self.gameObjects: dict[int, GameObject] = {}
+        self._gameObjects: dict[int, GameObject] = {}
         self._idCounter: int = 0
 
     def add(self, gameObject: GameObject) -> int:
         self._idCounter += 1
         gameObject.id = self._idCounter
-        self.gameObjects[self._idCounter] = gameObject
+        self._gameObjects[self._idCounter] = gameObject
         return self._idCounter
 
     def delete(self, id: int) -> None:
-        del self.gameObjects[id]
+        """throws ObjectDoesNotExistError"""
+        try:
+            del self._gameObjects[id]
+        except KeyError:
+            raise ObjectDoesNotExistError(id)
 
     def get(self, id: int) -> GameObject:
-        return self.gameObjects[id]
+        """throws ObjectDoesNotExistError"""
+        try:
+            return self._gameObjects[id]
+        except KeyError:
+            raise ObjectDoesNotExistError(id)
 
     def draw(self) -> None:
-        for gameObject in self.gameObjects.values():
+        for gameObject in self._gameObjects.values():
             gameObject.draw()
 
     def get_on_pos(self, pos: tuple[int, int]) -> int | None:
-        for obj_id in reversed(self.gameObjects):
-            obj: GameObject = self.gameObjects[obj_id]
+        for obj_id in reversed(self._gameObjects):
+            obj: GameObject = self._gameObjects[obj_id]
             if obj.contains_point(pos):
                 return obj_id
