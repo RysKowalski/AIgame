@@ -1,5 +1,7 @@
 from typing import TYPE_CHECKING
+
 import pygame
+
 from script_engine import ScriptEngine, ScriptTextDisplayData
 from game_objects import GameObject
 
@@ -48,6 +50,7 @@ class TextDisplayObject(GameObject):
             textDisplayData.textColor,
             textDisplayData.backgroundColor,
         )
+
         fontRect: pygame.Rect = self.font.get_rect(textDisplayData.value)
         self.rect.x = int(textDisplayData.x)
         self.rect.y = int(textDisplayData.y)
