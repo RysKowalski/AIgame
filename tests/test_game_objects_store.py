@@ -8,10 +8,8 @@ from tests.utils import (
 
 
 def test_add_and_get() -> None:
-    exampleObject: GameObject = ExampleObject(
-        "default", test_surface(), test_script_engine()
-    )
     objectStore: GameObjectStore = GameObjectStore()
+    exampleObject: GameObject = get_example_object()
 
     objectId: int = objectStore.add(exampleObject)
     outputObject: GameObject = objectStore.get(objectId)
