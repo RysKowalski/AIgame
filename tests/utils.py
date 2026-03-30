@@ -1,10 +1,10 @@
-import pygame
+from pygame import Surface
 from script_engine import ScriptEngine
 from levels import GameLevel, LevelData
 from game_objects import GameObject
 
 
-class TestLevel(GameLevel):
+class ExampleLevel(GameLevel):
     levelData = LevelData("none", "none", 2, 100)
     id = "test"
 
@@ -20,7 +20,7 @@ class TestLevel(GameLevel):
 
 class ExampleObject(GameObject):
     def __init__(
-        self, script: str, screen: pygame.Surface, scriptEngine: ScriptEngine
+        self, script: str, screen: "Surface", scriptEngine: ScriptEngine
     ) -> None:
         super().__init__(script, screen, scriptEngine)
         self.draw_call_count: int = 0
@@ -39,12 +39,12 @@ class ExampleObject(GameObject):
 
 
 def get_example_object() -> ExampleObject:
-    return ExampleObject("default", test_surface(), test_script_engine())
+    return ExampleObject("default", example_surface(), example_script_engine())
 
 
-def test_script_engine() -> ScriptEngine:
-    return ScriptEngine(TestLevel())
+def example_script_engine() -> ScriptEngine:
+    return ScriptEngine(ExampleLevel())
 
 
-def test_surface() -> pygame.Surface:
-    return pygame.Surface((1, 1))
+def example_surface() -> "Surface":
+    return Surface((1, 1))

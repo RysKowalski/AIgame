@@ -2,8 +2,8 @@ from game_objects import GameObjectStore, GameObject, ObjectDoesNotExistError
 from tests.utils import (
     ExampleObject,
     get_example_object,
-    test_script_engine,
-    test_surface,
+    example_script_engine,
+    example_surface,
 )
 
 
@@ -32,7 +32,7 @@ def test_add_and_get_many() -> None:
 
     for _ in range(1000):
         gameObject: GameObject = ExampleObject(
-            "default", test_surface(), test_script_engine()
+            "default", example_surface(), example_script_engine()
         )
         id: int = objectStore.add(gameObject)
         addedObjects[id] = gameObject
@@ -57,7 +57,7 @@ def test_get_nonexistent_raises_exception() -> None:
 def test_delete_get_raises_exception() -> None:
     objectStore: GameObjectStore = GameObjectStore()
     exampleObject: GameObject = ExampleObject(
-        "default", test_surface(), test_script_engine()
+        "default", example_surface(), example_script_engine()
     )
     failed: bool = True
 
