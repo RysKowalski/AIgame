@@ -19,6 +19,15 @@ def test_add_and_get() -> None:
     assert exampleObject is outputObject
 
 
+def test_add_sets_game_object_id() -> None:
+    objectStore: GameObjectStore = GameObjectStore()
+    obj: ExampleObject = get_example_object()
+
+    id: int = objectStore.add(obj)
+
+    assert id == obj.id
+
+
 def test_add_and_get_many() -> None:
     objectStore: GameObjectStore = GameObjectStore()
     addedObjects: dict[int, GameObject] = {}
@@ -126,3 +135,17 @@ def test_get_on_pos_not_found() -> None:
     id: int | None = objectStore.get_on_pos((0, 0))
 
     assert id is None
+
+
+def test_get_on_pos_later_added_detected_first() -> None:
+    objectStore: GameObjectStore = GameObjectStore()
+    obj1: ExampleObject = get_example_object()
+    obj1.contains_point_returns = True
+    obj2: ExampleObject = get_example_object()
+    obj2.contains_point_returns = True
+    objectStore.add(obj1)
+    objectStore.add(obj2)
+
+    detectedID: int | None = objectStore.get_on_pos((0, 0))
+
+    assert detectedID == obj2.id
