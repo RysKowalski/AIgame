@@ -1,6 +1,6 @@
 from __future__ import annotations
 from dataclasses import dataclass
-from levels import GameLevel
+from .script_context import ScriptContext
 
 
 @dataclass(frozen=True)
@@ -29,8 +29,8 @@ class ScriptEngine:
 
     _ARGUMENT_SENTINEL: str = "__ARG_START__"
 
-    def __init__(self, level: GameLevel) -> None:
-        self.level: GameLevel = level
+    def __init__(self, context: ScriptContext) -> None:
+        self.context: ScriptContext = context
 
     def calculate_expression(self, expression: str) -> float:
         if self._is_empty_expression(expression):
@@ -113,7 +113,7 @@ class ScriptEngine:
             elif self._is_number(token):
                 stack.append(float(token))
             elif self._is_variable(token):
-                stack.append(self._resolve_variable(token))
+                stack.append(self.context.resolve_variable(token))
             elif self._is_operator(token):
                 right: float = float(stack.pop())
                 left: float = float(stack.pop())
@@ -190,11 +190,6 @@ class ScriptEngine:
 
     def _is_variable(self, token: str) -> bool:
         return token.startswith("$")
-
-    def _resolve_variable(self, token: str) -> float:
-        if token == "$reward":
-            return self.level.reward
-        return self.level.variables[int(token[1:])]
 
     def _is_operator(self, token: str) -> bool:
         return token in "+-*/%^"

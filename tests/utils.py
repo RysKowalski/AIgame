@@ -2,6 +2,7 @@ from pygame import Surface
 from script_engine import ScriptEngine
 from levels import GameLevel, LevelData
 from game_objects import GameObject
+from script_engine.script_context import ScriptContext
 
 
 class ExampleLevel(GameLevel):
@@ -43,7 +44,7 @@ def get_example_object() -> ExampleObject:
 
 
 def example_script_engine() -> ScriptEngine:
-    return ScriptEngine(ExampleLevel())
+    return ScriptEngine(ScriptContext(ExampleLevel()))
 
 
 def example_surface() -> "Surface":
