@@ -45,12 +45,3 @@ class Level1Tutorial(GameLevel):
     def process_input(self, inputs: tuple[float]) -> float:
         maxValue: float = 10
         return min(inputs[0], maxValue)
-
-
-if __name__ == "__main__":
-    level: GameLevel = Level1Tutorial()
-    print(level.levelData)
-    while not level.end:
-        print(level.variables, level.reward)
-        print()
-        level.tick((1,))
