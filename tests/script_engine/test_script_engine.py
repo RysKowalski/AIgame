@@ -336,3 +336,26 @@ def test_script_expression_variable_reward() -> None:
     output: float = engine.calculate_expression(script)
 
     assert output == correctOutput
+
+
+def test_get_data_empty() -> None:
+    level: ExampleLevel = ExampleLevel()
+    engine: ScriptEngine = ScriptEngine(ScriptContext(level))
+
+    output: dict[str, float] = engine.get_data("")
+
+    assert output == {}
+
+
+def test_get_data_multiple_data() -> None:
+    level: ExampleLevel = ExampleLevel()
+    engine: ScriptEngine = ScriptEngine(ScriptContext(level))
+    script: str = """
+        this.var1 = 123
+        this.var2 = 456
+        this.var3 = 789
+    """
+
+    output: dict[str, float] = engine.get_data(script)
+
+    assert output == {"var1": 123, "var2": 456, "var3": 789}
