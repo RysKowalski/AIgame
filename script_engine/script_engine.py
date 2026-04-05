@@ -197,6 +197,26 @@ class ScriptEngine:
     def _is_function(self, token: str) -> bool:
         return token in ("max", "min")
 
+    def get_data(self, script: str) -> dict[str, float]:
+        output: dict[str, float] = {}
+        lines: list[str] = script.splitlines()
+        for rawLine in lines:
+            line: str = rawLine.strip()
+            if line == "":
+                continue
+
+            if line.startswith("this."):
+                firstSpaceIndex: int = line.find(" ")
+                value: float = self.calculate_expression(
+                    line[firstSpaceIndex + 3 :]
+                )  # cut out " = "
+
+                output[line[5:firstSpaceIndex]] = (
+                    value  # text after "this." before space
+                )
+
+        return output
+
     def calculate_square(self, script: str) -> ScriptSquareData:
         lines: list[str] = script.splitlines()
         x: float = -1
