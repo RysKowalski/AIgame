@@ -138,9 +138,9 @@ def test_get_on_pos_not_found() -> None:
 def test_get_on_pos_later_added_detected_first() -> None:
     objectStore: GameObjectStore = GameObjectStore()
     obj1: ExampleObject = get_example_object()
-    obj1.contains_point_returns = True
+    obj1.returns_true()
     obj2: ExampleObject = get_example_object()
-    obj2.contains_point_returns = True
+    obj2.returns_true()
     objectStore.add(obj1)
     objectStore.add(obj2)
 

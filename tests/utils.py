@@ -37,6 +37,9 @@ class ExampleObject(GameObject):
         self.contains_point_count += 1
         return self.contains_point_returns
 
+    def returns_true(self) -> None:
+        self.contains_point_returns = True
+
 
 def get_example_object() -> ExampleObject:
     return ExampleObject("default", example_surface(), example_script_engine())
