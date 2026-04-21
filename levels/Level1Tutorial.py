@@ -2,13 +2,9 @@ from .levels import GameLevel, LevelData
 
 
 class Level1Tutorial(GameLevel):
-    levelData = LevelData("none", "none", 1, 100)
-    id = "tutorial1"
-
     def __init__(self) -> None:
-        self.end = False
+        super().__init__(LevelData("tutorial1", 1, 100))
         self.variables = [0, 0]
-        self.reward = 0
 
     def tick(self, inputs: tuple[float]) -> None:
         input: float = self.process_input(inputs)

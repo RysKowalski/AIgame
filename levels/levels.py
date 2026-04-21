@@ -4,18 +4,17 @@ from abc import ABC, abstractmethod
 
 @dataclass(frozen=True)
 class LevelData:
-    startCutsceneID: str
-    endCutsceneID: str
+    id: str
     inputCount: int
     rewardTreshhold: float
 
 
 class GameLevel(ABC):
-    id: str
-    reward: float
-    end: bool
-    variables: list[float]
-    levelData: LevelData
+    def __init__(self, levelData: "LevelData") -> None:
+        self.levelData: LevelData = levelData
+        self.reward: float = 0
+        self.end: bool = False
+        self.variables: list[float] = []
 
     @abstractmethod
     def tick(self, inputs: tuple) -> None: ...

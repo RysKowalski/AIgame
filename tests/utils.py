@@ -6,13 +6,9 @@ from script_engine.script_context import ScriptContext
 
 
 class ExampleLevel(GameLevel):
-    levelData = LevelData("none", "none", 2, 100)
-    id = "test"
-
     def __init__(self) -> None:
-        self.end = False
+        super().__init__(LevelData("test", 2, 100))
         self.variables = [0, 0]
-        self.reward = 0
 
     def tick(self, inputs: tuple) -> None:
         pass
