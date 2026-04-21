@@ -14,9 +14,8 @@ class ExampleLevel(GameLevel):
         self.variables = [0, 0]
         self.reward = 0
 
-    def process_input(self, inputs: tuple[float]) -> float:
-        maxValue: float = 10
-        return min(inputs[0], maxValue)
+    def tick(self, inputs: tuple) -> None:
+        pass
 
 
 class ExampleObject(GameObject):

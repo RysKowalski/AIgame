@@ -1,5 +1,6 @@
 from __future__ import annotations
 from dataclasses import dataclass
+from abc import ABC, abstractmethod
 
 
 @dataclass(frozen=True)
@@ -10,13 +11,14 @@ class LevelData:
     rewardTreshhold: float
 
 
-class GameLevel:
+class GameLevel(ABC):
     id: str
     reward: float
     end: bool
     variables: list[float]
     levelData: LevelData
 
+    @abstractmethod
     def tick(self, inputs: tuple) -> None: ...
 
     def check_and_set_end(self) -> None:
