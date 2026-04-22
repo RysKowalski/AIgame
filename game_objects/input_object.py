@@ -2,8 +2,9 @@ from typing import TYPE_CHECKING
 
 import pygame
 
-from script_engine import ScriptEngine
+from script_engine import ScriptEngine, ScriptInputObjectData
 from game_objects import GameObject
+from widgets import TextDisplay, TextDisplaySettings
 
 
 if TYPE_CHECKING:
@@ -16,6 +17,7 @@ class InputObject(GameObject):
     this.value
     this.x
     this.y
+    this.round
     this.padding
     this.red
     this.green
@@ -37,7 +39,7 @@ class InputObject(GameObject):
         script: str,
         screen: pygame.Surface,
         scriptEngine: ScriptEngine,
-        font: "pygame.freetype.Font",
+        font: pygame.freetype.Font,
     ) -> None:
         if script == "default":
             self.script: str = self.get_default_script()
@@ -45,17 +47,22 @@ class InputObject(GameObject):
             self.script: str = script
         self.screen = screen
         self.scriptEngine: ScriptEngine = scriptEngine
-        self.font: "pygame.freetype.Font" = font
-        self.rect: pygame.Rect = pygame.Rect(1, 1, 1, 1)
+        self.font: pygame.freetype.Font = font
+
+    def _get_data(self) -> ScriptInputObjectData:
+        return self.scriptEngine.calculate_input_object(self.script)
 
     def draw(self) -> None:
-        pass
+        data: ScriptInputObjectData = self._get_data()
+
+        # fontrect: pygame.Rect = self.font.render(self.screen, (data.x, data.y), data.value, data.textColor)
 
     def get_default_script(self) -> str:
         return """this.input = -1
 this.value = 0
 this.x = 0
 this.y = 0
+this.round = 2
 this.padding = 5
 this.red = 0
 this.green = 0
@@ -70,4 +77,4 @@ this.border_green = 255
 this.border_blue = 255"""
 
     def contains_point(self, pos: tuple[int, int]) -> bool:
-        return True  # FIXME:
+        return True  # TODO:

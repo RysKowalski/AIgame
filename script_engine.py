@@ -24,6 +24,19 @@ class ScriptTextDisplayData:
     value: str
 
 
+@dataclass(frozen=True)
+class ScriptInputObjectData:
+    x: float
+    y: float
+    padding: int
+    borderWidth: int
+    backgroundColor: tuple[int, int, int]
+    textColor: tuple[int, int, int]
+    fontSize: int
+    borderColor: tuple[int, int, int]
+    value: str
+
+
 class ScriptEngine:
     """VIBE CODED :sob:"""
 
@@ -343,3 +356,97 @@ class ScriptEngine:
             value=finalValue,
         )
         return textDisplayData
+
+    def calculate_input_object(self, script: str) -> ScriptInputObjectData:
+        lines: list[str] = script.splitlines()
+
+        x: float = -1
+        y: float = -1
+        padding: int = 0
+        backgroundRed: int = -1
+        backgroundGreen: int = -1
+        backgroundBlue: int = -1
+        textRed: int = -1
+        textGreen: int = -1
+        textBlue: int = -1
+        textValue: float = -1
+        borderWidth: int = 0
+        borderRed: int = -1
+        borderGreen: int = -1
+        borderBlue: int = -1
+        roundDigits: int = 0
+        fontSize: int = 1
+        finalValue: str = ""
+
+        for _line in lines:
+            line: str = _line.strip()
+            if line == "":
+                continue
+
+            if line.startswith("this."):
+                # TODO: possible optimalization by adding start and end
+                firstSpaceIndex: int = line.find(" ")
+                value: float = self.calculate_expression(
+                    line[firstSpaceIndex + 3 :]  # cut out " = "
+                )
+                match line[5:firstSpaceIndex]:
+                    case "x":
+                        x = value
+                    case "y":
+                        y = value
+                    case "red":
+                        backgroundRed = int(value)
+                    case "green":
+                        backgroundGreen = int(value)
+                    case "blue":
+                        backgroundBlue = int(value)
+                    case "value":
+                        textValue = value
+                    case "round":
+                        roundDigits = int(value)
+                    case "padding":
+                        padding = int(value)
+                    case "text_red":
+                        textRed = int(value)
+                    case "text_green":
+                        textGreen = int(value)
+                    case "text_blue":
+                        textBlue = int(value)
+                    case "text_size":
+                        fontSize = int(value)
+                    case "border_width":
+                        borderWidth = int(value)
+                    case "border_red":
+                        borderRed = int(value)
+                    case "border_green":
+                        borderGreen = int(value)
+                    case "border_blue":
+                        borderBlue = int(value)
+                    case _:
+                        continue
+
+        if roundDigits > 0:
+            finalValue = str(round(textValue, roundDigits))
+        else:
+            finalValue = str(round(textValue))
+
+        textInputObjectData: ScriptInputObjectData = ScriptInputObjectData(
+            x=x,
+            y=y,
+            padding=padding,
+            borderWidth=borderWidth,
+            backgroundColor=(
+                backgroundRed,
+                backgroundGreen,
+                backgroundBlue,
+            ),
+            textColor=(
+                textRed,
+                textGreen,
+                textBlue,
+            ),
+            fontSize=fontSize,
+            borderColor=(borderRed, borderGreen, borderBlue),
+            value=finalValue,
+        )
+        return textInputObjectData
