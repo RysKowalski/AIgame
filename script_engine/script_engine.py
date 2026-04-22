@@ -1,6 +1,6 @@
 from __future__ import annotations
 from dataclasses import dataclass
-from levels import GameLevel
+from .script_context import ScriptContext
 
 
 @dataclass(frozen=True)
@@ -42,8 +42,8 @@ class ScriptEngine:
 
     _ARGUMENT_SENTINEL: str = "__ARG_START__"
 
-    def __init__(self, level: GameLevel) -> None:
-        self.level: GameLevel = level
+    def __init__(self, context: ScriptContext) -> None:
+        self.context: ScriptContext = context
 
     def calculate_expression(self, expression: str) -> float:
         if self._is_empty_expression(expression):
@@ -126,7 +126,7 @@ class ScriptEngine:
             elif self._is_number(token):
                 stack.append(float(token))
             elif self._is_variable(token):
-                stack.append(self._resolve_variable(token))
+                stack.append(self.context.resolve_variable(token))
             elif self._is_operator(token):
                 right: float = float(stack.pop())
                 left: float = float(stack.pop())
@@ -204,16 +204,31 @@ class ScriptEngine:
     def _is_variable(self, token: str) -> bool:
         return token.startswith("$")
 
-    def _resolve_variable(self, token: str) -> float:
-        if token == "$reward":
-            return self.level.reward
-        return self.level.variables[int(token[1:])]
-
     def _is_operator(self, token: str) -> bool:
         return token in "+-*/%^"
 
     def _is_function(self, token: str) -> bool:
         return token in ("max", "min")
+
+    def get_data(self, script: str) -> dict[str, float]:
+        output: dict[str, float] = {}
+        lines: list[str] = script.splitlines()
+        for rawLine in lines:
+            line: str = rawLine.strip()
+            if line == "":
+                continue
+
+            if line.startswith("this."):
+                firstSpaceIndex: int = line.find(" ")
+                value: float = self.calculate_expression(
+                    line[firstSpaceIndex + 3 :]
+                )  # cut out " = "
+
+                output[line[5:firstSpaceIndex]] = (
+                    value  # text after "this." before space
+                )
+
+        return output
 
     def calculate_square(self, script: str) -> ScriptSquareData:
         lines: list[str] = script.splitlines()

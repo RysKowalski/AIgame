@@ -2,20 +2,16 @@ from pygame import Surface
 from script_engine import ScriptEngine
 from levels import GameLevel, LevelData
 from game_objects import GameObject
+from script_engine.script_context import ScriptContext
 
 
 class ExampleLevel(GameLevel):
-    levelData = LevelData("none", "none", 2, 100)
-    id = "test"
-
     def __init__(self) -> None:
-        self.end = False
+        super().__init__(LevelData("test", 2, 100))
         self.variables = [0, 0]
-        self.reward = 0
 
-    def process_input(self, inputs: tuple[float]) -> float:
-        maxValue: float = 10
-        return min(inputs[0], maxValue)
+    def tick(self, inputs: tuple) -> None:
+        pass
 
 
 class ExampleObject(GameObject):
@@ -37,13 +33,16 @@ class ExampleObject(GameObject):
         self.contains_point_count += 1
         return self.contains_point_returns
 
+    def returns_true(self) -> None:
+        self.contains_point_returns = True
+
 
 def get_example_object() -> ExampleObject:
     return ExampleObject("default", example_surface(), example_script_engine())
 
 
 def example_script_engine() -> ScriptEngine:
-    return ScriptEngine(ExampleLevel())
+    return ScriptEngine(ScriptContext(ExampleLevel()))
 
 
 def example_surface() -> "Surface":

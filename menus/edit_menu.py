@@ -25,9 +25,7 @@ class EditSettings:
 
 
 class TextBox:
-    """Simple focusable text input widget for pygame.
-    VIBECODED :sob:
-    """
+    """Simple focusable text input widget for pygame."""
 
     def __init__(
         self,

@@ -1,5 +1,7 @@
 import pygame
 
+from script_engine.script_context import ScriptContext
+
 pygame.init()
 
 from pathlib import Path
@@ -35,7 +37,8 @@ def main() -> None:
     FRAMERATE: float = 60
 
     level: GameLevel = levels.Level1Tutorial()
-    scriptEngine: ScriptEngine = ScriptEngine(level)
+    scriptContext: ScriptContext = ScriptContext(level)
+    scriptEngine: ScriptEngine = ScriptEngine(scriptContext)
     gameObjects: game_objects.GameObjectStore = game_objects.GameObjectStore()
     screen: pygame.Surface = pygame.display.set_mode(WINDOW_SIZE, pygame.FULLSCREEN)
     clock: pygame.time.Clock = pygame.time.Clock()
