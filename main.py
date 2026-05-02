@@ -36,7 +36,7 @@ def main() -> None:
     WINDOW_SIZE: tuple[int, int] = (0, 0)
     FRAMERATE: float = 60
 
-    level: GameLevel = levels.Level1Tutorial()
+    level: GameLevel = levels.Level1TutorialTemporary()
     scriptContext: ScriptContext = ScriptContext(level)
     scriptEngine: ScriptEngine = ScriptEngine(scriptContext)
     gameObjects: game_objects.GameObjectStore = game_objects.GameObjectStore()

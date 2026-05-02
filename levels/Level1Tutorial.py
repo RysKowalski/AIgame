@@ -1,7 +1,7 @@
 from .levels import GameLevel, LevelData
 
 
-class Level1Tutorial(GameLevel):
+class Level1TutorialTemporary(GameLevel):
     def __init__(self) -> None:
         super().__init__(LevelData("tutorial1", 1, 100))
         self.variables = [0, 0]
@@ -16,3 +16,12 @@ class Level1Tutorial(GameLevel):
     def process_input(self, inputs: tuple[float]) -> float:
         maxValue: float = 10
         return min(inputs[0], maxValue)
+
+
+class Level1Tutorial(GameLevel):
+    def __init__(self) -> None:
+        super().__init__(LevelData("tutorial1", 1, 100))
+        self.variables = []
+
+    def tick(self, inputs: tuple[float]) -> None:
+        self.reward += inputs[0]

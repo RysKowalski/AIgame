@@ -1,12 +1,12 @@
 from typing import TYPE_CHECKING
 
 import pygame
+if TYPE_CHECKING:
+    import pygame.freetype
 
 from script_engine import ScriptEngine, ScriptTextDisplayData
 from game_objects import GameObject
 
-if TYPE_CHECKING:
-    import pygame.freetype
 
 
 class TextDisplayObject(GameObject):
