@@ -231,58 +231,20 @@ class ScriptEngine:
         return output
 
     def calculate_square(self, script: str) -> ScriptSquareData:
-        lines: list[str] = script.splitlines()
-        x: float = -1
-        y: float = -1
-        width: float = -1
-        height: float = -1
-        rotation: float = -1
-        backgroundRed: float = -1
-        backgroundGreen: float = -1
-        backgroundBlue: float = -1
-        borderWidth: float = -1
-        borderRed: float = -1
-        borderGreen: float = -1
-        borderBlue: float = -1
+        data: dict[str, float] = self.get_data(script)
 
-        for _line in lines:
-            line: str = _line.strip()
-            if line == "":
-                continue
-
-            if line.startswith("this."):
-                # TODO: possible optimalization by adding start and end
-                firstSpaceIndex: int = line.find(" ")
-                value: float = self.calculate_expression(
-                    line[firstSpaceIndex + 3 :]  # cut out " = "
-                )
-                match line[5:firstSpaceIndex]:
-                    case "x":
-                        x = value
-                    case "y":
-                        y = value
-                    case "width":
-                        width = value
-                    case "height":
-                        height = value
-                    case "rotation":
-                        rotation = value
-                    case "red":
-                        backgroundRed = value
-                    case "green":
-                        backgroundGreen = value
-                    case "blue":
-                        backgroundBlue = value
-                    case "border_width":
-                        borderWidth = value
-                    case "border_red":
-                        borderRed = value
-                    case "border_green":
-                        borderGreen = value
-                    case "border_blue":
-                        borderBlue = value
-                    case _:
-                        continue
+        x: float = data.get("x", -1.0)
+        y: float = data.get("y", -1)
+        width: float = data.get("width", -1)
+        height: float = data.get("height", -1)
+        rotation: float = data.get("rotation", -1)
+        backgroundRed: float = data.get("red", -1)
+        backgroundGreen: float = data.get("green", -1)
+        backgroundBlue: float = data.get("blue", -1)
+        borderWidth: float = data.get("border_width", -1)
+        borderRed: float = data.get("border_red", -1)
+        borderGreen: float = data.get("border_green", -1)
+        borderBlue: float = data.get("border_blue", -1)
 
         squareData: ScriptSquareData = ScriptSquareData(
             x=x,
@@ -301,167 +263,93 @@ class ScriptEngine:
         return squareData
 
     def calculate_text_display(self, script: str) -> ScriptTextDisplayData:
-        lines: list[str] = script.splitlines()
+        data: dict[str, float] = self.get_data(script)
 
-        x: float = -1
-        y: float = -1
-        backgroundRed: int = -1
-        backgroundGreen: int = -1
-        backgroundBlue: int = -1
-        textRed: int = -1
-        textGreen: int = -1
-        textBlue: int = -1
-        textValue: float = -1
-        roundDigits: int = 1
-        finalValue: str = ""
+        x: float = data.get("x", -1.0)
+        y: float = data.get("y", -1.0)
 
-        for _line in lines:
-            line: str = _line.strip()
-            if line == "":
-                continue
+        background_red: int = int(data.get("red", -1))
+        background_green: int = int(data.get("green", -1))
+        background_blue: int = int(data.get("blue", -1))
 
-            if line.startswith("this."):
-                # TODO: possible optimalization by adding start and end
-                firstSpaceIndex: int = line.find(" ")
-                value: float = self.calculate_expression(
-                    line[firstSpaceIndex + 3 :]  # cut out " = "
-                )
-                match line[5:firstSpaceIndex]:
-                    case "x":
-                        x = value
-                    case "y":
-                        y = value
-                    case "red":
-                        backgroundRed = int(value)
-                    case "green":
-                        backgroundGreen = int(value)
-                    case "blue":
-                        backgroundBlue = int(value)
-                    case "value":
-                        textValue = value
-                    case "round":
-                        roundDigits = int(value)
-                    case "text_red":
-                        textRed = int(value)
-                    case "text_green":
-                        textGreen = int(value)
-                    case "text_blue":
-                        textBlue = int(value)
-                    case _:
-                        continue
+        text_red: int = int(data.get("text_red", -1))
+        text_green: int = int(data.get("text_green", -1))
+        text_blue: int = int(data.get("text_blue", -1))
 
-        if roundDigits > 0:
-            finalValue = str(round(textValue, roundDigits))
+        text_value: float = data.get("value", -1.0)
+        round_digits: int = int(data.get("round", 1))
+
+        if round_digits > 0:
+            final_value: str = str(round(text_value, round_digits))
         else:
-            finalValue = str(round(textValue))
+            final_value = str(round(text_value))
 
-        textDisplayData: ScriptTextDisplayData = ScriptTextDisplayData(
+        return ScriptTextDisplayData(
             x=x,
             y=y,
             backgroundColor=(
-                backgroundRed,
-                backgroundGreen,
-                backgroundBlue,
+                background_red,
+                background_green,
+                background_blue,
             ),
             textColor=(
-                textRed,
-                textGreen,
-                textBlue,
+                text_red,
+                text_green,
+                text_blue,
             ),
-            value=finalValue,
+            value=final_value,
         )
-        return textDisplayData
 
     def calculate_input_object(self, script: str) -> ScriptInputObjectData:
-        lines: list[str] = script.splitlines()
+        data: dict[str, float] = self.get_data(script)
 
-        x: float = -1
-        y: float = -1
-        padding: int = 0
-        backgroundRed: int = -1
-        backgroundGreen: int = -1
-        backgroundBlue: int = -1
-        textRed: int = -1
-        textGreen: int = -1
-        textBlue: int = -1
-        textValue: float = -1
-        borderWidth: int = 0
-        borderRed: int = -1
-        borderGreen: int = -1
-        borderBlue: int = -1
-        roundDigits: int = 0
-        fontSize: int = 1
-        finalValue: str = ""
+        x: float = data.get("x", -1.0)
+        y: float = data.get("y", -1.0)
 
-        for _line in lines:
-            line: str = _line.strip()
-            if line == "":
-                continue
+        padding: int = int(data.get("padding", 0))
+        font_size: int = int(data.get("text_size", 1))
 
-            if line.startswith("this."):
-                # TODO: possible optimalization by adding start and end
-                firstSpaceIndex: int = line.find(" ")
-                value: float = self.calculate_expression(
-                    line[firstSpaceIndex + 3 :]  # cut out " = "
-                )
-                match line[5:firstSpaceIndex]:
-                    case "x":
-                        x = value
-                    case "y":
-                        y = value
-                    case "red":
-                        backgroundRed = int(value)
-                    case "green":
-                        backgroundGreen = int(value)
-                    case "blue":
-                        backgroundBlue = int(value)
-                    case "value":
-                        textValue = value
-                    case "round":
-                        roundDigits = int(value)
-                    case "padding":
-                        padding = int(value)
-                    case "text_red":
-                        textRed = int(value)
-                    case "text_green":
-                        textGreen = int(value)
-                    case "text_blue":
-                        textBlue = int(value)
-                    case "text_size":
-                        fontSize = int(value)
-                    case "border_width":
-                        borderWidth = int(value)
-                    case "border_red":
-                        borderRed = int(value)
-                    case "border_green":
-                        borderGreen = int(value)
-                    case "border_blue":
-                        borderBlue = int(value)
-                    case _:
-                        continue
+        background_red: int = int(data.get("red", -1))
+        background_green: int = int(data.get("green", -1))
+        background_blue: int = int(data.get("blue", -1))
 
-        if roundDigits > 0:
-            finalValue = str(round(textValue, roundDigits))
+        text_red: int = int(data.get("text_red", -1))
+        text_green: int = int(data.get("text_green", -1))
+        text_blue: int = int(data.get("text_blue", -1))
+
+        border_width: int = int(data.get("border_width", 0))
+        border_red: int = int(data.get("border_red", -1))
+        border_green: int = int(data.get("border_green", -1))
+        border_blue: int = int(data.get("border_blue", -1))
+
+        text_value: float = data.get("value", -1.0)
+        round_digits: int = int(data.get("round", 0))
+
+        if round_digits > 0:
+            final_value: str = str(round(text_value, round_digits))
         else:
-            finalValue = str(round(textValue))
+            final_value = str(round(text_value))
 
-        textInputObjectData: ScriptInputObjectData = ScriptInputObjectData(
+        return ScriptInputObjectData(
             x=x,
             y=y,
             padding=padding,
-            borderWidth=borderWidth,
+            borderWidth=border_width,
             backgroundColor=(
-                backgroundRed,
-                backgroundGreen,
-                backgroundBlue,
+                background_red,
+                background_green,
+                background_blue,
             ),
             textColor=(
-                textRed,
-                textGreen,
-                textBlue,
+                text_red,
+                text_green,
+                text_blue,
             ),
-            fontSize=fontSize,
-            borderColor=(borderRed, borderGreen, borderBlue),
-            value=finalValue,
+            fontSize=font_size,
+            borderColor=(
+                border_red,
+                border_green,
+                border_blue,
+            ),
+            value=final_value,
         )
-        return textInputObjectData
