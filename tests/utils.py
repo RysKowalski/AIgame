@@ -1,7 +1,10 @@
+from typing import Any, Iterator
+
 from pygame import Surface
-from script_engine import ScriptEngine
-from levels import GameLevel, LevelData
+
 from game_objects import GameObject
+from levels import GameLevel, LevelData
+from script_engine import ScriptEngine
 from script_engine.script_context import ScriptContext
 
 
@@ -12,6 +15,20 @@ class ExampleLevel(GameLevel):
 
     def tick(self, inputs: tuple) -> None:
         pass
+
+
+BLANK_DEFAULT_SCRIPT: str = "default script"
+
+
+class BlankGameObject(GameObject):
+    def draw(self) -> None:
+        pass
+
+    def get_default_script(self) -> str:
+        return BLANK_DEFAULT_SCRIPT
+
+    def contains_point(self, pos: tuple[int, int]) -> bool:
+        return False
 
 
 class ExampleObject(GameObject):

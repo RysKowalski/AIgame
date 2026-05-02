@@ -1,5 +1,6 @@
 from script_engine import ScriptEngine, ScriptSquareData
 from script_engine.script_context import ScriptContext
+from script_engine.script_engine import ScriptInputObjectData, ScriptTextDisplayData
 from tests.utils import ExampleLevel
 
 
@@ -359,3 +360,143 @@ def test_get_data_multiple_data() -> None:
     output: dict[str, float] = engine.get_data(script)
 
     assert output == {"var1": 123, "var2": 456, "var3": 789}
+
+
+def test_calculate_text_display() -> None:
+    level: ExampleLevel = ExampleLevel()
+    level.variables[0] = 6
+    level.variables[1] = 3
+    engine: ScriptEngine = ScriptEngine(ScriptContext(level))
+    correctOutput: ScriptTextDisplayData = ScriptTextDisplayData(
+        x=10.0,
+        y=10.0,
+        backgroundColor=(255, 255, 255),
+        textColor=(0, 0, 0),
+        value="0.0",
+    )
+    script: str = """
+        this.x = 10
+        this.y = 10
+        this.red = 255
+        this.green = 255
+        this.blue = 255
+        this.text_red = 0
+        this.text_green = 0
+        this.text_blue = 0
+        this.value = 0
+        this.round = 1
+    """
+
+    output: ScriptTextDisplayData = engine.calculate_text_display(script)
+
+    assert output == correctOutput
+
+
+def test_calculate_text_display_invalid_rounding_defaults_0() -> None:
+    level: ExampleLevel = ExampleLevel()
+    level.variables[0] = 6
+    level.variables[1] = 3
+    engine: ScriptEngine = ScriptEngine(ScriptContext(level))
+    correctOutput: ScriptTextDisplayData = ScriptTextDisplayData(
+        x=10.0,
+        y=10.0,
+        backgroundColor=(255, 255, 255),
+        textColor=(0, 0, 0),
+        value="0",
+    )
+    script: str = """
+        this.x = 10
+        this.y = 10
+        this.red = 255
+        this.green = 255
+        this.blue = 255
+        this.text_red = 0
+        this.text_green = 0
+        this.text_blue = 0
+        this.value = 0
+        this.round = 0
+    """
+
+    output: ScriptTextDisplayData = engine.calculate_text_display(script)
+
+    assert output == correctOutput
+
+
+def test_calculate_input_object() -> None:
+    level: ExampleLevel = ExampleLevel()
+    level.variables[0] = 6
+    level.variables[1] = 3
+    engine: ScriptEngine = ScriptEngine(ScriptContext(level))
+    correctOutput: ScriptInputObjectData = ScriptInputObjectData(
+        x=10.0,
+        y=10.0,
+        padding=0,
+        borderWidth=0,
+        backgroundColor=(255, 255, 255),
+        textColor=(0, 0, 0),
+        fontSize=1,
+        borderColor=(100, 100, 100),
+        value="0.0",
+    )
+    script: str = """
+        this.x = 10
+        this.y = 10
+        this.padding = 0
+        this.text_size = 1
+        this.red = 255
+        this.green = 255
+        this.blue = 255
+        this.text_red = 0
+        this.text_green = 0
+        this.text_blue = 0
+        this.border_width = 0
+        this.border_red = 100
+        this.border_green = 100
+        this.border_blue = 100
+        this.value = 0
+        this.round = 1
+    """
+
+    output: ScriptInputObjectData = engine.calculate_input_object(script)
+
+    assert output == correctOutput
+
+
+def test_calculate_input_object_invalid_rounding_defaults_0() -> None:
+    level: ExampleLevel = ExampleLevel()
+    level.variables[0] = 6
+    level.variables[1] = 3
+    engine: ScriptEngine = ScriptEngine(ScriptContext(level))
+    correctOutput: ScriptInputObjectData = ScriptInputObjectData(
+        x=10.0,
+        y=10.0,
+        padding=0,
+        borderWidth=0,
+        backgroundColor=(255, 255, 255),
+        textColor=(0, 0, 0),
+        fontSize=1,
+        borderColor=(100, 100, 100),
+        value="0",
+    )
+    script: str = """
+        this.x = 10
+        this.y = 10
+        this.padding = 0
+        this.text_size = 1
+        this.red = 255
+        this.green = 255
+        this.blue = 255
+        this.text_red = 0
+        this.text_green = 0
+        this.text_blue = 0
+        this.border_width = 0
+        this.border_red = 100
+        this.border_green = 100
+        this.border_blue = 100
+        this.value = 0
+        this.round = 0
+    """
+
+    output: ScriptInputObjectData = engine.calculate_input_object(script)
+
+    assert output == correctOutput
