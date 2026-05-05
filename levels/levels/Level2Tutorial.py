@@ -1,4 +1,4 @@
-from .levels import GameLevel, LevelData, LevelState
+from levels import GameLevel, LevelData, LevelState
 from math import sin
 
 

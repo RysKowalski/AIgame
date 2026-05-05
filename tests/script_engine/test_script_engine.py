@@ -1,4 +1,4 @@
-from levels.levels import LevelState
+from levels import LevelState
 from script_engine import ScriptEngine, ScriptSquareData
 from script_engine.script_context import ScriptContext
 from script_engine.script_engine import ScriptInputObjectData, ScriptTextDisplayData

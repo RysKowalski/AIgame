@@ -6,9 +6,8 @@ import pygame.freetype
 
 import game_objects
 import levels
-from levels.levels import LevelState
 import menus
-from levels import GameLevel
+from levels import GameLevel, LevelState
 from script_engine import ScriptEngine
 from script_engine.script_context import ScriptContext
 

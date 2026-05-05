@@ -1,4 +1,4 @@
-from levels.levels import LevelState
+from levels import LevelState
 
 
 class InvalidVariableError(Exception):

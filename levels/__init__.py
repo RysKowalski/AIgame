@@ -1,2 +1,3 @@
-from .levels import GameLevel, LevelData
-from .Level1Tutorial import Level1TutorialTemporary, Level1Tutorial
+from .GameLevel import GameLevel, LevelData, LevelState
+
+from .levels.Level1Tutorial import Level1TutorialTemporary, Level1Tutorial

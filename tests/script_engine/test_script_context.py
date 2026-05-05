@@ -1,6 +1,6 @@
 import pytest
 
-from levels.levels import LevelState
+from levels import LevelState
 from script_engine.script_context import InvalidVariableError, ScriptContext
 
 
