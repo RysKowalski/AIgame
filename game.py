@@ -6,6 +6,7 @@ import pygame.freetype
 
 import game_objects
 import levels
+from levels.levels import LevelState
 import menus
 from levels import GameLevel
 from script_engine import ScriptEngine
@@ -34,7 +35,8 @@ def main() -> None:
     FRAMERATE: float = 60
 
     level: GameLevel = levels.Level1TutorialTemporary()
-    scriptContext: ScriptContext = ScriptContext(level)
+    levelState: LevelState = LevelState(0, 0, [0, 0], False)
+    scriptContext: ScriptContext = ScriptContext(levelState)
     scriptEngine: ScriptEngine = ScriptEngine(scriptContext)
     gameObjects: game_objects.GameObjectStore = game_objects.GameObjectStore()
     screen: pygame.Surface = pygame.display.set_mode(WINDOW_SIZE, pygame.FULLSCREEN)
@@ -115,7 +117,7 @@ def main() -> None:
 
         addElementMenu.draw()
         editElementMenu.draw()
-        level.tick((0.3,))
+        level.tick(levelState, (0.3,))
 
         clock.tick(FRAMERATE)
         pygame.display.flip()

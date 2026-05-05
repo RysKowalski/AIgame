@@ -1,9 +1,8 @@
-from typing import Any, Iterator
-
 from pygame import Surface
 
 from game_objects import GameObject
 from levels import GameLevel, LevelData
+from levels.levels import LevelState
 from script_engine import ScriptEngine
 from script_engine.script_context import ScriptContext
 
@@ -11,9 +10,8 @@ from script_engine.script_context import ScriptContext
 class ExampleLevel(GameLevel):
     def __init__(self) -> None:
         super().__init__(LevelData("test", 2, 100))
-        self.variables = [0, 0]
 
-    def tick(self, inputs: tuple) -> None:
+    def tick(self, state: LevelState, inputs: tuple[float, ...]) -> None:
         pass
 
 

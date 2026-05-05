@@ -1,12 +1,12 @@
+from levels.levels import LevelState
 from script_engine import ScriptEngine, ScriptSquareData
 from script_engine.script_context import ScriptContext
 from script_engine.script_engine import ScriptInputObjectData, ScriptTextDisplayData
-from tests.utils import ExampleLevel
 
 
 def test_script_calculate_expression_empty() -> None:
-    level: ExampleLevel = ExampleLevel()
-    engine: ScriptEngine = ScriptEngine(ScriptContext(level))
+    state: LevelState = LevelState(0, 0, [0, 0], False)
+    engine: ScriptEngine = ScriptEngine(ScriptContext(state))
     expression: str = ""
     correctOutput: float = 0
 
@@ -16,8 +16,8 @@ def test_script_calculate_expression_empty() -> None:
 
 
 def test_script_calculate_expression_single_number() -> None:
-    level: ExampleLevel = ExampleLevel()
-    engine: ScriptEngine = ScriptEngine(ScriptContext(level))
+    state: LevelState = LevelState(0, 0, [0, 0], False)
+    engine: ScriptEngine = ScriptEngine(ScriptContext(state))
     expression: str = "132.058"
     correctOutput: float = float(expression)
 
@@ -27,8 +27,8 @@ def test_script_calculate_expression_single_number() -> None:
 
 
 def test_script_calculate_expression_number_addition() -> None:
-    level: ExampleLevel = ExampleLevel()
-    engine: ScriptEngine = ScriptEngine(ScriptContext(level))
+    state: LevelState = LevelState(0, 0, [0, 0], False)
+    engine: ScriptEngine = ScriptEngine(ScriptContext(state))
     expression: str = "3.5 + 4.2"
     correctOutput: float = 7.7
 
@@ -38,9 +38,9 @@ def test_script_calculate_expression_number_addition() -> None:
 
 
 def test_script_calculate_expression_single_variable() -> None:
-    level: ExampleLevel = ExampleLevel()
-    level.variables[0] = 0.6
-    engine: ScriptEngine = ScriptEngine(ScriptContext(level))
+    state: LevelState = LevelState(0, 0, [0, 0], False)
+    state.variables[0] = 0.6
+    engine: ScriptEngine = ScriptEngine(ScriptContext(state))
     expression: str = "$0"
     correctOutput: float = 0.6
 
@@ -50,10 +50,10 @@ def test_script_calculate_expression_single_variable() -> None:
 
 
 def test_script_calculate_expression_variable_addition() -> None:
-    level: ExampleLevel = ExampleLevel()
-    level.variables[0] = 0.6
-    level.variables[1] = 0.4
-    engine: ScriptEngine = ScriptEngine(ScriptContext(level))
+    state: LevelState = LevelState(0, 0, [0, 0], False)
+    state.variables[0] = 0.6
+    state.variables[1] = 0.4
+    engine: ScriptEngine = ScriptEngine(ScriptContext(state))
     expression: str = "$0 + $1"
     correctOutput: float = 1.0
 
@@ -63,8 +63,8 @@ def test_script_calculate_expression_variable_addition() -> None:
 
 
 def test_script_calculate_expression_power() -> None:
-    level: ExampleLevel = ExampleLevel()
-    engine: ScriptEngine = ScriptEngine(ScriptContext(level))
+    state: LevelState = LevelState(0, 0, [0, 0], False)
+    engine: ScriptEngine = ScriptEngine(ScriptContext(state))
     expression: str = "2 ^ 3"
     correctOutput: float = 8.0
 
@@ -74,8 +74,8 @@ def test_script_calculate_expression_power() -> None:
 
 
 def test_script_calculate_expression_three_numbers() -> None:
-    level: ExampleLevel = ExampleLevel()
-    engine: ScriptEngine = ScriptEngine(ScriptContext(level))
+    state: LevelState = LevelState(0, 0, [0, 0], False)
+    engine: ScriptEngine = ScriptEngine(ScriptContext(state))
     expression: str = "2 + 2 * 2"
     correctOutput: float = 6.0
 
@@ -85,8 +85,8 @@ def test_script_calculate_expression_three_numbers() -> None:
 
 
 def test_script_calculate_expression_parentheses() -> None:
-    level: ExampleLevel = ExampleLevel()
-    engine: ScriptEngine = ScriptEngine(ScriptContext(level))
+    state: LevelState = LevelState(0, 0, [0, 0], False)
+    engine: ScriptEngine = ScriptEngine(ScriptContext(state))
     expression: str = "2 + ( 2 * 2 )"
     correctOutput: float = 6.0
 
@@ -96,8 +96,8 @@ def test_script_calculate_expression_parentheses() -> None:
 
 
 def test_script_calculate_expression_two_parentheses() -> None:
-    level: ExampleLevel = ExampleLevel()
-    engine: ScriptEngine = ScriptEngine(ScriptContext(level))
+    state: LevelState = LevelState(0, 0, [0, 0], False)
+    engine: ScriptEngine = ScriptEngine(ScriptContext(state))
     expression: str = "( 2 * 2 ) - ( 2 * 3 )"
     correctOutput: float = -2.0
 
@@ -107,8 +107,8 @@ def test_script_calculate_expression_two_parentheses() -> None:
 
 
 def test_script_calculate_expression_nested_parentheses() -> None:
-    level: ExampleLevel = ExampleLevel()
-    engine: ScriptEngine = ScriptEngine(ScriptContext(level))
+    state: LevelState = LevelState(0, 0, [0, 0], False)
+    engine: ScriptEngine = ScriptEngine(ScriptContext(state))
     expression: str = "( ( ( ( ( ( 4 ) ) ) * ( 2 ) ) ) )"
     correctOutput: float = 8.0
 
@@ -118,8 +118,8 @@ def test_script_calculate_expression_nested_parentheses() -> None:
 
 
 def test_script_calculate_expression_subtraction() -> None:
-    level: ExampleLevel = ExampleLevel()
-    engine: ScriptEngine = ScriptEngine(ScriptContext(level))
+    state: LevelState = LevelState(0, 0, [0, 0], False)
+    engine: ScriptEngine = ScriptEngine(ScriptContext(state))
     expression: str = "3 - 2"
     correctOutput: float = 1
 
@@ -129,8 +129,8 @@ def test_script_calculate_expression_subtraction() -> None:
 
 
 def test_script_calculate_expression_division() -> None:
-    level: ExampleLevel = ExampleLevel()
-    engine: ScriptEngine = ScriptEngine(ScriptContext(level))
+    state: LevelState = LevelState(0, 0, [0, 0], False)
+    engine: ScriptEngine = ScriptEngine(ScriptContext(state))
     expression: str = "3 / 2"
     correctOutput: float = 1.5
 
@@ -140,8 +140,8 @@ def test_script_calculate_expression_division() -> None:
 
 
 def test_script_calculate_expression_division_by_zero() -> None:
-    level: ExampleLevel = ExampleLevel()
-    engine: ScriptEngine = ScriptEngine(ScriptContext(level))
+    state: LevelState = LevelState(0, 0, [0, 0], False)
+    engine: ScriptEngine = ScriptEngine(ScriptContext(state))
     expression: str = "3 / 0"
     correctOutput: float = 0
 
@@ -151,8 +151,8 @@ def test_script_calculate_expression_division_by_zero() -> None:
 
 
 def test_script_calculate_expression_multiplication() -> None:
-    level: ExampleLevel = ExampleLevel()
-    engine: ScriptEngine = ScriptEngine(ScriptContext(level))
+    state: LevelState = LevelState(0, 0, [0, 0], False)
+    engine: ScriptEngine = ScriptEngine(ScriptContext(state))
     expression: str = "3 * 2"
     correctOutput: float = 6.0
 
@@ -162,8 +162,8 @@ def test_script_calculate_expression_multiplication() -> None:
 
 
 def test_script_calculate_expression_modulo() -> None:
-    level: ExampleLevel = ExampleLevel()
-    engine: ScriptEngine = ScriptEngine(ScriptContext(level))
+    state: LevelState = LevelState(0, 0, [0, 0], False)
+    engine: ScriptEngine = ScriptEngine(ScriptContext(state))
     expression: str = "3 % 2"
     correctOutput: float = 1.0
 
@@ -173,8 +173,8 @@ def test_script_calculate_expression_modulo() -> None:
 
 
 def test_script_calculate_expression_function_max() -> None:
-    level: ExampleLevel = ExampleLevel()
-    engine: ScriptEngine = ScriptEngine(ScriptContext(level))
+    state: LevelState = LevelState(0, 0, [0, 0], False)
+    engine: ScriptEngine = ScriptEngine(ScriptContext(state))
     expression: str = "max [ 1, 2, 3, ]"
     correctOutput: float = 3.0
 
@@ -184,8 +184,8 @@ def test_script_calculate_expression_function_max() -> None:
 
 
 def test_script_calculate_expression_function_min() -> None:
-    level: ExampleLevel = ExampleLevel()
-    engine: ScriptEngine = ScriptEngine(ScriptContext(level))
+    state: LevelState = LevelState(0, 0, [0, 0], False)
+    engine: ScriptEngine = ScriptEngine(ScriptContext(state))
     expression: str = "min [ 1, 2, 3 ]"
     correctOutput: float = 1.0
 
@@ -195,8 +195,8 @@ def test_script_calculate_expression_function_min() -> None:
 
 
 def test_script_calculate_expression_function_with_calculation() -> None:
-    level: ExampleLevel = ExampleLevel()
-    engine: ScriptEngine = ScriptEngine(ScriptContext(level))
+    state: LevelState = LevelState(0, 0, [0, 0], False)
+    engine: ScriptEngine = ScriptEngine(ScriptContext(state))
     expression: str = "2 + max [ 1, 2, 3 ]"
     correctOutput: float = 5.0
 
@@ -206,8 +206,8 @@ def test_script_calculate_expression_function_with_calculation() -> None:
 
 
 def test_script_calculate_expression_nested_function() -> None:
-    level: ExampleLevel = ExampleLevel()
-    engine: ScriptEngine = ScriptEngine(ScriptContext(level))
+    state: LevelState = LevelState(0, 0, [0, 0], False)
+    engine: ScriptEngine = ScriptEngine(ScriptContext(state))
     expression: str = "max [ 1, min ( 2, 4 ), 3 ]"
     correctOutput: float = 3
 
@@ -217,8 +217,8 @@ def test_script_calculate_expression_nested_function() -> None:
 
 
 def test_script_calculate_expression_calculation_inside_function() -> None:
-    level: ExampleLevel = ExampleLevel()
-    engine: ScriptEngine = ScriptEngine(ScriptContext(level))
+    state: LevelState = LevelState(0, 0, [0, 0], False)
+    engine: ScriptEngine = ScriptEngine(ScriptContext(state))
     expression: str = "max [ 1, 2 + 3 * ( 3 / 2 ), 3 ]"
     correctOutput: float = 6.5
 
@@ -228,8 +228,8 @@ def test_script_calculate_expression_calculation_inside_function() -> None:
 
 
 def test_script_calculate_square_const_numbers() -> None:
-    level: ExampleLevel = ExampleLevel()
-    engine: ScriptEngine = ScriptEngine(ScriptContext(level))
+    state: LevelState = LevelState(0, 0, [0, 0], False)
+    engine: ScriptEngine = ScriptEngine(ScriptContext(state))
     correctOutput: ScriptSquareData = ScriptSquareData(
         x=100,
         y=200,
@@ -265,10 +265,10 @@ def test_script_calculate_square_const_numbers() -> None:
 
 
 def test_script_calculate_square_const_expressions() -> None:
-    level: ExampleLevel = ExampleLevel()
-    level.variables[0] = 6
-    level.variables[1] = 3
-    engine: ScriptEngine = ScriptEngine(ScriptContext(level))
+    state: LevelState = LevelState(0, 0, [0, 0], False)
+    state.variables[0] = 6
+    state.variables[1] = 3
+    engine: ScriptEngine = ScriptEngine(ScriptContext(state))
     correctOutput: ScriptSquareData = ScriptSquareData(
         x=3,
         y=6,
@@ -304,8 +304,8 @@ def test_script_calculate_square_const_expressions() -> None:
 
 
 def test_script_calculate_square_missing_assignations() -> None:
-    level: ExampleLevel = ExampleLevel()
-    engine: ScriptEngine = ScriptEngine(ScriptContext(level))
+    state: LevelState = LevelState(0, 0, [0, 0], False)
+    engine: ScriptEngine = ScriptEngine(ScriptContext(state))
     correctOutput: ScriptSquareData = ScriptSquareData(
         x=-1,
         y=-1,
@@ -328,9 +328,9 @@ def test_script_calculate_square_missing_assignations() -> None:
 
 
 def test_script_expression_variable_reward() -> None:
-    level: ExampleLevel = ExampleLevel()
-    engine: ScriptEngine = ScriptEngine(ScriptContext(level))
-    level.reward = 123.456
+    state: LevelState = LevelState(0, 0, [0, 0], False)
+    engine: ScriptEngine = ScriptEngine(ScriptContext(state))
+    state.reward = 123.456
     correctOutput: float = 123.456
     script: str = "$reward"
 
@@ -340,8 +340,8 @@ def test_script_expression_variable_reward() -> None:
 
 
 def test_get_data_empty() -> None:
-    level: ExampleLevel = ExampleLevel()
-    engine: ScriptEngine = ScriptEngine(ScriptContext(level))
+    state: LevelState = LevelState(0, 0, [0, 0], False)
+    engine: ScriptEngine = ScriptEngine(ScriptContext(state))
 
     output: dict[str, float] = engine.get_data("")
 
@@ -349,8 +349,8 @@ def test_get_data_empty() -> None:
 
 
 def test_get_data_multiple_data() -> None:
-    level: ExampleLevel = ExampleLevel()
-    engine: ScriptEngine = ScriptEngine(ScriptContext(level))
+    state: LevelState = LevelState(0, 0, [0, 0], False)
+    engine: ScriptEngine = ScriptEngine(ScriptContext(state))
     script: str = """
         this.var1 = 123
         this.var2 = 456
@@ -363,10 +363,10 @@ def test_get_data_multiple_data() -> None:
 
 
 def test_calculate_text_display() -> None:
-    level: ExampleLevel = ExampleLevel()
-    level.variables[0] = 6
-    level.variables[1] = 3
-    engine: ScriptEngine = ScriptEngine(ScriptContext(level))
+    state: LevelState = LevelState(0, 0, [0, 0], False)
+    state.variables[0] = 6
+    state.variables[1] = 3
+    engine: ScriptEngine = ScriptEngine(ScriptContext(state))
     correctOutput: ScriptTextDisplayData = ScriptTextDisplayData(
         x=10.0,
         y=10.0,
@@ -393,10 +393,10 @@ def test_calculate_text_display() -> None:
 
 
 def test_calculate_text_display_invalid_rounding_defaults_0() -> None:
-    level: ExampleLevel = ExampleLevel()
-    level.variables[0] = 6
-    level.variables[1] = 3
-    engine: ScriptEngine = ScriptEngine(ScriptContext(level))
+    state: LevelState = LevelState(0, 0, [0, 0], False)
+    state.variables[0] = 6
+    state.variables[1] = 3
+    engine: ScriptEngine = ScriptEngine(ScriptContext(state))
     correctOutput: ScriptTextDisplayData = ScriptTextDisplayData(
         x=10.0,
         y=10.0,
@@ -423,10 +423,10 @@ def test_calculate_text_display_invalid_rounding_defaults_0() -> None:
 
 
 def test_calculate_input_object() -> None:
-    level: ExampleLevel = ExampleLevel()
-    level.variables[0] = 6
-    level.variables[1] = 3
-    engine: ScriptEngine = ScriptEngine(ScriptContext(level))
+    state: LevelState = LevelState(0, 0, [0, 0], False)
+    state.variables[0] = 6
+    state.variables[1] = 3
+    engine: ScriptEngine = ScriptEngine(ScriptContext(state))
     correctOutput: ScriptInputObjectData = ScriptInputObjectData(
         x=10.0,
         y=10.0,
@@ -463,10 +463,10 @@ def test_calculate_input_object() -> None:
 
 
 def test_calculate_input_object_invalid_rounding_defaults_0() -> None:
-    level: ExampleLevel = ExampleLevel()
-    level.variables[0] = 6
-    level.variables[1] = 3
-    engine: ScriptEngine = ScriptEngine(ScriptContext(level))
+    state: LevelState = LevelState(0, 0, [0, 0], False)
+    state.variables[0] = 6
+    state.variables[1] = 3
+    engine: ScriptEngine = ScriptEngine(ScriptContext(state))
     correctOutput: ScriptInputObjectData = ScriptInputObjectData(
         x=10.0,
         y=10.0,

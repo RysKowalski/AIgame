@@ -1,4 +1,4 @@
-from levels import GameLevel
+from levels.levels import LevelState
 
 
 class InvalidVariableError(Exception):
@@ -9,8 +9,8 @@ class InvalidVariableError(Exception):
 class ScriptContext:
     """Holds runtime data and resolves variables/functions"""
 
-    def __init__(self, level: GameLevel) -> None:
-        self.level: GameLevel = level
+    def __init__(self, state: LevelState) -> None:
+        self.levelState: LevelState = state
 
     def resolve_variable(self, token: str) -> float:
         if not token.startswith("$"):
@@ -19,7 +19,7 @@ class ScriptContext:
         variable: str = token[1:]
 
         if variable == "reward":
-            return self.level.reward
+            return self.levelState.reward
 
         variableIndex: int = int(variable)
 
@@ -27,6 +27,6 @@ class ScriptContext:
             raise InvalidVariableError(token, "variable does not exist")
 
         try:
-            return self.level.variables[variableIndex]
+            return self.levelState.variables[variableIndex]
         except IndexError:
             raise InvalidVariableError(token, "variable does not exist")

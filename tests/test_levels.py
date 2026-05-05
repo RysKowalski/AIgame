@@ -1,20 +1,22 @@
-from levels.levels import GameLevel
+from levels.levels import GameLevel, LevelState
 from .utils import ExampleLevel
 
 
 def test_GameLevel_check_and_set_end_over() -> None:
     level: GameLevel = ExampleLevel()
-    level.reward = level.levelData.rewardTreshhold + 1
+    state: LevelState = LevelState(0, 0, [], False)
+    state.reward = level.data.rewardTreshhold + 1
 
-    level.check_and_set_end()
+    level.check_and_set_end(state)
 
-    assert level.end
+    assert state.ended
 
 
 def test_GameLevel_check_and_set_end_under() -> None:
     level: GameLevel = ExampleLevel()
-    level.reward = level.levelData.rewardTreshhold - 1
+    state: LevelState = LevelState(0, 0, [], False)
+    state.reward = level.data.rewardTreshhold - 1
 
-    level.check_and_set_end()
+    level.check_and_set_end(state)
 
-    assert not level.end
+    assert not state.ended

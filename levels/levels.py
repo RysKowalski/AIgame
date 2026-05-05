@@ -9,18 +9,20 @@ class LevelData:
     rewardTreshhold: float
 
 
+@dataclass
+class LevelState:
+    reward: float
+    tick_count: int
+    variables: list[float]
+    ended: bool
+
+
 class GameLevel(ABC):
-    def __init__(self, levelData: "LevelData") -> None:
-        self.levelData: LevelData = levelData
-        self.reward: float = 0
-        self.end: bool = False
-        self.variables: list[float] = []
+    def __init__(self, data: LevelData) -> None:
+        self.data: LevelData = data
 
     @abstractmethod
-    def tick(self, inputs: tuple) -> None: ...
+    def tick(self, state: LevelState, inputs: tuple[float, ...]) -> None: ...
 
-    def check_and_set_end(self) -> None:
-        if self.reward > self.levelData.rewardTreshhold:
-            self.end = True
-        else:
-            self.end = False
+    def check_and_set_end(self, state: LevelState) -> None:
+        state.ended = state.reward > self.data.rewardTreshhold

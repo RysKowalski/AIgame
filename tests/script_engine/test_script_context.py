@@ -1,14 +1,14 @@
 import pytest
 
+from levels.levels import LevelState
 from script_engine.script_context import InvalidVariableError, ScriptContext
-from tests.utils import ExampleLevel
 
 
 def test_resolve_variable_existing_var() -> None:
-    level: ExampleLevel = ExampleLevel()
+    state: LevelState = LevelState(0, 0, [0], False)
     correctVariableValue: float = 5.5
-    level.variables[0] = correctVariableValue
-    context: ScriptContext = ScriptContext(level)
+    state.variables[0] = correctVariableValue
+    context: ScriptContext = ScriptContext(state)
 
     output: float = context.resolve_variable("$0")
 
@@ -16,8 +16,8 @@ def test_resolve_variable_existing_var() -> None:
 
 
 def test_resolve_variable_nonexisting_var_throws_invalid_variable_error() -> None:
-    level: ExampleLevel = ExampleLevel()
-    context: ScriptContext = ScriptContext(level)
+    state: LevelState = LevelState(0, 0, [], False)
+    context: ScriptContext = ScriptContext(state)
 
     token: str = "$1234"
 
@@ -28,8 +28,8 @@ def test_resolve_variable_nonexisting_var_throws_invalid_variable_error() -> Non
 
 
 def test_resolve_variable_invalid_var_throws_invalid_variable_error() -> None:
-    level: ExampleLevel = ExampleLevel()
-    context: ScriptContext = ScriptContext(level)
+    state: LevelState = LevelState(0, 0, [], False)
+    context: ScriptContext = ScriptContext(state)
 
     token: str = "clearly invalid"
 
@@ -40,10 +40,10 @@ def test_resolve_variable_invalid_var_throws_invalid_variable_error() -> None:
 
 
 def test_resolve_variable_get_reward() -> None:
-    level: ExampleLevel = ExampleLevel()
+    state: LevelState = LevelState(0, 0, [], False)
     correctReward: float = 123.4
-    level.reward = correctReward
-    context: ScriptContext = ScriptContext(level)
+    state.reward = correctReward
+    context: ScriptContext = ScriptContext(state)
 
     output: float = context.resolve_variable("$reward")
 
