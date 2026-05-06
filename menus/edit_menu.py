@@ -24,7 +24,7 @@ class EditSettings:
     nameSize: int
 
 
-class TextBox:
+class InputTextBox:
     """Simple focusable text input widget for pygame."""
 
     def __init__(
@@ -34,7 +34,7 @@ class TextBox:
         rect: pygame.Rect,
         text: str,
         applyFunc: Callable[[], None],
-        textBoxes: list["TextBox"],
+        textBoxes: list["InputTextBox"],
         padding: int,
     ) -> None:
         self.screen: pygame.Surface = screen
@@ -42,14 +42,12 @@ class TextBox:
         self.rect: pygame.Rect = rect
         self.text: str = text
         self.applyFunc: Callable[[], None] = applyFunc
-        self.textBoxes: list[TextBox] = textBoxes
+        self.textBoxes: list[InputTextBox] = textBoxes
         self.padding: int = padding
 
         self.active: bool = False
         self.cursor_pos: int = len(text)
         self.cursor_visible: bool = True
-        self.cursor_timer: float = 0.0
-        self.cursor_interval: float = 0.5
 
     def focus(self) -> None:
         """Activate this textbox and deactivate others."""
@@ -165,8 +163,8 @@ class EditElementMenu:
 
         self.visible: bool = False
         self.position: tuple[int, int] = (0, 0)
-        self.options: list[tuple[TextDisplay, TextBox]] = []
-        self.gameObject: GameObject
+        self.options: list[tuple[TextDisplay, InputTextBox]] = []
+        self.currentGameObject: GameObject
         self.fontHeight: int = font.get_rect("").height
         self.maxOptionWidth: int = 1
 
@@ -178,11 +176,13 @@ class EditElementMenu:
 
     def show(self, gameObjectId: int, position: tuple[int, int]) -> None:
         self.visible = True
-        self.gameObject = self.gameObjects.get(gameObjectId)
+        self.currentGameObject = self.gameObjects.get(gameObjectId)
         self.position = position
 
         self.maxOptionWidth = (
-            self.font.get_rect(get_longest_option(self.gameObject.script) + " = ").width
+            self.font.get_rect(
+                get_longest_option(self.currentGameObject.script) + " = "
+            ).width
             + 2 * self.settings.textPadding
         )
 
@@ -197,7 +197,7 @@ class EditElementMenu:
 
     def _generate_options(self) -> None:
         self.options.clear()
-        for i, line in enumerate(self.gameObject.script.splitlines()):
+        for i, line in enumerate(self.currentGameObject.script.splitlines()):
             posY: float = self.position[1] + i * self.fontHeight
 
             textBoxRect: pygame.Rect = pygame.Rect(
@@ -226,7 +226,7 @@ class EditElementMenu:
                             textAlign=TextAlign.RIGHT,
                         ),
                     ),
-                    TextBox(
+                    InputTextBox(
                         self.screen,
                         self.font,
                         textBoxRect,
@@ -243,7 +243,7 @@ class EditElementMenu:
 
         for option in self.options:
             script.append("this." + option[0].text + option[1].text)
-        self.gameObject.script = "\n".join(script)
+        self.currentGameObject.script = "\n".join(script)
 
     def _calculate_width(self) -> None:
         self.width = (
@@ -260,7 +260,7 @@ class EditElementMenu:
                 1,
                 self.position[1] - self.settings.nameBottomGap,
             ),
-            self.gameObject.name,
+            self.currentGameObject.name,
             TextDisplaySettings(
                 padding=10,
                 borderWidth=3,
@@ -303,7 +303,7 @@ class EditElementMenu:
 
     def _delete_game_object(self) -> None:
         self.visible = False
-        self.gameObjects.delete(self.gameObject.id)
+        self.gameObjects.delete(self.currentGameObject.id)
 
     def _generate_whole_menu(self) -> None:
         left: int = self.options[0][0].rect.left - self.settings.menuHorizontalPadding

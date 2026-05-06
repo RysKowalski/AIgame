@@ -65,7 +65,7 @@ class AddElementMenu:
         max_width: int = 0
         text_height: int = 0
 
-        for surface, rect in self.text_surfaces:
+        for _, rect in self.text_surfaces:
             max_width = max(max_width, rect.width)
             text_height = max(text_height, rect.height)
 
@@ -154,11 +154,6 @@ class AddElementMenu:
         if not self.visible:
             return
 
-        pygame.draw.rect(
-            self.screen,
-            self.settings.backgroundColor,
-            self.menu_rect,
-        )
         self._draw_rect(
             self.menu_rect,
             self.settings.backgroundColor,
@@ -182,7 +177,7 @@ class AddElementMenu:
                 self.settings.entryBorderWidth,
             )
 
-            text_surface, text_rect = self.text_surfaces[i]
+            text_surface, _ = self.text_surfaces[i]
 
             text_pos = (
                 draw_rect.x + self.settings.entryPadding + self.settings.textPadding,
