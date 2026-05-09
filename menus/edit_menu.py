@@ -1,8 +1,8 @@
 from dataclasses import dataclass
 from typing import Callable
 import game_objects
-from widgets import TextDisplay, TextAlign, TextDisplaySettings
-from widgets.button import Button, ButtonSettings
+from .widgets import TextDisplay, TextAlign, TextDisplaySettings
+from .widgets.button import Button, ButtonSettings
 
 import pygame
 import pygame.freetype

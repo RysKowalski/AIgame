@@ -1,13 +1,12 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import List, Tuple, Callable
+from typing import Callable
 
 import pygame
 import pygame.freetype
 
-from game_objects import GameObject
-from game_objects import GameObjectStore
+from game_objects import GameObjectStore, GameObject
 
 
 @dataclass
@@ -24,9 +23,6 @@ class AddSettings:
     entrySpacing: int
 
 
-GameObjectFactory = Callable[[], GameObject]
-
-
 class AddElementMenu:
     """Context menu for spawning GameObject elements."""
 
@@ -35,24 +31,24 @@ class AddElementMenu:
         screen: pygame.Surface,
         font: pygame.freetype.Font,
         gameObjects: GameObjectStore,
-        elements: dict[str, GameObjectFactory],
+        elements: dict[str, Callable[[], GameObject]],
         settings: AddSettings,
     ) -> None:
         self.screen: pygame.Surface = screen
         self.font: pygame.freetype.Font = font
         self.gameObjects: GameObjectStore = gameObjects
-        self.elements: dict[str, GameObjectFactory] = elements
+        self.elements: dict[str, Callable[[], GameObject]] = elements
         self.settings: AddSettings = settings
 
         self.visible: bool = False
-        self.position: Tuple[int, int] = (0, 0)
+        self.position: tuple[int, int] = (0, 0)
 
-        self.entries: List[str] = list(elements.keys())
-        self.text_surfaces: List[Tuple[pygame.Surface, pygame.Rect]] = [
+        self.entries: list[str] = list(elements.keys())
+        self.text_surfaces: list[tuple[pygame.Surface, pygame.Rect]] = [
             self.font.render(entry, fgcolor=(255, 255, 255)) for entry in self.entries
         ]
 
-        self.entry_rects: List[pygame.Rect] = []
+        self.entry_rects: list[pygame.Rect] = []
         self.hover_index: int | None = None
 
         self.menu_rect: pygame.Rect = pygame.Rect(0, 0, 0, 0)
@@ -99,7 +95,7 @@ class AddElementMenu:
             self.entry_rects.append(rect)
             y += entry_height + self.settings.entrySpacing
 
-    def show(self, position: Tuple[int, int]) -> None:
+    def show(self, position: tuple[int, int]) -> None:
         """Display the menu at the given screen position."""
 
         self.position = position
@@ -137,9 +133,9 @@ class AddElementMenu:
                 return
 
             name: str = self.entries[self.hover_index]
-            factory: GameObjectFactory = self.elements[name]
+            factory: Callable[[], GameObject] = self.elements[name]
 
-            obj: "GameObject" = factory()
+            obj: GameObject = factory()
             self.gameObjects.add(obj)
 
             self.hide()
