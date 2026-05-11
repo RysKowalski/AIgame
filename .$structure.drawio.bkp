@@ -1,6 +1,6 @@
 <mxfile host="Electron" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.6.1 Chrome/142.0.7444.265 Electron/39.5.2 Safari/537.36" version="29.6.1">
   <diagram name="Page-1" id="H6DnZZUGhe4f_tkfM6y-">
-    <mxGraphModel dx="1378" dy="1473" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="1643" dy="1660" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -339,41 +339,6 @@
           <mxGeometry height="860" width="740" x="580" y="300" as="geometry">
             <mxRectangle height="40" width="90" x="580" y="300" as="alternateBounds" />
           </mxGeometry>
-        </mxCell>
-        <mxCell id="FUgYZzwQWgp-baVGyBhK-40" parent="OQxlD02g0yvNPghrTBxg-45" style="swimlane;whiteSpace=wrap;html=1;fillColor=#e3c800;fontColor=#000000;strokeColor=#B09500;" value="AddSettings" vertex="1">
-          <mxGeometry height="220" width="477" x="13" y="30" as="geometry">
-            <mxRectangle height="40" width="90" x="10" y="100" as="alternateBounds" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="FUgYZzwQWgp-baVGyBhK-41" parent="FUgYZzwQWgp-baVGyBhK-40" style="rounded=0;whiteSpace=wrap;html=1;" value="BacgroundColor" vertex="1">
-          <mxGeometry height="20" width="208" x="12" y="30" as="geometry" />
-        </mxCell>
-        <mxCell id="FUgYZzwQWgp-baVGyBhK-42" parent="FUgYZzwQWgp-baVGyBhK-40" style="rounded=0;whiteSpace=wrap;html=1;" value="entryBackgroundColor" vertex="1">
-          <mxGeometry height="20" width="208" x="12" y="60" as="geometry" />
-        </mxCell>
-        <mxCell id="FUgYZzwQWgp-baVGyBhK-45" parent="FUgYZzwQWgp-baVGyBhK-40" style="rounded=0;whiteSpace=wrap;html=1;" value="variables" vertex="1">
-          <mxGeometry height="20" width="208" x="12" y="90" as="geometry" />
-        </mxCell>
-        <mxCell id="FUgYZzwQWgp-baVGyBhK-46" parent="FUgYZzwQWgp-baVGyBhK-40" style="rounded=0;whiteSpace=wrap;html=1;" value="variables" vertex="1">
-          <mxGeometry height="20" width="208" x="12" y="120" as="geometry" />
-        </mxCell>
-        <mxCell id="FUgYZzwQWgp-baVGyBhK-51" parent="FUgYZzwQWgp-baVGyBhK-40" style="rounded=0;whiteSpace=wrap;html=1;" value="variables" vertex="1">
-          <mxGeometry height="20" width="208" x="12" y="150" as="geometry" />
-        </mxCell>
-        <mxCell id="FUgYZzwQWgp-baVGyBhK-47" parent="FUgYZzwQWgp-baVGyBhK-40" style="rounded=0;whiteSpace=wrap;html=1;" value="variables" vertex="1">
-          <mxGeometry height="20" width="207" x="260" y="30" as="geometry" />
-        </mxCell>
-        <mxCell id="FUgYZzwQWgp-baVGyBhK-48" parent="FUgYZzwQWgp-baVGyBhK-40" style="rounded=0;whiteSpace=wrap;html=1;" value="variables" vertex="1">
-          <mxGeometry height="20" width="207" x="260" y="60" as="geometry" />
-        </mxCell>
-        <mxCell id="FUgYZzwQWgp-baVGyBhK-49" parent="FUgYZzwQWgp-baVGyBhK-40" style="rounded=0;whiteSpace=wrap;html=1;" value="variables" vertex="1">
-          <mxGeometry height="20" width="207" x="260" y="90" as="geometry" />
-        </mxCell>
-        <mxCell id="FUgYZzwQWgp-baVGyBhK-50" parent="FUgYZzwQWgp-baVGyBhK-40" style="rounded=0;whiteSpace=wrap;html=1;" value="variables" vertex="1">
-          <mxGeometry height="20" width="207" x="260" y="120" as="geometry" />
-        </mxCell>
-        <mxCell id="FUgYZzwQWgp-baVGyBhK-52" parent="FUgYZzwQWgp-baVGyBhK-40" style="rounded=0;whiteSpace=wrap;html=1;" value="variables" vertex="1">
-          <mxGeometry height="20" width="207" x="260" y="150" as="geometry" />
         </mxCell>
         <mxCell id="OQxlD02g0yvNPghrTBxg-46" collapsed="1" parent="OQxlD02g0yvNPghrTBxg-23" style="swimlane;whiteSpace=wrap;html=1;fillColor=#008a00;fontColor=#ffffff;strokeColor=#005700;" value="edit_menu.py" vertex="1">
           <mxGeometry height="40" width="90" x="230" y="210" as="geometry">

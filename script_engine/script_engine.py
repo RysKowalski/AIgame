@@ -24,21 +24,8 @@ class ScriptTextDisplayData:
     value: str
 
 
-@dataclass(frozen=True)
-class ScriptInputObjectData:
-    x: float
-    y: float
-    padding: int
-    borderWidth: int
-    backgroundColor: tuple[int, int, int]
-    textColor: tuple[int, int, int]
-    fontSize: int
-    borderColor: tuple[int, int, int]
-    value: str
-
-
 class ScriptEngine:
-    """VIBE CODED :sob:"""
+    """VIBE CODED :sob: this is really really bad"""
 
     _ARGUMENT_SENTINEL: str = "__ARG_START__"
 
@@ -296,60 +283,6 @@ class ScriptEngine:
                 text_red,
                 text_green,
                 text_blue,
-            ),
-            value=final_value,
-        )
-
-    def calculate_input_object(self, script: str) -> ScriptInputObjectData:
-        data: dict[str, float] = self.get_data(script)
-
-        x: float = data.get("x", -1.0)
-        y: float = data.get("y", -1.0)
-
-        padding: int = int(data.get("padding", 0))
-        font_size: int = int(data.get("text_size", 1))
-
-        background_red: int = int(data.get("red", -1))
-        background_green: int = int(data.get("green", -1))
-        background_blue: int = int(data.get("blue", -1))
-
-        text_red: int = int(data.get("text_red", -1))
-        text_green: int = int(data.get("text_green", -1))
-        text_blue: int = int(data.get("text_blue", -1))
-
-        border_width: int = int(data.get("border_width", 0))
-        border_red: int = int(data.get("border_red", -1))
-        border_green: int = int(data.get("border_green", -1))
-        border_blue: int = int(data.get("border_blue", -1))
-
-        text_value: float = data.get("value", -1.0)
-        round_digits: int = int(data.get("round", 0))
-
-        if round_digits > 0:
-            final_value: str = str(round(text_value, round_digits))
-        else:
-            final_value = str(round(text_value))
-
-        return ScriptInputObjectData(
-            x=x,
-            y=y,
-            padding=padding,
-            borderWidth=border_width,
-            backgroundColor=(
-                background_red,
-                background_green,
-                background_blue,
-            ),
-            textColor=(
-                text_red,
-                text_green,
-                text_blue,
-            ),
-            fontSize=font_size,
-            borderColor=(
-                border_red,
-                border_green,
-                border_blue,
             ),
             value=final_value,
         )
