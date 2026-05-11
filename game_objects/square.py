@@ -1,6 +1,6 @@
 import pygame
 from script_engine import ScriptSquareData
-from game_objects import GameObject
+from .game_objects import GameObject
 
 
 class SquareObject(GameObject):
