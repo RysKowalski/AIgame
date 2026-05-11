@@ -12,20 +12,20 @@ from script_engine import ScriptEngine
 from script_engine.script_context import ScriptContext
 
 
-def resource_path(relative_path: str) -> str:
-    base_path: str = getattr(sys, "_MEIPASS", Path(__file__).parent.as_posix())
-    return str(Path(base_path) / relative_path)
-
-
 class Fonts:
+    @staticmethod
+    def _resource_path(relative_path: str) -> str:
+        base_path: str = getattr(sys, "_MEIPASS", Path(__file__).parent.as_posix())
+        return str(Path(base_path) / relative_path)
+
     addMenuFont: pygame.freetype.Font = pygame.freetype.Font(
-        resource_path("font.ttf"), 50
+        _resource_path("font.ttf"), 50
     )
     editMenuFont: pygame.freetype.Font = pygame.freetype.Font(
-        resource_path("font.ttf"), 22
+        _resource_path("font.ttf"), 22
     )
     uiTextDisplayFont: pygame.freetype.Font = pygame.freetype.Font(
-        resource_path("font.ttf"), 24
+        _resource_path("font.ttf"), 24
     )
 
 
