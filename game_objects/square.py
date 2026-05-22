@@ -52,17 +52,17 @@ class SquareObject(GameObject):
 
     def get_default_script(self) -> str:
         return """this.x = 0
-this.y = 0
-this.width = 100
-this.height = 100
-this.rotation = 0
-this.red = 255
-this.green = 255
-this.blue = 255
-this.border_width = 5
-this.border_red = 0
-this.border_green = 0
-this.border_blue = 0"""
+    this.y = 0
+    this.width = 100
+    this.height = 100
+    this.rotation = 0
+    this.red = 255
+    this.green = 255
+    this.blue = 255
+    this.border_width = 5
+    this.border_red = 0
+    this.border_green = 0
+    this.border_blue = 0"""
 
     def contains_point(self, pos: tuple[int, int]) -> bool:
         squareData: ScriptSquareData = self._get_data()

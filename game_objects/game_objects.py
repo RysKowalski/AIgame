@@ -1,9 +1,9 @@
-from abc import ABC, abstractmethod
+from typing import Protocol
 import pygame
 from script_engine import ScriptEngine
 
 
-class GameObject(ABC):
+class GameObject(Protocol):
     id: int
     name: str
     script: str
@@ -21,11 +21,8 @@ class GameObject(ABC):
         self.screen = screen
         self.scriptEngine: ScriptEngine = scriptEngine
 
-    @abstractmethod
     def draw(self) -> None: ...
 
-    @abstractmethod
     def get_default_script(self) -> str: ...
 
-    @abstractmethod
     def contains_point(self, pos: tuple[int, int]) -> bool: ...

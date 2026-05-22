@@ -5,3 +5,11 @@ from .game_objects_store import (
     GameObjectStore,
     ObjectDoesNotExistError,
 )
+
+__all__ = [
+    "GameObject",
+    "SquareObject",
+    "TextDisplayObject",
+    "GameObjectStore",
+    "ObjectDoesNotExistError",
+]
