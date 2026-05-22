@@ -1,12 +1,12 @@
 from typing import TYPE_CHECKING
 
 import pygame
+
 if TYPE_CHECKING:
     import pygame.freetype
 
 from script_engine import ScriptEngine, ScriptTextDisplayData
 from game_objects import GameObject
-
 
 
 class TextDisplayObject(GameObject):
@@ -40,9 +40,10 @@ class TextDisplayObject(GameObject):
         self.scriptEngine: ScriptEngine = scriptEngine
         self.font: "pygame.freetype.Font" = font
         self.rect: pygame.Rect = pygame.Rect(1, 1, 1, 1)
+        self.get_data = lambda: self.scriptEngine.calculate_text_display(self.script)
 
     def draw(self) -> None:
-        textDisplayData: ScriptTextDisplayData = self._get_data()
+        textDisplayData: ScriptTextDisplayData = self.get_data()
         self.font.render_to(
             self.screen,
             (textDisplayData.x, textDisplayData.y),
@@ -56,9 +57,6 @@ class TextDisplayObject(GameObject):
         self.rect.y = int(textDisplayData.y)
         self.rect.width = fontRect.width
         self.rect.height = fontRect.height
-
-    def _get_data(self) -> ScriptTextDisplayData:
-        return self.scriptEngine.calculate_text_display(self.script)
 
     def get_default_script(self) -> str:
         return """this.x = 0

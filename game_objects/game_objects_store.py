@@ -16,6 +16,7 @@ class GameObjectStore:
         self._idCounter += 1
         gameObject.id = self._idCounter
         self._gameObjects[self._idCounter] = gameObject
+        self.update_script()
         return self._idCounter
 
     def delete(self, id: int) -> None:
@@ -24,6 +25,7 @@ class GameObjectStore:
             del self._gameObjects[id]
         except KeyError:
             raise ObjectDoesNotExistError(id)
+        self.update_script()
 
     def get(self, id: int) -> GameObject:
         """throws ObjectDoesNotExistError"""
@@ -41,3 +43,6 @@ class GameObjectStore:
             obj: GameObject = self._gameObjects[obj_id]
             if obj.contains_point(pos):
                 return obj_id
+
+    def update_script(self) -> None:
+        pass

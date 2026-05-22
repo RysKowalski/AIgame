@@ -244,6 +244,7 @@ class EditElementMenu:
         for option in self.options:
             script.append("this." + option[0].text + option[1].text)
         self.currentGameObject.script = "\n".join(script)
+        self.gameObjects.update_script()
 
     def _calculate_width(self) -> None:
         self.width = (

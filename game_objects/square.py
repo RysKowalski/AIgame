@@ -1,5 +1,6 @@
 import pygame
-from script_engine import ScriptSquareData
+
+from script_engine import ScriptSquareData, ScriptEngine
 from .game_objects import GameObject
 
 
@@ -21,8 +22,17 @@ class SquareObject(GameObject):
 
     name = "Square"
 
+    def __init__(
+        self,
+        script: str,
+        screen: pygame.Surface,
+        scriptEngine: ScriptEngine,
+    ) -> None:
+        super().__init__(script, screen, scriptEngine)
+        self.get_data = lambda: self.scriptEngine.calculate_square(self.script)
+
     def draw(self) -> None:
-        squareData: ScriptSquareData = self._get_data()
+        squareData: ScriptSquareData = self.get_data()
 
         surface: pygame.Surface = pygame.Surface(
             (squareData.width, squareData.height), pygame.SRCALPHA
@@ -47,9 +57,6 @@ class SquareObject(GameObject):
 
         self.screen.blit(rotatedSurface, rotatedRect)
 
-    def _get_data(self) -> ScriptSquareData:
-        return self.scriptEngine.calculate_square(self.script)
-
     def get_default_script(self) -> str:
         return """this.x = 0
     this.y = 0
@@ -65,7 +72,7 @@ class SquareObject(GameObject):
     this.border_blue = 0"""
 
     def contains_point(self, pos: tuple[int, int]) -> bool:
-        squareData: ScriptSquareData = self._get_data()
+        squareData: ScriptSquareData = self.get_data()
 
         surface: pygame.Surface = pygame.Surface(
             (squareData.width, squareData.height), pygame.SRCALPHA

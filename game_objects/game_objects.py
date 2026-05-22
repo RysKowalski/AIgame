@@ -1,4 +1,4 @@
-from typing import Protocol
+from typing import Any, Callable, Protocol
 import pygame
 from script_engine import ScriptEngine
 
@@ -9,6 +9,7 @@ class GameObject(Protocol):
     script: str
     screen: pygame.Surface
     scriptEngine: ScriptEngine
+    get_data: Callable[[], Any]
 
     def __init__(
         self, script: str, screen: pygame.Surface, scriptEngine: ScriptEngine
