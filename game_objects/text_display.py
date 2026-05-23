@@ -24,6 +24,7 @@ class TextDisplayObject(GameObject):
     """
 
     name = "Text"
+    id = 0
 
     def __init__(
         self,

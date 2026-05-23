@@ -30,16 +30,15 @@ class Fonts:
 
 
 def main() -> None:
-    WINDOW_SIZE: tuple[int, int] = (0, 0)
     FRAMERATE: float = 60
+    clock: pygame.time.Clock = pygame.time.Clock()
+    screen: pygame.Surface = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
 
     level: GameLevel = levels.Level1TutorialTemporary()
     levelState: LevelState = LevelState(0, 0, [0, 0], False)
     scriptContext: ScriptContext = ScriptContext(levelState)
     scriptEngine: ScriptEngine = ScriptEngine(scriptContext)
     gameObjects: game_objects.GameObjectStore = game_objects.GameObjectStore()
-    screen: pygame.Surface = pygame.display.set_mode(WINDOW_SIZE, pygame.FULLSCREEN)
-    clock: pygame.time.Clock = pygame.time.Clock()
 
     menuSettings: menus.AddSettings = menus.AddSettings(
         backgroundColor=pygame.Color(18, 18, 18),  # #121212
@@ -92,6 +91,7 @@ def main() -> None:
     running: bool = True
     while running:
         ticks += 1
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False

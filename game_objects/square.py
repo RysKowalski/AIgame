@@ -21,6 +21,7 @@ class SquareObject(GameObject):
     """
 
     name = "Square"
+    id = 0
 
     def __init__(
         self,
