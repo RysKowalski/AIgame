@@ -5,8 +5,8 @@ import pygame
 if TYPE_CHECKING:
     import pygame.freetype
 
-from script_engine import ScriptEngine, ScriptTextDisplayData
-from game_objects import GameObject
+from AIgame.script_engine import ScriptEngine, ScriptTextDisplayData
+from AIgame.game_objects import GameObject
 
 
 class TextDisplayObject(GameObject):

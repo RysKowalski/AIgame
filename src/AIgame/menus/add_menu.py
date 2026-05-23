@@ -6,7 +6,7 @@ from typing import Callable
 import pygame
 import pygame.freetype
 
-from game_objects import GameObjectStore, GameObject
+from AIgame.game_objects import GameObjectStore, GameObject
 
 
 @dataclass

@@ -1,6 +1,5 @@
 name: Build Windows Executable
 
-
 on:
   push:
     branches: [main]
@@ -28,8 +27,7 @@ jobs:
 
       - name: Build executable
         run: |
-          pyinstaller --noconfirm --onefile --windowed --add-data "font.ttf;." main.py
-
+          run: pyinstaller --noconfirm --onefile --windowed --add-data "src/font.ttf;." src/main.py
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:

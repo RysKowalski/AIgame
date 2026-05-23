@@ -1,6 +1,6 @@
 import pygame
 
-from script_engine import ScriptSquareData, ScriptEngine
+from AIgame.script_engine import ScriptSquareData, ScriptEngine
 from .game_objects import GameObject
 
 

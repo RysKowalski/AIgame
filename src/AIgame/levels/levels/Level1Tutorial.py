@@ -1,4 +1,4 @@
-from levels import GameLevel, LevelData, LevelState
+from AIgame.levels import GameLevel, LevelData, LevelState
 
 
 class Level1Tutorial(GameLevel):

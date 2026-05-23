@@ -1,7 +1,7 @@
-from levels import LevelState
-from script_engine import ScriptEngine, ScriptSquareData
-from script_engine.script_context import ScriptContext
-from script_engine.script_engine import ScriptTextDisplayData
+from AIgame.levels import LevelState
+from AIgame.script_engine import ScriptEngine, ScriptSquareData
+from AIgame.script_engine.script_context import ScriptContext
+from AIgame.script_engine.script_engine import ScriptTextDisplayData
 
 
 def test_script_calculate_expression_empty() -> None:

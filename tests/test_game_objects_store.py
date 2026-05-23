@@ -1,4 +1,4 @@
-from game_objects import GameObjectStore, GameObject, ObjectDoesNotExistError
+from AIgame.game_objects import GameObjectStore, GameObject, ObjectDoesNotExistError
 from tests.utils import (
     ExampleObject,
     get_example_object,

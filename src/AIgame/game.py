@@ -4,12 +4,12 @@ from pathlib import Path
 import pygame
 import pygame.freetype
 
-import game_objects
-import levels
-import menus
-from levels import GameLevel, LevelState
-from script_engine import ScriptEngine
-from script_engine.script_context import ScriptContext
+from AIgame import game_objects
+from AIgame import levels
+from AIgame import menus
+from AIgame.levels import GameLevel, LevelState
+from AIgame.script_engine import ScriptEngine
+from AIgame.script_engine.script_context import ScriptContext
 
 
 class Fonts:

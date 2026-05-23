@@ -1,13 +1,13 @@
 from dataclasses import dataclass
 from typing import Callable
-import game_objects
-from .widgets import TextDisplay, TextAlign, TextDisplaySettings
-from .widgets.button import Button, ButtonSettings
 
 import pygame
 import pygame.freetype
 
-from game_objects import GameObject
+from AIgame import game_objects
+from .widgets import TextDisplay, TextAlign, TextDisplaySettings
+from .widgets.button import Button, ButtonSettings
+from AIgame.game_objects import GameObject
 
 
 @dataclass

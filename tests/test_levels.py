@@ -1,4 +1,4 @@
-from levels import GameLevel, LevelState
+from AIgame.levels import GameLevel, LevelState
 from .utils import ExampleLevel
 
 

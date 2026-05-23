@@ -1,6 +1,6 @@
 from typing import Any, Callable, Protocol
 import pygame
-from script_engine import ScriptEngine
+from AIgame.script_engine import ScriptEngine
 
 
 class GameObject(Protocol):

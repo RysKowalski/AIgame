@@ -1,7 +1,7 @@
 import pytest
 
-from levels import LevelState
-from script_engine.script_context import InvalidVariableError, ScriptContext
+from AIgame.levels import LevelState
+from AIgame.script_engine.script_context import InvalidVariableError, ScriptContext
 
 
 def test_resolve_variable_existing_var() -> None:

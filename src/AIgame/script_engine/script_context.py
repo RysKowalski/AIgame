@@ -1,4 +1,4 @@
-from levels import LevelState
+from AIgame.levels import LevelState
 
 
 class InvalidVariableError(Exception):
