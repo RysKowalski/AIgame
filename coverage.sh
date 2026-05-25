@@ -1,3 +1,3 @@
 coverage run -m pytest
-coverage html --omit tests/*.py
+coverage html
 xdg-open htmlcov/index.html
