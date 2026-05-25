@@ -4,7 +4,7 @@ from typing import Protocol
 
 @dataclass(frozen=True)
 class LevelData:
-    id: str
+    name: str
     inputCount: int
     rewardTreshhold: float
 
@@ -20,10 +20,6 @@ class LevelState:
 class GameLevel(Protocol):
     data: LevelData
 
-    def __init__(self, data: LevelData) -> None:
-        self.data: LevelData = data
-
     def tick(self, state: LevelState, inputs: tuple[float, ...]) -> None: ...
 
-    def check_and_set_end(self, state: LevelState) -> None:
-        state.ended = state.reward > self.data.rewardTreshhold
+    def check_and_set_end(self, state: LevelState) -> None: ...

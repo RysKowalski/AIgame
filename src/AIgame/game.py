@@ -7,7 +7,7 @@ import pygame.freetype
 from AIgame import game_objects
 from AIgame import levels
 from AIgame import menus
-from AIgame.levels import GameLevel, LevelState
+from AIgame.levels import GameLevel, LevelManager, LevelState
 from AIgame.script_engine import ScriptEngine
 from AIgame.script_engine.script_context import ScriptContext
 
@@ -34,10 +34,12 @@ def main() -> None:
     clock: pygame.time.Clock = pygame.time.Clock()
     screen: pygame.Surface = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
 
-    level: GameLevel = levels.Level1TutorialTemporary()
     levelState: LevelState = LevelState(0, 0, [0, 0], False)
     scriptContext: ScriptContext = ScriptContext(levelState)
     scriptEngine: ScriptEngine = ScriptEngine(scriptContext)
+
+    levelManager: LevelManager = LevelManager("tutorial1temp", scriptEngine)
+
     gameObjects: game_objects.GameObjectStore = game_objects.GameObjectStore()
 
     menuSettings: menus.AddSettings = menus.AddSettings(
@@ -116,7 +118,7 @@ def main() -> None:
 
         addElementMenu.draw()
         editElementMenu.draw()
-        level.tick(levelState, (0.3,))
+        levelManager.tick((0.3, 0.3))
 
         clock.tick(FRAMERATE)
         pygame.display.flip()

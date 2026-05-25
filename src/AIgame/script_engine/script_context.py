@@ -1,4 +1,8 @@
-from AIgame.levels import LevelState
+from typing import TYPE_CHECKING
+
+
+if TYPE_CHECKING:
+    from AIgame.levels import LevelState
 
 
 class InvalidVariableError(Exception):
@@ -9,8 +13,8 @@ class InvalidVariableError(Exception):
 class ScriptContext:
     """Holds runtime data and resolves variables/functions"""
 
-    def __init__(self, state: LevelState) -> None:
-        self.levelState: LevelState = state
+    def __init__(self, state: "LevelState") -> None:
+        self.levelState: "LevelState" = state
 
     def resolve_variable(self, token: str) -> float:
         if not token.startswith("$"):
