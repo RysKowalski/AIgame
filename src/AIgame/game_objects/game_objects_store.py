@@ -1,5 +1,86 @@
-from AIgame.game_objects.square import SquareObject
+from __future__ import annotations
+
+from typing import Any
+
+from AIgame.script_engine.script_engine import ScriptSquareData
+from .square import SquareObject
 from .game_objects import GameObject
+
+
+class ScriptApplyer:
+    def update_script(self, gameObjects: list[GameObject]) -> None:
+        dynamicClass: str = self._get_class_base()
+
+        for obj in gameObjects:
+            func: str = ""
+            func += self._get_function_def(str(obj.id))
+
+            if isinstance(obj, SquareObject):
+                func += self._get_func_body_square(obj)
+
+            dynamicClass += func
+
+        DynamicClass: type = self._get_executed_class(dynamicClass)
+        self._set_functions(DynamicClass, gameObjects)
+
+    def _get_class_base(self) -> str:
+        return """
+class Script:
+    def __init__(self):
+        self.reward = 0
+        self.inputs = []
+        self.outputs = ()
+"""
+
+    def _get_function_def(self, name: str) -> str:
+        return f"    def f{name}(self):"
+
+    def _get_func_body_square(self, obj: GameObject) -> str:
+        body: str = ""
+        body += self._get_square_function_base()
+        for line in obj.script.splitlines():
+            if line.startswith("this."):
+                body += "        " + line[5:] + "\n"
+
+        body += self._get_square_return()
+        return body
+
+    def _get_square_function_base(self) -> str:
+        return """
+        x = 0
+        y = 0
+        width = 100
+        height = 100
+        rotation = 0
+        red = 255
+        green = 255
+        blue = 255
+        border_width = 5
+        border_red = 0
+        border_green = 0
+        border_blue = 0
+"""
+
+    def _get_square_return(self) -> str:
+        return "        return ScriptSquareData(x, y, width, height, rotation, (red, green, blue), border_width, (border_red, border_green, border_blue))\n"
+
+    def _get_executed_class(self, dynamicClass: str) -> type:
+        namespace: dict[str, Any] = {"ScriptSquareData": ScriptSquareData}
+        try:
+            exec(dynamicClass, namespace)
+        except Exception as e:
+            print(dynamicClass, e)
+
+        return namespace["Script"]
+
+    def _set_functions(self, DynamicClass: type, gameObjects: list[GameObject]) -> None:
+
+        print(DynamicClass, type(DynamicClass))
+        dynamicClass = DynamicClass()
+        for obj in gameObjects:
+            if not isinstance(obj, SquareObject):
+                continue
+            obj.get_data = getattr(dynamicClass, "f" + str(obj.id))
 
 
 class ObjectDoesNotExistError(Exception):
@@ -46,37 +127,4 @@ class GameObjectStore:
                 return obj_id
 
     def update_script(self) -> None:
-        dynamicClass: str = """
-class Script:
-    def __init__(self):
-        self.reward = 0
-        self.inputs = []
-        self.outputs = ()"""
-
-        for obj in self._gameObjects.values():
-            if not isinstance(obj, SquareObject):
-                continue
-            funcBody: str = """
-x = 0
-y = 0
-width = 100
-height = 100
-rotation = 0
-red = 255
-green = 255
-blue = 255
-border_width = 5
-border_red = 0
-border_green = 0
-border_blue = 0
-"""
-            for line in obj.script.splitlines():
-                if line.startswith("this."):
-                    funcBody += line[5:] + "\n"
-            funcBody += """
-return ScriptSquareData(x, y, width, height, rotation, (red, green, blue), border_width, (border_red, border_green, border_blue)
-            """
-
-            dynamicClass += f"    def {obj.id}:"
-            for line in funcBody:
-                dynamicClass += "        " + line + "\n"
+        ScriptApplyer().update_script(list(self._gameObjects.values()))
