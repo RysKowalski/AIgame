@@ -1,3 +1,4 @@
+from AIgame.game_objects.square import SquareObject
 from .game_objects import GameObject
 
 
@@ -45,4 +46,37 @@ class GameObjectStore:
                 return obj_id
 
     def update_script(self) -> None:
-        pass
+        dynamicClass: str = """
+class Script:
+    def __init__(self):
+        self.reward = 0
+        self.inputs = []
+        self.outputs = ()"""
+
+        for obj in self._gameObjects.values():
+            if not isinstance(obj, SquareObject):
+                continue
+            funcBody: str = """
+x = 0
+y = 0
+width = 100
+height = 100
+rotation = 0
+red = 255
+green = 255
+blue = 255
+border_width = 5
+border_red = 0
+border_green = 0
+border_blue = 0
+"""
+            for line in obj.script.splitlines():
+                if line.startswith("this."):
+                    funcBody += line[5:] + "\n"
+            funcBody += """
+return ScriptSquareData(x, y, width, height, rotation, (red, green, blue), border_width, (border_red, border_green, border_blue)
+            """
+
+            dynamicClass += f"    def {obj.id}:"
+            for line in funcBody:
+                dynamicClass += "        " + line + "\n"
