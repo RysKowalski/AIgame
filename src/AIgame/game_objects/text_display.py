@@ -15,7 +15,7 @@ class TextDisplayObject(GameObject):
     this.x
     this.y
     this.value
-    this.round
+    this.round_digits
     this.red
     this.green
     this.blue
@@ -64,7 +64,7 @@ class TextDisplayObject(GameObject):
         return """this.x = 0
 this.y = 0
 this.value = 0
-this.round = 2
+this.round_digits = 2
 this.red = 155
 this.green = 155
 this.blue = 155

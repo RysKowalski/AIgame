@@ -2,7 +2,8 @@ from __future__ import annotations
 
 from typing import Any
 
-from AIgame.script_engine.script_engine import ScriptSquareData
+from AIgame.script_engine.script_engine import ScriptSquareData, ScriptTextDisplayData
+from .text_display import TextDisplayObject
 from .square import SquareObject
 from .game_objects import GameObject
 
@@ -17,6 +18,10 @@ class ScriptApplyer:
 
             if isinstance(obj, SquareObject):
                 func += self._get_func_body_square(obj)
+            elif isinstance(obj, TextDisplayObject):
+                func += self._get_func_body_text_display(obj)
+            else:
+                raise
 
             dynamicClass += func
 
@@ -64,8 +69,47 @@ class Script:
     def _get_square_return(self) -> str:
         return "        return ScriptSquareData(x, y, width, height, rotation, (red, green, blue), border_width, (border_red, border_green, border_blue))\n"
 
+    def _get_func_body_text_display(self, obj: GameObject) -> str:
+        body: str = ""
+        body += self._get_text_display_function_base()
+        for line in obj.script.splitlines():
+            if line.startswith("this."):
+                body += "        " + line[5:] + "\n"
+
+        body += self._get_text_display_value_processing()
+        body += self._get_text_display_return()
+        return body
+
+    def _get_text_display_function_base(self) -> str:
+        return """
+        y = 0
+        value = 0
+        round_digits = 2
+        red = 155
+        green = 155
+        blue = 155
+        text_red = 255
+        text_green = 255
+        text_blue = 255
+"""
+
+    def _get_text_display_value_processing(self) -> str:
+        return """
+        if round_digits > 0:
+            final_value: str = str(round(value, round_digits))
+        else:
+            final_value = str(round(value))
+"""
+
+    def _get_text_display_return(self) -> str:
+        return "        return ScriptTextDisplayData(x, y, (red, green, blue), (text_red, text_green, text_blue), final_value )\n"
+
     def _get_executed_class(self, dynamicClass: str) -> type:
-        namespace: dict[str, Any] = {"ScriptSquareData": ScriptSquareData}
+        print(dynamicClass)
+        namespace: dict[str, Any] = {
+            "ScriptSquareData": ScriptSquareData,
+            "ScriptTextDisplayData": ScriptTextDisplayData,
+        }
         try:
             exec(dynamicClass, namespace)
         except Exception as e:
@@ -74,12 +118,8 @@ class Script:
         return namespace["Script"]
 
     def _set_functions(self, DynamicClass: type, gameObjects: list[GameObject]) -> None:
-
-        print(DynamicClass, type(DynamicClass))
         dynamicClass = DynamicClass()
         for obj in gameObjects:
-            if not isinstance(obj, SquareObject):
-                continue
             obj.get_data = getattr(dynamicClass, "f" + str(obj.id))
 
 
@@ -98,6 +138,7 @@ class GameObjectStore:
         self._idCounter += 1
         gameObject.id = self._idCounter
         self._gameObjects[self._idCounter] = gameObject
+        print(gameObject.id, type(gameObject))
         self.update_script()
         return self._idCounter
 

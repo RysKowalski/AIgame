@@ -264,7 +264,7 @@ class ScriptEngine:
         text_blue: int = int(data.get("text_blue", -1))
 
         text_value: float = data.get("value", -1.0)
-        round_digits: int = int(data.get("round", 1))
+        round_digits: int = int(data.get("round_digits", 1))
 
         if round_digits > 0:
             final_value: str = str(round(text_value, round_digits))
