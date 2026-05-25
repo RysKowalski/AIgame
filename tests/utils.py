@@ -7,11 +7,13 @@ from AIgame.script_engine.script_context import ScriptContext
 
 
 class ExampleLevel(GameLevel):
-    def __init__(self) -> None:
-        super().__init__(LevelData("test", 2, 100))
+    data = LevelData("test", 2, 100)
 
     def tick(self, state: LevelState, inputs: tuple[float, ...]) -> None:
         pass
+
+    def check_and_set_end(self, state: LevelState) -> None:
+        state.ended = state.reward > self.data.rewardTreshhold
 
 
 BLANK_DEFAULT_SCRIPT: str = "default script"
