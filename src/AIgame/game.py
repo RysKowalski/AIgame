@@ -5,9 +5,8 @@ import pygame
 import pygame.freetype
 
 from AIgame import game_objects
-from AIgame import levels
 from AIgame import menus
-from AIgame.levels import GameLevel, LevelManager, LevelState
+from AIgame.levels import LevelManager, LevelState
 from AIgame.script_engine import ScriptEngine
 from AIgame.script_engine.script_context import ScriptContext
 

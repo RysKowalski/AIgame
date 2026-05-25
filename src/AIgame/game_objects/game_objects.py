@@ -1,18 +1,20 @@
-from typing import Any, Callable, Protocol
-import pygame
-from AIgame.script_engine import ScriptEngine
+from typing import TYPE_CHECKING, Any, Callable, Protocol
+
+if TYPE_CHECKING:
+    from pygame import Surface
+    from AIgame.script_engine import ScriptEngine
 
 
 class GameObject(Protocol):
     id: int
     name: str
     script: str
-    screen: pygame.Surface
-    scriptEngine: ScriptEngine
+    screen: "Surface"
+    scriptEngine: "ScriptEngine"
     get_data: Callable[[], Any]
 
     def __init__(
-        self, script: str, screen: pygame.Surface, scriptEngine: ScriptEngine
+        self, script: str, screen: "Surface", scriptEngine: "ScriptEngine"
     ) -> None:
         """if script == 'default' default script is set"""
         if script == "default":
@@ -20,7 +22,7 @@ class GameObject(Protocol):
         else:
             self.script: str = script
         self.screen = screen
-        self.scriptEngine: ScriptEngine = scriptEngine
+        self.scriptEngine: "ScriptEngine" = scriptEngine
 
     def draw(self) -> None: ...
 
