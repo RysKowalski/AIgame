@@ -6,7 +6,8 @@ from typing import Callable
 import pygame
 import pygame.freetype
 
-from AIgame.game_objects import GameObjectStore, GameObject
+from AIgame.game_objects import GameObject
+from AIgame.game_objects_manager import GameObjectManager
 
 
 @dataclass
@@ -30,13 +31,13 @@ class AddElementMenu:
         self,
         screen: pygame.Surface,
         font: pygame.freetype.Font,
-        gameObjects: GameObjectStore,
+        gameObjects: GameObjectManager,
         elements: dict[str, Callable[[], GameObject]],
         settings: AddSettings,
     ) -> None:
         self.screen: pygame.Surface = screen
         self.font: pygame.freetype.Font = font
-        self.gameObjects: GameObjectStore = gameObjects
+        self.gameObjects: GameObjectManager = gameObjects
         self.elements: dict[str, Callable[[], GameObject]] = elements
         self.settings: AddSettings = settings
 

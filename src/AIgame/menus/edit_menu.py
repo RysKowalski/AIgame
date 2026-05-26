@@ -4,10 +4,9 @@ from typing import Callable
 import pygame
 import pygame.freetype
 
-from AIgame import game_objects
-from .widgets import TextDisplay, TextAlign, TextDisplaySettings
-from .widgets.button import Button, ButtonSettings
+from .widgets import TextDisplay, TextAlign, TextDisplaySettings, Button, ButtonSettings
 from AIgame.game_objects import GameObject
+from AIgame.game_objects_manager import GameObjectManager
 
 
 @dataclass
@@ -154,12 +153,12 @@ class EditElementMenu:
         screen: pygame.Surface,
         font: pygame.freetype.Font,
         settings: EditSettings,
-        gameObjects: game_objects.GameObjectStore,
+        gameObjects: GameObjectManager,
     ) -> None:
         self.screen: pygame.Surface = screen
         self.font: pygame.freetype.Font = font
         self.settings: EditSettings = settings
-        self.gameObjects: game_objects.GameObjectStore = gameObjects
+        self.gameObjects: GameObjectManager = gameObjects
 
         self.visible: bool = False
         self.position: tuple[int, int] = (0, 0)

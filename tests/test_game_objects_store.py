@@ -1,4 +1,5 @@
-from AIgame.game_objects import GameObjectStore, GameObject, ObjectDoesNotExistError
+from AIgame.game_objects import GameObject
+from AIgame.game_objects_manager import GameObjectManager, ObjectDoesNotExistError
 from tests.utils import (
     ExampleObject,
     get_example_object,
@@ -7,7 +8,7 @@ from tests.utils import (
 
 
 def test_add_and_get() -> None:
-    objectStore: GameObjectStore = GameObjectStore()
+    objectStore: GameObjectManager = GameObjectManager()
     exampleObject: GameObject = get_example_object()
 
     objectId: int = objectStore.add(exampleObject)
@@ -17,7 +18,7 @@ def test_add_and_get() -> None:
 
 
 def test_add_sets_game_object_id() -> None:
-    objectStore: GameObjectStore = GameObjectStore()
+    objectStore: GameObjectManager = GameObjectManager()
     obj: ExampleObject = get_example_object()
 
     id: int = objectStore.add(obj)
@@ -26,7 +27,7 @@ def test_add_sets_game_object_id() -> None:
 
 
 def test_add_and_get_many() -> None:
-    objectStore: GameObjectStore = GameObjectStore()
+    objectStore: GameObjectManager = GameObjectManager()
     addedObjects: dict[int, GameObject] = {}
 
     for _ in range(100):
@@ -39,7 +40,7 @@ def test_add_and_get_many() -> None:
 
 
 def test_get_nonexistent_raises_exception() -> None:
-    objectStore: GameObjectStore = GameObjectStore()
+    objectStore: GameObjectManager = GameObjectManager()
     nonexistentId: int = -1
     failed: bool = True
 
@@ -52,7 +53,7 @@ def test_get_nonexistent_raises_exception() -> None:
 
 
 def test_delete_get_raises_exception() -> None:
-    objectStore: GameObjectStore = GameObjectStore()
+    objectStore: GameObjectManager = GameObjectManager()
     exampleObject: GameObject = ExampleObject("default", example_surface())
     failed: bool = True
 
@@ -68,7 +69,7 @@ def test_delete_get_raises_exception() -> None:
 
 
 def test_delete_nonexistent_raises_exception() -> None:
-    objectStore: GameObjectStore = GameObjectStore()
+    objectStore: GameObjectManager = GameObjectManager()
     nonexistentId: int = -1
     failed: bool = True
 
@@ -81,7 +82,7 @@ def test_delete_nonexistent_raises_exception() -> None:
 
 
 def test_draw_correct_call() -> None:
-    objectStore: GameObjectStore = GameObjectStore()
+    objectStore: GameObjectManager = GameObjectManager()
     gameObject: GameObject = get_example_object()
     objectStore.add(gameObject)
 
@@ -91,7 +92,7 @@ def test_draw_correct_call() -> None:
 
 
 def test_draw_correct_call_many() -> None:
-    objectStore: GameObjectStore = GameObjectStore()
+    objectStore: GameObjectManager = GameObjectManager()
     gameObjects: list[ExampleObject] = [get_example_object() for _ in range(100)]
     for gameObject in gameObjects:
         objectStore.add(gameObject)
@@ -103,13 +104,13 @@ def test_draw_correct_call_many() -> None:
 
 
 def test_draw_no_game_objects() -> None:
-    objectStore: GameObjectStore = GameObjectStore()
+    objectStore: GameObjectManager = GameObjectManager()
 
     objectStore.draw()
 
 
 def test_get_on_pos_found() -> None:
-    objectStore: GameObjectStore = GameObjectStore()
+    objectStore: GameObjectManager = GameObjectManager()
     gameObject: ExampleObject = get_example_object()
     gameObject.contains_point_returns = True
     id: int = objectStore.add(gameObject)
@@ -120,7 +121,7 @@ def test_get_on_pos_found() -> None:
 
 
 def test_get_on_pos_not_found() -> None:
-    objectStore: GameObjectStore = GameObjectStore()
+    objectStore: GameObjectManager = GameObjectManager()
     gameObject: ExampleObject = get_example_object()
     gameObject.contains_point_returns = False
     objectStore.add(gameObject)
@@ -131,7 +132,7 @@ def test_get_on_pos_not_found() -> None:
 
 
 def test_get_on_pos_later_added_detected_first() -> None:
-    objectStore: GameObjectStore = GameObjectStore()
+    objectStore: GameObjectManager = GameObjectManager()
     obj1: ExampleObject = get_example_object()
     obj1.returns_true()
     obj2: ExampleObject = get_example_object()

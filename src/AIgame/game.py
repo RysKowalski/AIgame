@@ -7,6 +7,7 @@ import pygame.freetype
 from AIgame import game_objects
 from AIgame import menus
 from AIgame.levels import LevelManager
+from AIgame.game_objects_manager import GameObjectManager
 
 
 class Fonts:
@@ -33,7 +34,7 @@ def main() -> None:
 
     levelManager: LevelManager = LevelManager("tutorial1temp")
 
-    gameObjects: game_objects.GameObjectStore = game_objects.GameObjectStore()
+    gameObjects: GameObjectManager = GameObjectManager()
 
     menuSettings: menus.AddSettings = menus.AddSettings(
         backgroundColor=pygame.Color(18, 18, 18),  # #121212

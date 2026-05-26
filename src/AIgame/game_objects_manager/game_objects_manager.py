@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from .game_objects import GameObject
+from AIgame.game_objects import GameObject
 from AIgame.script_applyer import ScriptApplyer
 
 
@@ -10,7 +10,7 @@ class ObjectDoesNotExistError(Exception):
         super().__init__(f"object with ID {objectId} does not exist")
 
 
-class GameObjectStore:
+class GameObjectManager:
     def __init__(self) -> None:
         self._gameObjects: dict[int, GameObject] = {}
         self._idCounter: int = 0
