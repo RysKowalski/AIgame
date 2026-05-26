@@ -9,6 +9,11 @@ from AIgame.game_objects import (
 )
 
 
+class NotImplementedGameObjectError(NotImplementedError):
+    def __init__(self, *args: object) -> None:
+        super().__init__(*args)
+
+
 class ScriptApplyer:
     def update_script(self, gameObjects: list[GameObject]) -> None:
         dynamicClass: str = self._get_class_base()
@@ -21,8 +26,10 @@ class ScriptApplyer:
                 func += self._get_func_body_square(obj)
             elif isinstance(obj, TextDisplayObject):
                 func += self._get_func_body_text_display(obj)
+            elif isinstance(obj, GameObject):
+                func += "        return\n"
             else:
-                raise
+                raise NotImplementedGameObjectError(obj)
 
             dynamicClass += func
 
@@ -106,7 +113,6 @@ class Script:
         return "        return ScriptTextDisplayData(x, y, (red, green, blue), (text_red, text_green, text_blue), final_value )\n"
 
     def _get_executed_class(self, dynamicClass: str) -> type:
-        print(dynamicClass)
         namespace: dict[str, Any] = {
             "ScriptSquareData": ScriptSquareData,
             "ScriptTextDisplayData": ScriptTextDisplayData,

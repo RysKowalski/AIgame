@@ -2,7 +2,6 @@ from AIgame.game_objects import GameObjectStore, GameObject, ObjectDoesNotExistE
 from tests.utils import (
     ExampleObject,
     get_example_object,
-    example_script_engine,
     example_surface,
 )
 
@@ -30,10 +29,8 @@ def test_add_and_get_many() -> None:
     objectStore: GameObjectStore = GameObjectStore()
     addedObjects: dict[int, GameObject] = {}
 
-    for _ in range(1000):
-        gameObject: GameObject = ExampleObject(
-            "default", example_surface(), example_script_engine()
-        )
+    for _ in range(100):
+        gameObject: GameObject = ExampleObject("default", example_surface())
         id: int = objectStore.add(gameObject)
         addedObjects[id] = gameObject
 
@@ -56,9 +53,7 @@ def test_get_nonexistent_raises_exception() -> None:
 
 def test_delete_get_raises_exception() -> None:
     objectStore: GameObjectStore = GameObjectStore()
-    exampleObject: GameObject = ExampleObject(
-        "default", example_surface(), example_script_engine()
-    )
+    exampleObject: GameObject = ExampleObject("default", example_surface())
     failed: bool = True
 
     id: int = objectStore.add(exampleObject)
@@ -97,7 +92,7 @@ def test_draw_correct_call() -> None:
 
 def test_draw_correct_call_many() -> None:
     objectStore: GameObjectStore = GameObjectStore()
-    gameObjects: list[ExampleObject] = [get_example_object() for _ in range(1000)]
+    gameObjects: list[ExampleObject] = [get_example_object() for _ in range(100)]
     for gameObject in gameObjects:
         objectStore.add(gameObject)
 

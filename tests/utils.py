@@ -2,8 +2,6 @@ from pygame import Surface
 
 from AIgame.game_objects import GameObject
 from AIgame.levels import GameLevel, LevelData, LevelState
-from AIgame.script_engine import ScriptEngine
-from AIgame.script_engine.script_context import ScriptContext
 
 
 class ExampleLevel(GameLevel):
@@ -43,10 +41,8 @@ class ExampleObject(GameObject):
     def get_data() -> None:
         pass
 
-    def __init__(
-        self, script: str, screen: "Surface", scriptEngine: ScriptEngine
-    ) -> None:
-        super().__init__(script, screen, scriptEngine)
+    def __init__(self, script: str, screen: "Surface") -> None:
+        super().__init__(script, screen)
         self.draw_call_count: int = 0
         self.contains_point_count: int = 0
         self.contains_point_returns: bool = False
@@ -67,11 +63,7 @@ class ExampleObject(GameObject):
 
 
 def get_example_object() -> ExampleObject:
-    return ExampleObject("default", example_surface(), example_script_engine())
-
-
-def example_script_engine() -> ScriptEngine:
-    return ScriptEngine(ScriptContext(LevelState(0, 0, [0, 0], False)))
+    return ExampleObject("default", example_surface())
 
 
 def example_surface() -> "Surface":

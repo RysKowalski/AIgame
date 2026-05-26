@@ -1,9 +1,10 @@
-from typing import TYPE_CHECKING, Any, Callable, Protocol
+from typing import TYPE_CHECKING, Any, Callable, Protocol, runtime_checkable
 
 if TYPE_CHECKING:
     from pygame import Surface
 
 
+@runtime_checkable
 class GameObject(Protocol):
     id: int
     name: str
