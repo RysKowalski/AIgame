@@ -47,22 +47,18 @@ class ScriptEngine:
         current: str = ""
 
         for ch in expression:
-            if ch.isspace():
-                self._flush_token(tokens, current)
+            if ch == " ":
+                tokens.append(current)
                 current = ""
             elif ch in "+-*/%^(),[]":
-                self._flush_token(tokens, current)
+                tokens.append(current)
                 current = ""
                 tokens.append(ch)
             else:
                 current += ch
 
-        self._flush_token(tokens, current)
+        tokens.append(current)
         return tokens
-
-    def _flush_token(self, tokens: list[str], token: str) -> None:
-        if token:
-            tokens.append(token)
 
     def _convert_tokens_to_reverse_polish_notation(
         self, tokens: list[str]
