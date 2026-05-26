@@ -6,7 +6,8 @@ from typing import Callable
 import pygame
 import pygame.freetype
 
-from AIgame.game_objects import GameObject
+from AIgame.resources import Fonts
+from AIgame.game_objects import GameObject, SquareObject, TextDisplayObject
 from AIgame.game_objects_manager import GameObjectManager
 
 
@@ -30,21 +31,36 @@ class AddElementMenu:
     def __init__(
         self,
         screen: pygame.Surface,
-        font: pygame.freetype.Font,
         gameObjects: GameObjectManager,
-        elements: dict[str, Callable[[], GameObject]],
         settings: AddSettings,
+        font: pygame.freetype.Font = Fonts.addMenuFont,
+        elements: dict[str, Callable[[], GameObject]] | None = None,
     ) -> None:
         self.screen: pygame.Surface = screen
         self.font: pygame.freetype.Font = font
         self.gameObjects: GameObjectManager = gameObjects
-        self.elements: dict[str, Callable[[], GameObject]] = elements
         self.settings: AddSettings = settings
+
+        self.elements: dict[str, Callable[[], GameObject]] = {}
+
+        if elements is None:
+            default: dict[str, Callable[[], GameObject]] = {
+                "square": lambda: SquareObject(script="default", screen=screen),
+                "text": lambda: TextDisplayObject(
+                    script="default",
+                    screen=screen,
+                    font=Fonts.uiTextDisplayFont,
+                ),
+            }
+
+            self.elements = default
+        else:
+            self.elements = elements
 
         self.visible: bool = False
         self.position: tuple[int, int] = (0, 0)
 
-        self.entries: list[str] = list(elements.keys())
+        self.entries: list[str] = list(self.elements.keys())
         self.text_surfaces: list[tuple[pygame.Surface, pygame.Rect]] = [
             self.font.render(entry, fgcolor=(255, 255, 255)) for entry in self.entries
         ]

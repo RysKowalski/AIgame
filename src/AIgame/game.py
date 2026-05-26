@@ -1,30 +1,9 @@
-import sys
-from pathlib import Path
-
 import pygame
-import pygame.freetype
 
-from AIgame import game_objects
-from AIgame import menus
+from AIgame.menus import AddSettings, AddElementMenu, EditSettings, EditElementMenu
 from AIgame.levels import LevelManager
 from AIgame.game_objects_manager import GameObjectManager
-
-
-class Fonts:
-    @staticmethod
-    def _resource_path(relative_path: str) -> str:
-        base_path: str = getattr(sys, "_MEIPASS", Path(__file__).parent.as_posix())
-        return str(Path(base_path) / relative_path)
-
-    addMenuFont: pygame.freetype.Font = pygame.freetype.Font(
-        _resource_path("font.ttf"), 50
-    )
-    editMenuFont: pygame.freetype.Font = pygame.freetype.Font(
-        _resource_path("font.ttf"), 22
-    )
-    uiTextDisplayFont: pygame.freetype.Font = pygame.freetype.Font(
-        _resource_path("font.ttf"), 24
-    )
+from AIgame.resources import Fonts
 
 
 def main() -> None:
@@ -36,7 +15,7 @@ def main() -> None:
 
     gameObjects: GameObjectManager = GameObjectManager()
 
-    menuSettings: menus.AddSettings = menus.AddSettings(
+    menuSettings: AddSettings = AddSettings(
         backgroundColor=pygame.Color(18, 18, 18),  # #121212
         entryBackgroundColor=pygame.Color(18, 18, 18),  # #121212
         hoverEntryBackgroundColor=pygame.Color(50, 50, 50),  # #323232
@@ -49,24 +28,13 @@ def main() -> None:
         entrySpacing=0,
     )
 
-    addElementMenu: menus.AddElementMenu = menus.AddElementMenu(
+    addElementMenu: AddElementMenu = AddElementMenu(
         screen,
-        Fonts.addMenuFont,
         gameObjects,
-        {
-            "square": lambda: game_objects.SquareObject(
-                script="default", screen=screen
-            ),
-            "text": lambda: game_objects.TextDisplayObject(
-                script="default",
-                screen=screen,
-                font=Fonts.uiTextDisplayFont,
-            ),
-        },
         menuSettings,
     )
 
-    editSettings: menus.EditSettings = menus.EditSettings(
+    editSettings: EditSettings = EditSettings(
         backgroundColor=pygame.Color(10, 10, 10),
         borderColor=pygame.Color(255, 255, 255),
         editingBorderColor=pygame.Color(255, 255, 255),
@@ -78,8 +46,8 @@ def main() -> None:
         textPadding=8,
         nameSize=30,
     )
-    editElementMenu: menus.EditElementMenu = menus.EditElementMenu(
-        screen, Fonts.editMenuFont, editSettings, gameObjects
+    editElementMenu: EditElementMenu = EditElementMenu(
+        screen, editSettings, gameObjects
     )
 
     ticks: int = 0
