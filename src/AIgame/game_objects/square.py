@@ -1,7 +1,20 @@
+from dataclasses import dataclass
+
 import pygame
 
-from AIgame.script_engine import ScriptSquareData, ScriptEngine
 from .game_objects import GameObject
+
+
+@dataclass(frozen=True)
+class ScriptSquareData:
+    x: float
+    y: float
+    width: float
+    height: float
+    rotation: float
+    backgroundColor: tuple[int, int, int]
+    borderWidth: float
+    borderColor: tuple[int, int, int]
 
 
 class SquareObject(GameObject):
@@ -27,10 +40,9 @@ class SquareObject(GameObject):
         self,
         script: str,
         screen: pygame.Surface,
-        scriptEngine: ScriptEngine,
     ) -> None:
-        super().__init__(script, screen, scriptEngine)
-        self.get_data = lambda: self.scriptEngine.calculate_square(self.script)
+        super().__init__(script, screen)
+        self.get_data = lambda: ScriptSquareData(0, 0, 0, 0, 0, (0, 0, 0), 0, (0, 0, 0))
 
     def draw(self) -> None:
         squareData: ScriptSquareData = self.get_data()

@@ -1,6 +1,6 @@
 from .game_objects import GameObject
-from .square import SquareObject
-from .text_display import TextDisplayObject
+from .square import SquareObject, ScriptSquareData
+from .text_display import TextDisplayObject, ScriptTextDisplayData
 from .game_objects_store import (
     GameObjectStore,
     ObjectDoesNotExistError,
@@ -9,7 +9,9 @@ from .game_objects_store import (
 __all__ = [
     "GameObject",
     "SquareObject",
+    "ScriptSquareData",
     "TextDisplayObject",
+    "ScriptTextDisplayData",
     "GameObjectStore",
     "ObjectDoesNotExistError",
 ]

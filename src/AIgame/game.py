@@ -6,9 +6,7 @@ import pygame.freetype
 
 from AIgame import game_objects
 from AIgame import menus
-from AIgame.levels import LevelManager, LevelState
-from AIgame.script_engine import ScriptEngine
-from AIgame.script_engine.script_context import ScriptContext
+from AIgame.levels import LevelManager
 
 
 class Fonts:
@@ -33,11 +31,7 @@ def main() -> None:
     clock: pygame.time.Clock = pygame.time.Clock()
     screen: pygame.Surface = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
 
-    levelState: LevelState = LevelState(0, 0, [0, 0], False)
-    scriptContext: ScriptContext = ScriptContext(levelState)
-    scriptEngine: ScriptEngine = ScriptEngine(scriptContext)
-
-    levelManager: LevelManager = LevelManager("tutorial1temp", scriptEngine)
+    levelManager: LevelManager = LevelManager("tutorial1temp")
 
     gameObjects: game_objects.GameObjectStore = game_objects.GameObjectStore()
 
@@ -60,12 +54,11 @@ def main() -> None:
         gameObjects,
         {
             "square": lambda: game_objects.SquareObject(
-                script="default", screen=screen, scriptEngine=scriptEngine
+                script="default", screen=screen
             ),
             "text": lambda: game_objects.TextDisplayObject(
                 script="default",
                 screen=screen,
-                scriptEngine=scriptEngine,
                 font=Fonts.uiTextDisplayFont,
             ),
         },

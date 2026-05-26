@@ -1,12 +1,5 @@
-from typing import TYPE_CHECKING
 from .GameLevel import GameLevel, LevelState
 from .levels import Level1Tutorial, Level2Tutorial, Level1TutorialTemporary
-
-from AIgame.script_engine import ScriptContext
-
-if TYPE_CHECKING:
-    from AIgame.script_engine import ScriptEngine
-
 
 defaultLevels: dict[str, type[GameLevel]] = {
     Level1TutorialTemporary.data.name: Level1TutorialTemporary,
@@ -19,10 +12,8 @@ class LevelManager:
     def __init__(
         self,
         levelName: str,
-        scriptEngine: "ScriptEngine",
         levels: dict[str, type[GameLevel]] = defaultLevels,
     ):
-        self.scriptEngine = scriptEngine
         self.levels: dict[str, type[GameLevel]] = levels
         self.levelNames: list[str] = list(levels.keys())
         self._set_level(levelName)
@@ -37,7 +28,6 @@ class LevelManager:
         self.levelState: LevelState = LevelState(
             0, 0, [0 for _ in range(self.level.data.inputCount)], False
         )
-        self.scriptEngine.context = ScriptContext(self.levelState)
 
     def _next_level(self) -> None:
         currentIndex: int = self.levelNames.index(self.level.data.name)

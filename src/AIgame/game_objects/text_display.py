@@ -1,13 +1,21 @@
+from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
 import pygame
 
 if TYPE_CHECKING:
     import pygame.freetype
-    from AIgame.script_engine import ScriptEngine
 
-from AIgame.script_engine import ScriptTextDisplayData
-from AIgame.game_objects import GameObject
+from .game_objects import GameObject
+
+
+@dataclass(frozen=True)
+class ScriptTextDisplayData:
+    x: float
+    y: float
+    backgroundColor: tuple[int, int, int]
+    textColor: tuple[int, int, int]
+    value: str
 
 
 class TextDisplayObject(GameObject):
@@ -31,7 +39,6 @@ class TextDisplayObject(GameObject):
         self,
         script: str,
         screen: pygame.Surface,
-        scriptEngine: "ScriptEngine",
         font: "pygame.freetype.Font",
     ) -> None:
         if script == "default":
@@ -39,10 +46,9 @@ class TextDisplayObject(GameObject):
         else:
             self.script: str = script
         self.screen = screen
-        self.scriptEngine: "ScriptEngine" = scriptEngine
         self.font: "pygame.freetype.Font" = font
         self.rect: pygame.Rect = pygame.Rect(1, 1, 1, 1)
-        self.get_data = lambda: self.scriptEngine.calculate_text_display(self.script)
+        self.get_data = lambda: ScriptTextDisplayData(0, 0, (0, 0, 0), (0, 0, 0), "0")
 
     def draw(self) -> None:
         textDisplayData: ScriptTextDisplayData = self.get_data()
