@@ -6,9 +6,6 @@ from AIgame.game_objects import (
 )
 
 
-class NotImplementedGameObjectError(NotImplementedError): ...
-
-
 class ScriptApplyer:
     def __init__(self) -> None:
         self.line_data_extraction_pattern: re.Pattern[str] = re.compile(
@@ -41,14 +38,14 @@ class Script:
         self.outputs = ()
 """
 
-    def _function_def(self, name: str) -> list[str]:
-        return [f"def f{name}(self):"]
+    def _function_def(self, name: str) -> str:
+        return f"def f{name}(self):"
 
-    def _function_base(self) -> list[str]:
-        return ["data = {}"]
+    def _function_base(self) -> str:
+        return "data = {}"
 
-    def _function_return(self) -> list[str]:
-        return ["return data"]
+    def _function_return(self) -> str:
+        return "return data"
 
     def _function_body(self, script: str) -> list[str]:
         body: list[str] = []
@@ -69,12 +66,16 @@ class Script:
 
         return body
 
-    def _indent(self, level: int, lines: list[str]) -> list[str]:
+    def _indent(self, level: int, lines: list[str] | str) -> list[str]:
         INDENT: str = "    "
 
         indented: list[str] = []
-        for line in lines:
-            indented.append(INDENT * level + line)
+
+        if isinstance(lines, list):
+            for line in lines:
+                indented.append(INDENT * level + line)
+        else:
+            indented.append(INDENT * level + lines)
 
         return indented
 
