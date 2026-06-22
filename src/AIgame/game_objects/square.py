@@ -1,8 +1,9 @@
 from dataclasses import dataclass
+from typing import Any
 
 import pygame
 
-from .game_objects import GameObject
+from .GameObject import GameObject
 
 
 @dataclass(frozen=True)
@@ -35,17 +36,46 @@ class SquareObject(GameObject):
 
     name = "Square"
     id = 0
+    script = """this.x = 0
+    this.y = 0
+    this.width = 100
+    this.height = 100
+    this.rotation = 0
+    this.red = 255
+    this.green = 255
+    this.blue = 255
+    this.border_width = 0
+    this.border_red = 0
+    this.border_green = 0
+    this.border_blue = 0"""
 
     def __init__(
         self,
-        script: str,
         screen: pygame.Surface,
     ) -> None:
-        super().__init__(script, screen)
-        self.get_data = lambda: ScriptSquareData(0, 0, 0, 0, 0, (0, 0, 0), 0, (0, 0, 0))
+        super().__init__(screen)
+        self.get_data = lambda: {}
 
     def draw(self) -> None:
-        squareData: ScriptSquareData = self.get_data()
+        data: dict[str, Any] = self.get_data()
+        squareData: ScriptSquareData = ScriptSquareData(
+            x=data.get("x", 0),
+            y=data.get("y", 0),
+            width=data.get("width", 100),
+            height=data.get("height", 100),
+            rotation=data.get("rotation", 0),
+            backgroundColor=(
+                data.get("red", 255),
+                data.get("green", 255),
+                data.get("blue", 255),
+            ),
+            borderWidth=data.get("border_width", 0),
+            borderColor=(
+                data.get("border_red", 0),
+                data.get("border_green", 0),
+                data.get("border_blue", 0),
+            ),
+        )
 
         surface: pygame.Surface = pygame.Surface(
             (squareData.width, squareData.height), pygame.SRCALPHA
@@ -54,9 +84,10 @@ class SquareObject(GameObject):
         rect: pygame.Rect = pygame.Rect(0, 0, squareData.width, squareData.height)
 
         pygame.draw.rect(surface, squareData.backgroundColor, rect)
-        pygame.draw.rect(
-            surface, squareData.borderColor, rect, int(squareData.borderWidth)
-        )
+        if squareData.borderWidth > 0:
+            pygame.draw.rect(
+                surface, squareData.borderColor, rect, int(squareData.borderWidth)
+            )
 
         rotatedSurface: pygame.Surface = pygame.transform.rotate(
             surface, squareData.rotation
@@ -70,22 +101,26 @@ class SquareObject(GameObject):
 
         self.screen.blit(rotatedSurface, rotatedRect)
 
-    def get_default_script(self) -> str:
-        return """this.x = 0
-    this.y = 0
-    this.width = 100
-    this.height = 100
-    this.rotation = 0
-    this.red = 255
-    this.green = 255
-    this.blue = 255
-    this.border_width = 5
-    this.border_red = 0
-    this.border_green = 0
-    this.border_blue = 0"""
-
     def contains_point(self, pos: tuple[int, int]) -> bool:
-        squareData: ScriptSquareData = self.get_data()
+        data: dict[str, Any] = self.get_data()
+        squareData: ScriptSquareData = ScriptSquareData(
+            x=data.get("x", 0),
+            y=data.get("y", 0),
+            width=data.get("width", 100),
+            height=data.get("height", 100),
+            rotation=data.get("rotation", 0),
+            backgroundColor=(
+                data.get("red", 255),
+                data.get("green", 255),
+                data.get("blue", 255),
+            ),
+            borderWidth=data.get("border_width", 0),
+            borderColor=(
+                data.get("border_red", 0),
+                data.get("border_green", 0),
+                data.get("border_blue", 0),
+            ),
+        )
 
         surface: pygame.Surface = pygame.Surface(
             (squareData.width, squareData.height), pygame.SRCALPHA

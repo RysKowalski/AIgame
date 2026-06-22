@@ -20,15 +20,13 @@ BLANK_DEFAULT_SCRIPT: str = "default script"
 class BlankGameObject(GameObject):
     name = "ExampleObject"
     id = 0
+    script = BLANK_DEFAULT_SCRIPT
 
     def get_data() -> None:
         pass
 
     def draw(self) -> None:
         pass
-
-    def get_default_script(self) -> str:
-        return BLANK_DEFAULT_SCRIPT
 
     def contains_point(self, pos: tuple[int, int]) -> bool:
         return False
@@ -37,21 +35,19 @@ class BlankGameObject(GameObject):
 class ExampleObject(GameObject):
     name = "ExampleObject"
     id = 0
+    script = ""
 
     def get_data() -> None:
         pass
 
-    def __init__(self, script: str, screen: "Surface") -> None:
-        super().__init__(script, screen)
+    def __init__(self, screen: "Surface") -> None:
+        super().__init__(screen)
         self.draw_call_count: int = 0
         self.contains_point_count: int = 0
         self.contains_point_returns: bool = False
 
     def draw(self) -> None:
         self.draw_call_count += 1
-
-    def get_default_script(self) -> str:
-        return "0"
 
     def contains_point(self, pos: tuple[int, int]) -> bool:
         pos[0]
@@ -63,7 +59,7 @@ class ExampleObject(GameObject):
 
 
 def get_example_object() -> ExampleObject:
-    return ExampleObject("default", example_surface())
+    return ExampleObject(example_surface())
 
 
 def example_surface() -> "Surface":

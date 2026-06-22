@@ -31,7 +31,7 @@ def test_add_and_get_many() -> None:
     addedObjects: dict[int, GameObject] = {}
 
     for _ in range(100):
-        gameObject: GameObject = ExampleObject("default", example_surface())
+        gameObject: GameObject = ExampleObject(example_surface())
         id: int = objectStore.add(gameObject)
         addedObjects[id] = gameObject
 
@@ -54,7 +54,7 @@ def test_get_nonexistent_raises_exception() -> None:
 
 def test_delete_get_raises_exception() -> None:
     objectStore: GameObjectManager = GameObjectManager()
-    exampleObject: GameObject = ExampleObject("default", example_surface())
+    exampleObject: GameObject = ExampleObject(example_surface())
     failed: bool = True
 
     id: int = objectStore.add(exampleObject)

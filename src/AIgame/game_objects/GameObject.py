@@ -12,16 +12,9 @@ class GameObject(Protocol):
     screen: "Surface"
     get_data: Callable[[], Any]
 
-    def __init__(self, script: str, screen: "Surface") -> None:
-        """if script == 'default' default script is set"""
-        if script == "default":
-            self.script: str = self.get_default_script()
-        else:
-            self.script: str = script
+    def __init__(self, screen: "Surface") -> None:
         self.screen = screen
 
     def draw(self) -> None: ...
-
-    def get_default_script(self) -> str: ...
 
     def contains_point(self, pos: tuple[int, int]) -> bool: ...

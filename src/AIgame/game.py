@@ -3,7 +3,6 @@ import pygame
 from AIgame.menus import AddSettings, AddElementMenu, EditSettings, EditElementMenu
 from AIgame.levels import LevelManager
 from AIgame.game_objects_manager import GameObjectManager
-from AIgame.resources import Fonts
 
 
 def main() -> None:

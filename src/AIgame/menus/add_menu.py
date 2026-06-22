@@ -45,9 +45,8 @@ class AddElementMenu:
 
         if elements is None:
             default: dict[str, Callable[[], GameObject]] = {
-                "square": lambda: SquareObject(script="default", screen=screen),
+                "square": lambda: SquareObject(screen=screen),
                 "text": lambda: TextDisplayObject(
-                    script="default",
                     screen=screen,
                     font=Fonts.uiTextDisplayFont,
                 ),
