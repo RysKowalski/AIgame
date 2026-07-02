@@ -20,15 +20,31 @@
      inkscape:pageopacity="0"
      inkscape:pagecheckerboard="1"
      inkscape:deskcolor="#505050"
-     inkscape:zoom="0.64"
-     inkscape:cx="1962.5"
-     inkscape:cy="1983.5938"
+     inkscape:zoom="0.32"
+     inkscape:cx="712.5"
+     inkscape:cy="1129.6875"
      inkscape:window-width="2560"
      inkscape:window-height="1422"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
-     inkscape:current-layer="svg189" />
+     inkscape:current-layer="g192"
+     showgrid="false">
+    <inkscape:grid
+       id="grid2"
+       units="px"
+       originx="0"
+       originy="0"
+       spacingx="0.5"
+       spacingy="0.5"
+       empcolor="#0099e5"
+       empopacity="0.30196078"
+       color="#0099e5"
+       opacity="0.14902"
+       empspacing="5"
+       enabled="true"
+       visible="false" />
+  </sodipodi:namedview>
   <!-- svg-source:excalidraw -->
   <metadata
      id="metadata1" />
@@ -110,16 +126,16 @@
          transform="translate(35,39.3)"
          id="g28">
         <text
-           x="0"
-           y="33.354"
+           x="74.272789"
+           y="28.275875"
            font-family="'Lilita One', sans-serif, 'Segoe UI Emoji'"
            font-size="36px"
            fill="#d3d3d3"
            text-anchor="start"
-           style="white-space:pre"
+           style="text-align:center;text-anchor:middle;white-space:pre"
            direction="ltr"
            dominant-baseline="alphabetic"
-           id="text27">   square</text>
+           id="text27">square</text>
       </g>
       <g
          stroke-linecap="round"
@@ -139,7 +155,7 @@
            id="path29" />
       </g>
       <g
-         transform="translate(35,99.3)"
+         transform="translate(57.42188,100.8625)"
          id="g30">
         <text
            x="0"
@@ -151,7 +167,7 @@
            style="white-space:pre"
            direction="ltr"
            dominant-baseline="alphabetic"
-           id="text29">   circle</text>
+           id="text29">circle</text>
       </g>
       <g
          stroke-linecap="round"
@@ -171,7 +187,7 @@
            id="path31" />
       </g>
       <g
-         transform="translate(35,159.3)"
+         transform="translate(75,159.3)"
          id="g32">
         <text
            x="0"
@@ -183,7 +199,7 @@
            style="white-space:pre"
            direction="ltr"
            dominant-baseline="alphabetic"
-           id="text31">   text</text>
+           id="text31">text</text>
       </g>
       <g
          stroke-linecap="round"
@@ -203,7 +219,7 @@
            id="path33" />
       </g>
       <g
-         transform="translate(35,219.3)"
+         transform="translate(75,219.3)"
          id="g34">
         <text
            x="0"
@@ -215,7 +231,7 @@
            style="white-space:pre"
            direction="ltr"
            dominant-baseline="alphabetic"
-           id="text33">   text</text>
+           id="text33">text</text>
       </g>
       <g
          stroke-linecap="round"
@@ -235,7 +251,7 @@
            id="path35" />
       </g>
       <g
-         transform="translate(35,279.3)"
+         transform="translate(75,279.3)"
          id="g36">
         <text
            x="0"
@@ -247,7 +263,7 @@
            style="white-space:pre"
            direction="ltr"
            dominant-baseline="alphabetic"
-           id="text35">   text</text>
+           id="text35">text</text>
       </g>
       <g
          stroke-linecap="round"
@@ -267,7 +283,7 @@
            id="path37" />
       </g>
       <g
-         transform="translate(35,339.3)"
+         transform="translate(75,339.3)"
          id="g38">
         <text
            x="0"
@@ -279,7 +295,7 @@
            style="white-space:pre"
            direction="ltr"
            dominant-baseline="alphabetic"
-           id="text37">   text</text>
+           id="text37">text</text>
       </g>
     </g>
   </g>
@@ -418,19 +434,7 @@
     </g>
     <g
        transform="translate(415,120)"
-       id="g48">
-      <text
-         x="0"
-         y="15.264"
-         font-family="Nunito, sans-serif, 'Segoe UI Emoji'"
-         font-size="16px"
-         fill="#d3d3d3"
-         text-anchor="start"
-         style="white-space:pre"
-         direction="ltr"
-         dominant-baseline="alphabetic"
-         id="text47">$0 * 5</text>
-    </g>
+       id="g48" />
     <g
        stroke-linecap="round"
        transform="translate(410,150)"
@@ -447,21 +451,6 @@
          stroke-width="2"
          fill="none"
          id="path49" />
-    </g>
-    <g
-       transform="translate(415,160)"
-       id="g50">
-      <text
-         x="0"
-         y="15.264"
-         font-family="Nunito, sans-serif, 'Segoe UI Emoji'"
-         font-size="16px"
-         fill="#d3d3d3"
-         text-anchor="start"
-         style="white-space:pre"
-         direction="ltr"
-         dominant-baseline="alphabetic"
-         id="text49">$0 / 10</text>
     </g>
     <g
        stroke-linecap="round"
@@ -863,6 +852,36 @@
          direction="ltr"
          dominant-baseline="alphabetic"
          id="text75">expression</text>
+    </g>
+    <g
+       transform="translate(415.01292,119.99221)"
+       id="g74-2">
+      <text
+         x="0"
+         y="15.264"
+         font-family="Nunito, sans-serif, 'Segoe UI Emoji'"
+         font-size="16px"
+         fill="#d3d3d3"
+         text-anchor="start"
+         style="white-space:pre"
+         direction="ltr"
+         dominant-baseline="alphabetic"
+         id="text73-7">expression</text>
+    </g>
+    <g
+       transform="translate(415.01292,159.99221)"
+       id="g76-0">
+      <text
+         x="0"
+         y="15.264"
+         font-family="Nunito, sans-serif, 'Segoe UI Emoji'"
+         font-size="16px"
+         fill="#d3d3d3"
+         text-anchor="start"
+         style="white-space:pre"
+         direction="ltr"
+         dominant-baseline="alphabetic"
+         id="text75-9">expression</text>
     </g>
     <g
        stroke-linecap="round"
@@ -2617,7 +2636,7 @@
      style="writing-mode:lr-tb;direction:ltr;white-space:pre;shape-inside:url(#rect1);display:inline;fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-opacity:1"><tspan
        x="518"
        y="124.9185"
-       id="tspan4">normal</tspan></text>
+       id="tspan1">normal</tspan></text>
   <text
      xml:space="preserve"
      transform="matrix(4.5940815,0,0,3.5785169,-1331.6428,224.26534)"
@@ -2625,7 +2644,7 @@
      style="writing-mode:lr-tb;direction:ltr;white-space:pre;shape-inside:url(#rect1-6);display:inline;fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-opacity:1"><tspan
        x="518"
        y="124.9185"
-       id="tspan5">error in script</tspan></text>
+       id="tspan2">error in script</tspan></text>
   <text
      xml:space="preserve"
      transform="matrix(4.5940815,0,0,3.5785169,-1959.4212,218.9654)"
@@ -2633,27 +2652,5 @@
      style="writing-mode:lr-tb;direction:ltr;white-space:pre;shape-inside:url(#rect1-62);display:inline;fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-opacity:1"><tspan
        x="518"
        y="124.9185"
-       id="tspan6">while editing</tspan></text>
-  <text
-     xml:space="preserve"
-     style="font-size:6px;writing-mode:lr-tb;direction:ltr;fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:0.5;stroke-opacity:1"
-     x="560.79028"
-     y="10.128157"
-     id="text2"><tspan
-       sodipodi:role="line"
-       id="tspan2"
-       style="stroke-width:0.5"
-       x="560.79028"
-       y="10.128157">1s</tspan></text>
-  <text
-     xml:space="preserve"
-     style="font-size:6px;writing-mode:lr-tb;direction:ltr;fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:0.5;stroke-opacity:1"
-     x="595"
-     y="-9"
-     id="text3"><tspan
-       sodipodi:role="line"
-       id="tspan3"
-       style="stroke-width:0.5"
-       x="595"
-       y="-9">s</tspan></text>
+       id="tspan3">while editing</tspan></text>
 </svg>
