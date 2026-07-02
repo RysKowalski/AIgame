@@ -1,83 +1,112 @@
+from typing import Any, Callable, Sequence, TypeAlias
 import pygame
 
 from .mouse import Mouse, MouseState
 from .widget import WidgetBase
 
 
-class Button(WidgetBase):
-    def __init__(self, win, x, y, width, height, isSubWidget=False, **kwargs):
-        """A customisable button for Pygame
+Colour: TypeAlias = tuple[int, int, int]
+Callback: TypeAlias = Callable[..., None]
 
-        :param win: Surface on which to draw
-        :type win: pygame.Surface
-        :param x: X-coordinate of top left
-        :type x: int
-        :param y: Y-coordinate of top left
-        :type y: int
-        :param width: Width of button
-        :type width: int
-        :param height: Height of button
-        :type height: int
-        :param kwargs: Optional parameters
-        """
+
+class Button(WidgetBase):
+    def __init__(
+        self,
+        win: pygame.Surface,
+        x: int,
+        y: int,
+        width: int,
+        height: int,
+        isSubWidget: bool = False,
+        *,
+        inactiveColour: Colour = (150, 150, 150),
+        hoverColour: Colour = (125, 125, 125),
+        pressedColour: Colour = (100, 100, 100),
+        colour: Colour | None = None,
+        shadowDistance: int = 0,
+        shadowColour: Colour = (210, 210, 180),
+        onClick: Callback | None = None,
+        onRelease: Callback | None = None,
+        onHover: Callback | None = None,
+        onHoverRelease: Callback | None = None,
+        onClickParams: Sequence[Any] = (),
+        onReleaseParams: Sequence[Any] = (),
+        onHoverParams: Sequence[Any] = (),
+        onHoverReleaseParams: Sequence[Any] = (),
+        textColour: Colour = (0, 0, 0),
+        fontSize: int = 20,
+        text: str = "",
+        font: pygame.font.Font | None = None,
+        textHAlign: str = "centre",
+        textVAlign: str = "centre",
+        margin: int = 20,
+        image: pygame.Surface | None = None,
+        imageHAlign: str = "centre",
+        imageVAlign: str = "centre",
+        borderThickness: int = 0,
+        inactiveBorderColour: Colour = (0, 0, 0),
+        hoverBorderColour: Colour = (80, 80, 80),
+        pressedBorderColour: Colour = (100, 100, 100),
+        borderColour: Colour | None = None,
+        radius: int = 0,
+    ) -> None:
         super().__init__(win, x, y, width, height, isSubWidget)
 
-        # Colour
-        self.inactiveColour = kwargs.get("inactiveColour", (150, 150, 150))
-        self.hoverColour = kwargs.get("hoverColour", (125, 125, 125))
-        self.pressedColour = kwargs.get("pressedColour", (100, 100, 100))
-        self.colour = kwargs.get(
-            "colour", self.inactiveColour
-        )  # Allows colour to override inactiveColour
-        self.inactiveColour = self.colour
-        self.shadowDistance = kwargs.get("shadowDistance", 0)
-        self.shadowColour = kwargs.get("shadowColour", (210, 210, 180))
+        self.inactiveColour = colour or inactiveColour
+        self.hoverColour = hoverColour
+        self.pressedColour = pressedColour
+        self.colour = self.inactiveColour
 
-        # Function
-        self.onClick = kwargs.get("onClick", lambda *args: None)
-        self.onRelease = kwargs.get("onRelease", lambda *args: None)
-        self.onHover = kwargs.get("onHover", lambda *args: None)
-        self.onHoverRelease = kwargs.get("onHoverRelease", lambda *args: None)
-        self.onClickParams = kwargs.get("onClickParams", ())
-        self.onReleaseParams = kwargs.get("onReleaseParams", ())
-        self.onHoverParams = kwargs.get("onHoverParams", ())
-        self.onHoverReleaseParams = kwargs.get("onHoverReleaseParams", ())
+        self.shadowDistance = shadowDistance
+        self.shadowColour = shadowColour
+
+        self.onClick = onClick or (lambda *args: None)
+        self.onRelease = onRelease or (lambda *args: None)
+        self.onHover = onHover or (lambda *args: None)
+        self.onHoverRelease = onHoverRelease or (lambda *args: None)
+
+        self.onClickParams = onClickParams
+        self.onReleaseParams = onReleaseParams
+        self.onHoverParams = onHoverParams
+        self.onHoverReleaseParams = onHoverReleaseParams
+
         self.clicked = False
 
-        # Text (Remove if using PyInstaller)
-        self.textColour = kwargs.get("textColour", (0, 0, 0))
-        self.fontSize = kwargs.get("fontSize", 20)
-        self.string = kwargs.get("text", "")
-        self.font = kwargs.get("font", pygame.font.SysFont("calibri", self.fontSize))
+        self.textColour = textColour
+        self.fontSize = fontSize
+        self.string = text
+        self.font = font or pygame.font.SysFont("calibri", fontSize)
+
         self.text = self.font.render(self.string, True, self.textColour)
-        self.textHAlign = kwargs.get("textHAlign", "centre")
-        self.textVAlign = kwargs.get("textVAlign", "centre")
-        self.margin = kwargs.get("margin", 20)
+        self.textHAlign = textHAlign
+        self.textVAlign = textVAlign
+        self.margin = margin
 
         self.textRect = self.text.get_rect()
         self.alignTextRect()
 
-        # Image
-        self.image = kwargs.get("image", None)
-        self.imageHAlign = kwargs.get("imageHAlign", "centre")
-        self.imageVAlign = kwargs.get("imageVAlign", "centre")
+        self.image = image
+        self.imageHAlign = imageHAlign
+        self.imageVAlign = imageVAlign
 
-        if self.image:
-            self.imageRect = self.image.get_rect()
+        self.imageRect = None
+        if image is not None:
+            self.imageRect = image.get_rect()
             self.alignImageRect()
 
-        # Border
-        self.borderThickness = kwargs.get("borderThickness", 0)
-        self.inactiveBorderColour = kwargs.get("inactiveBorderColour", (0, 0, 0))
-        self.hoverBorderColour = kwargs.get("hoverBorderColour", (80, 80, 80))
-        self.pressedBorderColour = kwargs.get("pressedBorderColour", (100, 100, 100))
-        self.borderColour = kwargs.get("borderColour", self.inactiveBorderColour)
-        self.inactiveBorderColour = self.borderColour
-        self.radius = kwargs.get("radius", 0)
+        self.borderThickness = borderThickness
+        self.inactiveBorderColour = borderColour or inactiveBorderColour
+        self.hoverBorderColour = hoverBorderColour
+        self.pressedBorderColour = pressedBorderColour
+        self.borderColour = self.inactiveBorderColour
 
+        self.radius = radius
         self.mouseWasInside = False
 
-    def alignImageRect(self):
+    def alignImageRect(self) -> None:
+        if self.imageRect is None:
+            return
+
         self.imageRect.center = (
             self._x + self._width // 2,
             self._y + self._height // 2,
@@ -93,8 +122,11 @@ class Button(WidgetBase):
         elif self.imageVAlign == "bottom":
             self.imageRect.bottom = self._y + self._height - self.margin
 
-    def alignTextRect(self):
-        self.textRect.center = (self._x + self._width // 2, self._y + self._height // 2)
+    def alignTextRect(self) -> None:
+        self.textRect.center = (
+            self._x + self._width // 2,
+            self._y + self._height // 2,
+        )
 
         if self.textHAlign == "left":
             self.textRect.left = self._x + self.margin
@@ -106,12 +138,7 @@ class Button(WidgetBase):
         elif self.textVAlign == "bottom":
             self.textRect.bottom = self._y + self._height - self.margin
 
-    def listen(self, events):
-        """Wait for inputs
-
-        :param events: Use pygame.event.get()
-        :type events: list of pygame.event.Event
-        """
+    def listen(self, events: list[pygame.event.Event]) -> None:
         if not self._hidden and not self._disabled:
             mouseState = Mouse.getMouseState()
             x, y = Mouse.getMousePos()
@@ -147,11 +174,10 @@ class Button(WidgetBase):
                 self.colour = self.inactiveColour
                 self.borderColour = self.inactiveBorderColour
 
-    def draw(self):
-        """Display to surface"""
+    def draw(self) -> None:
         if not self._hidden:
             if pygame.version.vernum[0] < 2:
-                borderRects = [
+                borderRects: list[tuple[int, int, int, int]] = [
                     (
                         self._x + self.radius,
                         self._y,
@@ -166,7 +192,7 @@ class Button(WidgetBase):
                     ),
                 ]
 
-                borderCircles = [
+                borderCircles: list[tuple[int, int]] = [
                     (self._x + self.radius, self._y + self.radius),
                     (self._x + self.radius, self._y + self._height - self.radius),
                     (self._x + self._width - self.radius, self._y + self.radius),
@@ -176,7 +202,7 @@ class Button(WidgetBase):
                     ),
                 ]
 
-                backgroundRects = [
+                backgroundRects: list[tuple[int, int, int, int]] = [
                     (
                         self._x + self.borderThickness + self.radius,
                         self._y + self.borderThickness,
@@ -191,7 +217,7 @@ class Button(WidgetBase):
                     ),
                 ]
 
-                backgroundCircles = [
+                backgroundCircles: list[tuple[int, int]] = [
                     (
                         self._x + self.radius + self.borderThickness,
                         self._y + self.radius + self.borderThickness,
@@ -214,13 +240,24 @@ class Button(WidgetBase):
                     pygame.draw.rect(self.win, self.borderColour, rect)
 
                 for circle in borderCircles:
-                    pygame.draw.circle(self.win, self.borderColour, circle, self.radius)
+                    pygame.draw.circle(
+                        self.win,
+                        self.borderColour,
+                        circle,
+                        self.radius,
+                    )
 
                 for rect in backgroundRects:
                     pygame.draw.rect(self.win, self.colour, rect)
 
                 for circle in backgroundCircles:
-                    pygame.draw.circle(self.win, self.colour, circle, self.radius)
+                    pygame.draw.circle(
+                        self.win,
+                        self.colour,
+                        circle,
+                        self.radius,
+                    )
+
             else:
                 pygame.draw.rect(
                     self.win,
@@ -253,49 +290,70 @@ class Button(WidgetBase):
                     border_radius=self.radius,
                 )
 
-            if self.image:
+            if self.image is not None:
                 self.imageRect = self.image.get_rect()
                 self.alignImageRect()
                 self.win.blit(self.image, self.imageRect)
 
-            self.text = self.font.render(self.string, True, self.textColour)
+            self.text = self.font.render(
+                self.string,
+                True,
+                self.textColour,
+            )
+
             self.textRect = self.text.get_rect()
             self.alignTextRect()
             self.win.blit(self.text, self.textRect)
 
-    def setText(self, text):
+    def setText(self, text: str) -> None:
         self.string = text
-        self.text = self.font.render(self.string, True, self.textColour)
+        self.text = self.font.render(
+            self.string,
+            True,
+            self.textColour,
+        )
         self.textRect = self.text.get_rect()
         self.alignTextRect()
 
-    def setImage(self, image):
+    def setImage(self, image: pygame.Surface) -> None:
         self.image = image
-        self.imageRect = self.image.get_rect()
+        self.imageRect = image.get_rect()
         self.alignImageRect()
 
-    def setOnClick(self, onClick, params=()):
+    def setOnClick(
+        self,
+        onClick: Callback,
+        params: Sequence[Any] = (),
+    ) -> None:
         self.onClick = onClick
         self.onClickParams = params
 
-    def setOnRelease(self, onRelease, params=()):
+    def setOnRelease(
+        self,
+        onRelease: Callback,
+        params: Sequence[Any] = (),
+    ) -> None:
         self.onRelease = onRelease
         self.onReleaseParams = params
 
-    def setOnHover(self, onHover, params=()):
+    def setOnHover(
+        self,
+        onHover: Callback,
+        params: Sequence[Any] = (),
+    ) -> None:
         self.onHover = onHover
         self.onHoverParams = params
 
-    def setInactiveColour(self, colour):
+    def setInactiveColour(self, colour: Colour) -> None:
         self.inactiveColour = colour
 
-    def setPressedColour(self, colour):
+    def setPressedColour(self, colour: Colour) -> None:
         self.pressedColour = colour
 
-    def setHoverColour(self, colour):
+    def setHoverColour(self, colour: Colour) -> None:
         self.hoverColour = colour
 
-    def get(self, attr):
+    def get(self, attr: str) -> Any:
         parent = super().get(attr)
         if parent is not None:
             return parent
@@ -303,7 +361,9 @@ class Button(WidgetBase):
         if attr == "colour":
             return self.colour
 
-    def set(self, attr, value):
+        return None
+
+    def set(self, attr: str, value: Any) -> None:
         super().set(attr, value)
 
         if attr == "colour":
@@ -311,81 +371,108 @@ class Button(WidgetBase):
 
 
 class ButtonArray(WidgetBase):
-    def __init__(self, win, x, y, width, height, shape, **kwargs):
-        """A collection of buttons
+    def __init__(
+        self,
+        win: pygame.Surface,
+        x: int,
+        y: int,
+        width: int,
+        height: int,
+        shape: tuple[int, int],
+        *,
+        colour: tuple[int, int, int] = (210, 210, 180),
+        border: int = 10,
+        topBorder: int | None = None,
+        bottomBorder: int | None = None,
+        leftBorder: int | None = None,
+        rightBorder: int | None = None,
+        borderRadius: int = 0,
+        separationThickness: int | None = None,
+        inactiveColours: Sequence[tuple[int, int, int]] | None = None,
+        hoverColours: Sequence[tuple[int, int, int]] | None = None,
+        pressedColours: Sequence[tuple[int, int, int]] | None = None,
+        shadowDistances: Sequence[int] | None = None,
+        shadowColours: Sequence[tuple[int, int, int]] | None = None,
+        onClicks: Sequence[Callable[..., Any] | None] | None = None,
+        onReleases: Sequence[Callable[..., Any] | None] | None = None,
+        onHovers: Sequence[Callable[..., Any] | None] | None = None,
+        onClickParams: Sequence[Any] | None = None,
+        onReleaseParams: Sequence[Any] | None = None,
+        onHoverParams: Sequence[Any] | None = None,
+        textColours: Sequence[tuple[int, int, int]] | None = None,
+        fontSizes: Sequence[int] | None = None,
+        texts: Sequence[str] | None = None,
+        fonts: Sequence[pygame.font.Font | None] | None = None,
+        textHAligns: Sequence[str] | None = None,
+        textVAligns: Sequence[str] | None = None,
+        margins: Sequence[int] | None = None,
+        images: Sequence[pygame.Surface | None] | None = None,
+        imageHAligns: Sequence[str] | None = None,
+        imageVAligns: Sequence[str] | None = None,
+        imageRotations: Sequence[float] | None = None,
+        imageFills: Sequence[bool] | None = None,
+        imageZooms: Sequence[float] | None = None,
+        radii: Sequence[int] | None = None,
+    ) -> None:
+        """A collection of buttons."""
 
-        :param win: Surface on which to draw
-        :type win: pygame.Surface
-        :param x: X-coordinate of top left
-        :type x: int
-        :param y: Y-coordinate of top left
-        :type y: int
-        :param width: Width of button
-        :type width: int
-        :param height: Height of button
-        :type height: int
-        :param shape: The 2d shape of the array (columns, rows)
-        :type shape: tuple of int
-        :param kwargs: Optional parameters
-        """
         super().__init__(win, x, y, width, height)
 
-        self.shape = shape
-        self.numButtons = shape[0] * shape[1]
+        self.shape: tuple[int, int] = shape
+        self.numButtons: int = shape[0] * shape[1]
 
-        # Array
-        self.colour = kwargs.get("colour", (210, 210, 180))
-        self.border = kwargs.get("border", 10)
-        self.topBorder = kwargs.get("topBorder", self.border)
-        self.bottomBorder = kwargs.get("bottomBorder", self.border)
-        self.leftBorder = kwargs.get("leftBorder", self.border)
-        self.rightBorder = kwargs.get("rightBorder", self.border)
-        self.borderRadius = kwargs.get("borderRadius", 0)
-        self.separationThickness = kwargs.get("separationThickness", self.border)
+        self.colour: tuple[int, int, int] = colour
+        self.border: int = border
+        self.topBorder: int = border if topBorder is None else topBorder
+        self.bottomBorder: int = border if bottomBorder is None else bottomBorder
+        self.leftBorder: int = border if leftBorder is None else leftBorder
+        self.rightBorder: int = border if rightBorder is None else rightBorder
+        self.borderRadius: int = borderRadius
+        self.separationThickness: int = (
+            border if separationThickness is None else separationThickness
+        )
 
-        self.buttonAttributes = {
-            # Colour
-            "inactiveColour": kwargs.get("inactiveColours", None),
-            "hoverColour": kwargs.get("hoverColours", None),
-            "pressedColour": kwargs.get("pressedColours", None),
-            "shadowDistance": kwargs.get("shadowDistances", None),
-            "shadowColour": kwargs.get("shadowColours", None),
-            # Function
-            "onClick": kwargs.get("onClicks", None),
-            "onRelease": kwargs.get("onReleases", None),
-            "onHover": kwargs.get("onHovers", None),
-            "onClickParams": kwargs.get("onClickParams", None),
-            "onReleaseParams": kwargs.get("onReleaseParams", None),
-            "onHoverParams": kwargs.get("onHoverParams", None),
-            # Text
-            "textColour": kwargs.get("textColours", None),
-            "fontSize": kwargs.get("fontSizes", None),
-            "text": kwargs.get("texts", None),
-            "font": kwargs.get("fonts", None),
-            "textHAlign": kwargs.get("textHAligns", None),
-            "textVAlign": kwargs.get("textVAligns", None),
-            "margin": kwargs.get("margins", None),
-            # Image
-            "image": kwargs.get("images", None),
-            "imageHAlign": kwargs.get("imageHAligns", None),
-            "imageVAlign": kwargs.get("imageVAligns", None),
-            "imageRotation": kwargs.get("imageRotations", None),
-            "imageFill": kwargs.get("imageFills", None),
-            "imageZoom": kwargs.get("imageZooms", None),
-            "radius": kwargs.get("radii", None),
+        self.buttonAttributes: dict[str, Sequence[Any] | None] = {
+            "inactiveColour": inactiveColours,
+            "hoverColour": hoverColours,
+            "pressedColour": pressedColours,
+            "shadowDistance": shadowDistances,
+            "shadowColour": shadowColours,
+            "onClick": onClicks,
+            "onRelease": onReleases,
+            "onHover": onHovers,
+            "onClickParams": onClickParams,
+            "onReleaseParams": onReleaseParams,
+            "onHoverParams": onHoverParams,
+            "textColour": textColours,
+            "fontSize": fontSizes,
+            "text": texts,
+            "font": fonts,
+            "textHAlign": textHAligns,
+            "textVAlign": textVAligns,
+            "margin": margins,
+            "image": images,
+            "imageHAlign": imageHAligns,
+            "imageVAlign": imageVAligns,
+            "imageRotation": imageRotations,
+            "imageFill": imageFills,
+            "imageZoom": imageZooms,
+            "radius": radii,
         }
 
-        self.buttons = []
+        self.buttons: list[Button] = []
         self.createButtons()
 
-    def createButtons(self):
+    def createButtons(self) -> None:
         across, down = self.shape
+
         width = (
             self._width
             - self.separationThickness * (across - 1)
             - self.leftBorder
             - self.rightBorder
         ) // across
+
         height = (
             self._height
             - self.separationThickness * (down - 1)
@@ -394,81 +481,94 @@ class ButtonArray(WidgetBase):
         ) // down
 
         count = 0
+
         for i in range(across):
             for j in range(down):
-                x = self._x + i * (width + self.separationThickness) + self.leftBorder
-                y = self._y + j * (height + self.separationThickness) + self.topBorder
+                button_x = (
+                    self._x + i * (width + self.separationThickness) + self.leftBorder
+                )
+
+                button_y = (
+                    self._y + j * (height + self.separationThickness) + self.topBorder
+                )
+
                 self.buttons.append(
                     Button(
                         self.win,
-                        x,
-                        y,
+                        button_x,
+                        button_y,
                         width,
                         height,
                         isSubWidget=True,
                         **{
-                            k: v[count]
-                            for k, v in self.buttonAttributes.items()
-                            if v is not None
+                            key: values[count]
+                            for key, values in self.buttonAttributes.items()
+                            if values is not None
                         },
                     )
                 )
+
                 count += 1
 
-    def listen(self, events):
-        """Wait for inputs
+    def listen(self, events: list[pygame.event.Event]) -> None:
+        """Wait for inputs."""
 
-        :param events: Use pygame.event.get()
-        :type events: list of pygame.event.Event
-        """
         if not self._hidden and not self._disabled:
             for button in self.buttons:
                 button.listen(events)
 
-    def draw(self):
-        """Display to surface"""
-        if not self._hidden:
-            rects = [
-                (
-                    self._x + self.borderRadius,
-                    self._y,
-                    self._width - self.borderRadius * 2,
-                    self._height,
-                ),
-                (
-                    self._x,
-                    self._y + self.borderRadius,
-                    self._width,
-                    self._height - self.borderRadius * 2,
-                ),
-            ]
+    def draw(self) -> None:
+        """Display to surface."""
 
-            circles = [
-                (self._x + self.borderRadius, self._y + self.borderRadius),
-                (
-                    self._x + self.borderRadius,
-                    self._y + self._height - self.borderRadius,
-                ),
-                (
-                    self._x + self._width - self.borderRadius,
-                    self._y + self.borderRadius,
-                ),
-                (
-                    self._x + self._width - self.borderRadius,
-                    self._y + self._height - self.borderRadius,
-                ),
-            ]
+        if self._hidden:
+            return
 
-            for rect in rects:
-                pygame.draw.rect(self.win, self.colour, rect)
+        rects: list[tuple[int, int, int, int]] = [
+            (
+                self._x + self.borderRadius,
+                self._y,
+                self._width - self.borderRadius * 2,
+                self._height,
+            ),
+            (
+                self._x,
+                self._y + self.borderRadius,
+                self._width,
+                self._height - self.borderRadius * 2,
+            ),
+        ]
 
-            for circle in circles:
-                pygame.draw.circle(self.win, self.colour, circle, self.borderRadius)
+        circles: list[tuple[int, int]] = [
+            (self._x + self.borderRadius, self._y + self.borderRadius),
+            (
+                self._x + self.borderRadius,
+                self._y + self._height - self.borderRadius,
+            ),
+            (
+                self._x + self._width - self.borderRadius,
+                self._y + self.borderRadius,
+            ),
+            (
+                self._x + self._width - self.borderRadius,
+                self._y + self._height - self.borderRadius,
+            ),
+        ]
 
-            for button in self.buttons:
-                button.draw()
+        for rect in rects:
+            pygame.draw.rect(self.win, self.colour, rect)
 
-    def getButtons(self):
+        for circle in circles:
+            pygame.draw.circle(
+                self.win,
+                self.colour,
+                circle,
+                self.borderRadius,
+            )
+
+        for button in self.buttons:
+            button.draw()
+
+    def getButtons(self) -> list[Button]:
         return self.buttons
 
 
