@@ -1,9 +1,10 @@
 from typing import Any, Callable, Sequence, TypeAlias
+
 import pygame
+import pygame.freetype
 
 from .mouse import Mouse, MouseState
 from .widget import WidgetBase
-
 
 Colour: TypeAlias = tuple[int, int, int]
 Callback: TypeAlias = Callable[..., None]
@@ -36,7 +37,7 @@ class Button(WidgetBase):
         textColour: Colour = (0, 0, 0),
         fontSize: int = 20,
         text: str = "",
-        font: pygame.font.Font | None = None,
+        font: pygame.freetype.Font | None = None,
         textHAlign: str = "centre",
         textVAlign: str = "centre",
         margin: int = 20,
@@ -75,14 +76,16 @@ class Button(WidgetBase):
         self.textColour = textColour
         self.fontSize = fontSize
         self.string = text
-        self.font = font or pygame.font.SysFont("calibri", fontSize)
+        self.font: pygame.freetype.Font = font or pygame.freetype.SysFont(
+            "calibri", fontSize
+        )
 
-        self.text = self.font.render(self.string, True, self.textColour)
         self.textHAlign = textHAlign
         self.textVAlign = textVAlign
         self.margin = margin
 
-        self.textRect = self.text.get_rect()
+        self.text, self.textRect = self.font.render(self.string, self.textColour)
+
         self.alignTextRect()
 
         self.image = image
@@ -295,24 +298,14 @@ class Button(WidgetBase):
                 self.alignImageRect()
                 self.win.blit(self.image, self.imageRect)
 
-            self.text = self.font.render(
-                self.string,
-                True,
-                self.textColour,
-            )
+            self.text, self.textRect = self.font.render(self.string, self.textColour)
 
-            self.textRect = self.text.get_rect()
             self.alignTextRect()
             self.win.blit(self.text, self.textRect)
 
     def setText(self, text: str) -> None:
         self.string = text
-        self.text = self.font.render(
-            self.string,
-            True,
-            self.textColour,
-        )
-        self.textRect = self.text.get_rect()
+        self.text, self.textRect = self.font.render(self.string, self.textColour)
         self.alignTextRect()
 
     def setImage(self, image: pygame.Surface) -> None:
@@ -402,7 +395,7 @@ class ButtonArray(WidgetBase):
         textColours: Sequence[tuple[int, int, int]] | None = None,
         fontSizes: Sequence[int] | None = None,
         texts: Sequence[str] | None = None,
-        fonts: Sequence[pygame.font.Font | None] | None = None,
+        fonts: Sequence[pygame.freetype.Font | None] | None = None,
         textHAligns: Sequence[str] | None = None,
         textVAligns: Sequence[str] | None = None,
         margins: Sequence[int] | None = None,
@@ -570,68 +563,3 @@ class ButtonArray(WidgetBase):
 
     def getButtons(self) -> list[Button]:
         return self.buttons
-
-
-if __name__ == "__main__":
-    import AIgame.widgets
-
-    pygame.init()
-    win = pygame.display.set_mode((600, 600))
-
-    button = Button(
-        win,
-        100,
-        100,
-        300,
-        150,
-        text="Hello",
-        fontSize=50,
-        margin=20,
-        inactiveColour=(255, 0, 0),
-        pressedColour=(0, 255, 0),
-        radius=20,
-        onClick=lambda: print("Click"),
-        font=pygame.font.SysFont("calibri", 10),
-        textVAlign="bottom",
-        imageHAlign="centre",
-        imageVAlign="centre",
-        borderThickness=3,
-        onRelease=lambda: print("Release"),
-        shadowDistance=5,
-        borderColour=(0, 0, 0),
-        onHover=lambda: print("Hover"),
-        onHoverRelease=lambda: print("Hover Release"),
-    )
-
-    buttonArray = ButtonArray(
-        win,
-        50,
-        50,
-        500,
-        500,
-        (2, 2),
-        border=100,
-        texts=("1", "2", "3", "4"),
-        onClicks=(
-            lambda: print(1),
-            lambda: print(2),
-            lambda: print(3),
-            lambda: print(4),
-        ),
-    )
-
-    buttonArray.hide()
-
-    run = True
-    while run:
-        events = pygame.event.get()
-        for event in events:
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                run = False
-                quit()
-
-        win.fill((255, 255, 255))
-
-        AIgame.widgets.update(events)
-        pygame.display.update()

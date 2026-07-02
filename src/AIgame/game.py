@@ -15,11 +15,11 @@ def main() -> None:
     gameObjects: GameObjectManager = GameObjectManager()
 
     menuSettings: AddSettings = AddSettings(
-        backgroundColor=pygame.Color(18, 18, 18),  # #121212
-        entryBackgroundColor=pygame.Color(18, 18, 18),  # #121212
-        hoverEntryBackgroundColor=pygame.Color(50, 50, 50),  # #323232
-        borderColor=pygame.Color(211, 211, 211),  # #D3D3D3
-        entryBorderColor=pygame.Color(211, 211, 211),  # #D3D3D3
+        backgroundColor=(18, 18, 18),  # #121212
+        entryBackgroundColor=(18, 18, 18),  # #121212
+        hoverEntryBackgroundColor=(50, 50, 50),  # #323232
+        borderColor=(211, 211, 211),  # #D3D3D3
+        entryBorderColor=(211, 211, 211),  # #D3D3D3
         borderWidth=3,
         entryBorderWidth=3,
         entryPadding=30,

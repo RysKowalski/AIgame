@@ -9,15 +9,16 @@ import pygame.freetype
 from AIgame.resources import Fonts
 from AIgame.game_objects import GameObject, SquareObject, TextDisplayObject
 from AIgame.game_objects_manager import GameObjectManager
+from AIgame.widgets.button import ButtonArray
 
 
 @dataclass
 class AddSettings:
-    backgroundColor: pygame.Color
-    entryBackgroundColor: pygame.Color
-    hoverEntryBackgroundColor: pygame.Color
-    borderColor: pygame.Color
-    entryBorderColor: pygame.Color
+    backgroundColor: tuple[int, int, int]
+    entryBackgroundColor: tuple[int, int, int]
+    hoverEntryBackgroundColor: tuple[int, int, int]
+    borderColor: tuple[int, int, int]
+    entryBorderColor: tuple[int, int, int]
     borderWidth: int
     entryBorderWidth: int
     entryPadding: int
@@ -86,6 +87,7 @@ class AddElementMenu:
         )
 
         entry_height: int = text_height + self.settings.textPadding * 2
+        print(entry_height)
 
         total_height: int = (
             len(self.entries) * entry_height
@@ -176,7 +178,7 @@ class AddElementMenu:
         for i, rect in enumerate(self.entry_rects):
             draw_rect: pygame.Rect = rect.move(self.menu_rect.topleft)
 
-            color: pygame.Color = (
+            color: tuple[int, int, int] = (
                 self.settings.hoverEntryBackgroundColor
                 if i == self.hover_index
                 else self.settings.entryBackgroundColor
@@ -201,9 +203,142 @@ class AddElementMenu:
     def _draw_rect(
         self,
         rect: pygame.Rect,
-        backgroundColor: pygame.Color,
-        borderColor: pygame.Color,
+        backgroundColor: tuple[int, int, int],
+        borderColor: tuple[int, int, int],
         borderWidth: int,
     ):
         pygame.draw.rect(self.screen, backgroundColor, rect)
         pygame.draw.rect(self.screen, borderColor, rect, borderWidth)
+
+
+class NewerElementMenu:
+    """Context menu for spawning GameObject elements."""
+
+    def __init__(
+        self,
+        screen: pygame.Surface,
+        gameObjects: GameObjectManager,
+        settings: AddSettings,
+        font: pygame.freetype.Font = Fonts.addMenuFont,
+        elements: dict[str, Callable[[], GameObject]] | None = None,
+    ) -> None:
+        self.screen = screen
+        self.gameObjects = gameObjects
+        self.settings = settings
+        self.font = font
+
+        if elements is None:
+            self.elements = {
+                "square": lambda: SquareObject(screen=screen),
+                "text": lambda: TextDisplayObject(
+                    screen=screen,
+                    font=Fonts.uiTextDisplayFont,
+                ),
+            }
+        else:
+            self.elements = elements
+
+        self.visible = False
+        self.position = (0, 0)
+
+        self.entries = list(self.elements.keys())
+
+        button_width = (
+            max(font.get_rect(text).width for text in self.entries)
+            + settings.textPadding * 2
+        )
+
+        button_height = (
+            max(font.get_rect(text).height for text in self.entries)
+            + settings.textPadding * 2
+        )
+
+        menu_width = button_width + settings.entryPadding * 2
+
+        menu_height = (
+            len(self.entries) * button_height
+            + (len(self.entries) - 1) * settings.entrySpacing
+            + settings.entryPadding * 2
+        )
+
+        self.menu_rect = pygame.Rect(0, 0, menu_width, menu_height)
+
+        self.buttons = ButtonArray(
+            win=screen,
+            x=0,
+            y=0,
+            width=menu_width,
+            height=menu_height,
+            shape=(1, len(self.entries)),
+            border=settings.entryPadding,
+            separationThickness=settings.entrySpacing,
+            inactiveColours=[settings.entryBackgroundColor] * len(self.entries),
+            hoverColours=[settings.hoverEntryBackgroundColor] * len(self.entries),
+            textColours=[(255, 255, 255)] * len(self.entries),
+            texts=self.entries,
+            fonts=[font] * len(self.entries),
+            onClicks=[self._make_callback(name) for name in self.entries],
+        )
+
+    def _make_callback(
+        self,
+        name: str,
+    ) -> Callable[[], None]:
+        def callback() -> None:
+            obj = self.elements[name]()
+            self.gameObjects.add(obj)
+            self.hide()
+
+        return callback
+
+    def show(self, position: tuple[int, int]) -> None:
+        self.position = position
+        self.menu_rect.topleft = position
+
+        self.buttons.setX(position[0])
+        self.buttons.setY(position[1])
+
+        self.visible = True
+
+    def hide(self) -> None:
+        self.visible = False
+
+    def process_event(
+        self,
+        event: pygame.event.Event,
+    ) -> None:
+        if not self.visible:
+            return
+
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+            self.hide()
+            return
+
+        if (
+            event.type == pygame.MOUSEBUTTONDOWN
+            and event.button == 1
+            and not self.menu_rect.collidepoint(event.pos)
+        ):
+            self.hide()
+            return
+
+        self.buttons.listen([event])
+
+    def draw(self) -> None:
+        if not self.visible:
+            return
+
+        pygame.draw.rect(
+            self.screen,
+            self.settings.backgroundColor,
+            self.menu_rect,
+        )
+
+        pygame.draw.rect(
+            self.screen,
+            self.settings.borderColor,
+            self.menu_rect,
+            self.settings.borderWidth,
+        )
+
+        self.buttons.draw()
