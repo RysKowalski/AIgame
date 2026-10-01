@@ -2,7 +2,7 @@ import pygame
 
 from AIgame.menus import AddSettings, AddElementMenu, EditSettings, EditElementMenu
 from AIgame import levels
-from AIgame.game_objects_manager import GameObjectManager
+from AIgame import game_objects_manager
 
 
 def main() -> None:
@@ -12,7 +12,9 @@ def main() -> None:
 
     levelManager: levels.LevelManager = levels.LevelManager("tutorial1temp")
 
-    gameObjects: GameObjectManager = GameObjectManager()
+    gameObjects: game_objects_manager.GameObjectManager = (
+        game_objects_manager.GameObjectManager()
+    )
 
     menuSettings: AddSettings = AddSettings(
         backgroundColor=(18, 18, 18),  # #121212

@@ -7,8 +7,8 @@ import pygame.freetype
 from AIgame.resources import Fonts
 
 from .widgets import TextDisplay, TextAlign, TextDisplaySettings, Button, ButtonSettings
-from AIgame.game_objects import GameObject
-from AIgame.game_objects_manager import GameObjectManager
+from AIgame import game_objects
+from AIgame import game_objects_manager
 
 
 @dataclass
@@ -154,18 +154,18 @@ class EditElementMenu:
         self,
         screen: pygame.Surface,
         settings: EditSettings,
-        gameObjects: GameObjectManager,
+        gameObjects: game_objects_manager.GameObjectManager,
         font: pygame.freetype.Font = Fonts.editMenuFont,
     ) -> None:
         self.screen: pygame.Surface = screen
         self.font: pygame.freetype.Font = font
         self.settings: EditSettings = settings
-        self.gameObjects: GameObjectManager = gameObjects
+        self.gameObjects: game_objects_manager.GameObjectManager = gameObjects
 
         self.visible: bool = False
         self.position: tuple[int, int] = (0, 0)
         self.options: list[tuple[TextDisplay, InputTextBox]] = []
-        self.currentGameObject: GameObject
+        self.currentGameObject: game_objects.GameObject
         self.fontHeight: int = font.get_rect("").height
         self.maxOptionWidth: int = 1
 

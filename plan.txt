@@ -1,0 +1,36 @@
+gracz włącza grę, dostaje prosty tutorial o menu i informację jak
+zobaczyć objekt help
+
+po skończeniu poziomu, obecne objekty się zapisują jako rozwiązanie poziomu
+pojawia się informacja że przechodzi się do kolejnego poziomu,
+widoczne obiekty znikają
+
+
+obiekty aktywują się po dostania sygnału aktywacji:
+  - co tick symulacji
+  - co tick gry
+  - po aktywacji obiektu aktywatora
+
+obiekty specjalne:
+  - help:
+    - help1 pokazuje jak włączyć edit i add menu, oraz jak edytować liczby, jakie są obliczenia
+      oraz co oznaczają edytowalne pola
+    - help2 pokazuje jak użyć prostych zmiennych
+
+  - variables:
+    pokazuje obecne zmienne poziomu i zmienne globalne
+
+  - akcja:
+    pokazuje się jako kwadrat, ma tyle pól edycji co gra ma ruchów
+
+  - tick:
+    aktywuje tick symulacji
+
+zmienne:
+  zmienne poziomu $n mają stan poziomu
+  zmienne globalne #name:
+    - #reward nagroda za poprzedni tick
+    - #total_reward suma nagród obecnej próby
+    - #level_name nazwa poziomu
+    - #object_count ilość objektów
+    możliwe zmienne obiektu @nazwa przypisywane w kodzie obiektu
