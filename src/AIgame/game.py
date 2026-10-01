@@ -1,9 +1,8 @@
 import pygame
 
 from AIgame.menus import AddSettings, AddElementMenu, EditSettings, EditElementMenu
-from AIgame.levels import LevelManager
+from AIgame import levels
 from AIgame.game_objects_manager import GameObjectManager
-from AIgame.resources import Fonts
 
 
 def main() -> None:
@@ -11,7 +10,7 @@ def main() -> None:
     clock: pygame.time.Clock = pygame.time.Clock()
     screen: pygame.Surface = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
 
-    levelManager: LevelManager = LevelManager("tutorial1temp")
+    levelManager: levels.LevelManager = levels.LevelManager("tutorial1temp")
 
     gameObjects: GameObjectManager = GameObjectManager()
 
