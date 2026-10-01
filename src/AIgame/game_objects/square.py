@@ -57,23 +57,22 @@ class SquareObject(GameObject):
         self.get_data = lambda: {}
 
     def draw(self) -> None:
-        data: dict[str, Any] = self.get_data()
         squareData: ScriptSquareData = ScriptSquareData(
-            x=data.get("x", 0),
-            y=data.get("y", 0),
-            width=data.get("width", 100),
-            height=data.get("height", 100),
-            rotation=data.get("rotation", 0),
+            x=self.data.get("x", 0),
+            y=self.data.get("y", 0),
+            width=self.data.get("width", 100),
+            height=self.data.get("height", 100),
+            rotation=self.data.get("rotation", 0),
             backgroundColor=(
-                data.get("red", 255),
-                data.get("green", 255),
-                data.get("blue", 255),
+                self.data.get("red", 255),
+                self.data.get("green", 255),
+                self.data.get("blue", 255),
             ),
-            borderWidth=data.get("border_width", 0),
+            borderWidth=self.data.get("border_width", 0),
             borderColor=(
-                data.get("border_red", 0),
-                data.get("border_green", 0),
-                data.get("border_blue", 0),
+                self.data.get("border_red", 0),
+                self.data.get("border_green", 0),
+                self.data.get("border_blue", 0),
             ),
         )
 
@@ -104,21 +103,21 @@ class SquareObject(GameObject):
     def contains_point(self, pos: tuple[int, int]) -> bool:
         data: dict[str, Any] = self.get_data()
         squareData: ScriptSquareData = ScriptSquareData(
-            x=data.get("x", 0),
-            y=data.get("y", 0),
-            width=data.get("width", 100),
-            height=data.get("height", 100),
-            rotation=data.get("rotation", 0),
+            x=self.data.get("x", 0),
+            y=self.data.get("y", 0),
+            width=self.data.get("width", 100),
+            height=self.data.get("height", 100),
+            rotation=self.data.get("rotation", 0),
             backgroundColor=(
-                data.get("red", 255),
-                data.get("green", 255),
-                data.get("blue", 255),
+                self.data.get("red", 255),
+                self.data.get("green", 255),
+                self.data.get("blue", 255),
             ),
-            borderWidth=data.get("border_width", 0),
+            borderWidth=self.data.get("border_width", 0),
             borderColor=(
-                data.get("border_red", 0),
-                data.get("border_green", 0),
-                data.get("border_blue", 0),
+                self.data.get("border_red", 0),
+                self.data.get("border_green", 0),
+                self.data.get("border_blue", 0),
             ),
         )
 

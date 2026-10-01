@@ -17,8 +17,7 @@ obiekty specjalne:
 
   - action:
     pokazuje się jako kwadrat, ma tyle pól edycji co gra ma ruchów
-
-  - tick:
+- tick:
     pokazuje się jako kwadrat, aktywuje tick po kliknięciu aktywuje tick symulacji
 
   - timer_tick:
@@ -28,7 +27,7 @@ obiekty vizualizacji:
   - kwadrat
   - text
 
-obiekty input:
+obiekty input wykonywane jako pierwsze:
   - toggle
   - set
   - slider
@@ -43,4 +42,4 @@ zmienne:
     - #object_count ilość obiektyów
 
   zmienne gracza @name::
-    mogą być ustawione w obiektach input, są one wykonywane jako pierwsze
+    mogą być ustawione w obiektach input

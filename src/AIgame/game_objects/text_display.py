@@ -56,10 +56,8 @@ this.text_blue = 255"""
         self.get_data = lambda: {}
 
     def draw(self) -> None:
-        data: dict[str, Any] = self.get_data()
-
-        rawValue: float = data.get("value", 0)
-        roundDigits: int = int(data.get("round_digits", 2))
+        rawValue: float = self.data.get("value", 0)
+        roundDigits: int = int(self.data.get("round_digits", 2))
 
         value: str
         if roundDigits > 0:
@@ -68,17 +66,17 @@ this.text_blue = 255"""
             value = str(round(rawValue))
 
         textDisplayData: ScriptTextDisplayData = ScriptTextDisplayData(
-            x=data.get("x", 0),
-            y=data.get("y", 0),
+            x=self.data.get("x", 0),
+            y=self.data.get("y", 0),
             backgroundColor=(
-                data.get("red", 155),
-                data.get("green", 155),
-                data.get("blue", 155),
+                self.data.get("red", 155),
+                self.data.get("green", 155),
+                self.data.get("blue", 155),
             ),
             textColor=(
-                data.get("text_red", 255),
-                data.get("text_green", 255),
-                data.get("text_blue", 255),
+                self.data.get("text_red", 255),
+                self.data.get("text_green", 255),
+                self.data.get("text_blue", 255),
             ),
             value=value,
         )

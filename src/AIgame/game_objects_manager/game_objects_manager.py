@@ -13,6 +13,8 @@ class ObjectDoesNotExistError(Exception):
 class GameObjectManager:
     def __init__(self) -> None:
         self._gameObjects: dict[int, GameObject] = {}
+        self._inputObjects: dict[int, GameObject] = {}
+
         self._idCounter: int = 0
 
     def add(self, gameObject: GameObject) -> int:
@@ -40,6 +42,7 @@ class GameObjectManager:
 
     def draw(self) -> None:
         for gameObject in self._gameObjects.values():
+            gameObject.run_script()
             gameObject.draw()
 
     def get_on_pos(self, pos: tuple[int, int]) -> int | None:
