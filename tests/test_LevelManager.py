@@ -1,4 +1,4 @@
-from AIgame.levels import GameLevel, LevelManager, LevelState, LevelData
+from AIgame.levels import GameLevel, LevelData, LevelManager, LevelState
 
 
 class ExampleLevel(GameLevel):

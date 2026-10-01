@@ -17,13 +17,12 @@ class GameObjectManager:
 
         self._idCounter: int = 0
 
-    def add(self, gameObject: GameObject) -> int:
+    def add(self, gameObject: GameObject) -> None:
         self._idCounter += 1
         gameObject.id = self._idCounter
         self._gameObjects[self._idCounter] = gameObject
         print(gameObject.id, type(gameObject))
         self.update_script()
-        return self._idCounter
 
     def delete(self, id: int) -> None:
         """throws ObjectDoesNotExistError"""
@@ -31,7 +30,6 @@ class GameObjectManager:
             del self._gameObjects[id]
         except KeyError:
             raise ObjectDoesNotExistError(id)
-        self.update_script()
 
     def get(self, id: int) -> GameObject:
         """throws ObjectDoesNotExistError"""

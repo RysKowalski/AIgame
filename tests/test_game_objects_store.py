@@ -2,28 +2,19 @@ from AIgame.game_objects import GameObject
 from AIgame.game_objects_manager import GameObjectManager, ObjectDoesNotExistError
 from tests.utils import (
     ExampleObject,
-    get_example_object,
     example_surface,
+    get_example_object,
 )
 
 
 def test_add_and_get() -> None:
     objectStore: GameObjectManager = GameObjectManager()
-    exampleObject: GameObject = get_example_object()
+    obj: GameObject = get_example_object()
 
-    objectId: int = objectStore.add(exampleObject)
-    outputObject: GameObject = objectStore.get(objectId)
+    objectStore.add(obj)
+    outputObject: GameObject = objectStore.get(obj.id)
 
-    assert exampleObject is outputObject
-
-
-def test_add_sets_game_object_id() -> None:
-    objectStore: GameObjectManager = GameObjectManager()
-    obj: ExampleObject = get_example_object()
-
-    id: int = objectStore.add(obj)
-
-    assert id == obj.id
+    assert obj is outputObject
 
 
 def test_add_and_get_many() -> None:

@@ -1,14 +1,14 @@
 from __future__ import annotations
 
+from collections.abc import Callable
 from dataclasses import dataclass
-from typing import Callable
 
 import pygame
 import pygame.freetype
 
-from AIgame.resources import Fonts
 from AIgame.game_objects import GameObject, SquareObject, TextDisplayObject
 from AIgame.game_objects_manager import GameObjectManager
+from AIgame.resources import Fonts
 from AIgame.widgets.button import ButtonArray
 
 
