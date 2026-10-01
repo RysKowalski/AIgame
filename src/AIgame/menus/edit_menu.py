@@ -1,14 +1,13 @@
+from collections.abc import Callable
 from dataclasses import dataclass
-from typing import Callable
 
 import pygame
 import pygame.freetype
 
+from AIgame import game_objects, game_objects_manager
 from AIgame.resources import Fonts
 
-from .widgets import TextDisplay, TextAlign, TextDisplaySettings, Button, ButtonSettings
-from AIgame import game_objects
-from AIgame import game_objects_manager
+from .widgets import Button, ButtonSettings, TextAlign, TextDisplay, TextDisplaySettings
 
 
 @dataclass
@@ -175,9 +174,11 @@ class EditElementMenu:
 
         self.deleteButton: Button
 
-    def show(self, gameObjectId: int, position: tuple[int, int]) -> None:
+    def show(
+        self, gameObject: game_objects.GameObject, position: tuple[int, int]
+    ) -> None:
         self.visible = True
-        self.currentGameObject = self.gameObjects.get(gameObjectId)
+        self.currentGameObject = gameObject
         self.position = position
 
         self.maxOptionWidth = (

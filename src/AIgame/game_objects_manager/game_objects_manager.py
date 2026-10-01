@@ -45,11 +45,10 @@ class GameObjectManager:
             gameObject.run_script()
             gameObject.draw()
 
-    def get_on_pos(self, pos: tuple[int, int]) -> int | None:
-        for obj_id in reversed(self._gameObjects):
-            obj: GameObject = self._gameObjects[obj_id]
+    def get_on_pos(self, pos: tuple[int, int]) -> GameObject | None:
+        for obj in reversed(self._gameObjects.values()):
             if obj.contains_point(pos):
-                return obj_id
+                return obj
 
     def update_script(self) -> None:
         ScriptApplyer().update_script(list(self._gameObjects.values()))
