@@ -1,4 +1,4 @@
-from .game_objects import GameObject
+from .GameObject import GameObject
 from .square import SquareObject, ScriptSquareData
 from .text_display import TextDisplayObject, ScriptTextDisplayData
 

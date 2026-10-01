@@ -209,6 +209,7 @@ __marimo__/
 graph
 *.dot
 *.svg
+!design.svg
 _viz
 
 

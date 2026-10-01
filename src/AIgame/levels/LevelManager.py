@@ -1,11 +1,5 @@
 from .GameLevel import GameLevel, LevelState
-from .levels import Level1Tutorial, Level2Tutorial, Level1TutorialTemporary
-
-defaultLevels: dict[str, type[GameLevel]] = {
-    Level1TutorialTemporary.data.name: Level1TutorialTemporary,
-    Level1Tutorial.data.name: Level1Tutorial,
-    Level2Tutorial.data.name: Level2Tutorial,
-}
+from .levels import defaultLevels
 
 
 class LevelManager:
