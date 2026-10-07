@@ -43,3 +43,10 @@ zmienne:
 
   zmienne gracza @name::
     mogą być ustawione w obiektach input
+
+dostępne funkcje:
+  max(a, b)
+  min(a, b)
+  avg(a1, a2 ... an)
+  round(a, precision)
+
