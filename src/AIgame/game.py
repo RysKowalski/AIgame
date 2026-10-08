@@ -10,6 +10,10 @@ def main() -> None:
     clock: pygame.time.Clock = pygame.time.Clock()
     screen: pygame.Surface = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
 
+    def trigger_tick() -> None:
+        print("trigger_tick executed")
+        levelManager.tick((0.3, 0.3))
+
     levelManager: levels.LevelManager = levels.LevelManager("tutorial1temp")
 
     gameObjects: game_objects_manager.GameObjectManager = (
@@ -82,14 +86,9 @@ def main() -> None:
 
         addElementMenu.draw()
         editElementMenu.draw()
-        levelManager.tick((0.3, 0.3))
 
         clock.tick(FRAMERATE)
         pygame.display.flip()
-
-
-def trigger_tick() -> None:
-    print("trigger_tick executed")
 
 
 if __name__ == "__main__":
