@@ -1,12 +1,12 @@
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING
 
 import pygame
 
 if TYPE_CHECKING:
     import pygame.freetype
 
-from .GameObject import GameObject
+from .GameObject import VizObject
 
 
 @dataclass(frozen=True)
@@ -18,7 +18,7 @@ class ScriptTextDisplayData:
     value: str
 
 
-class TextDisplayObject(GameObject):
+class TextDisplayObject(VizObject):
     """
     this.x
     this.y

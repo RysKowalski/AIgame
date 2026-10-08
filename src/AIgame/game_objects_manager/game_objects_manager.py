@@ -61,6 +61,7 @@ class GameObjectManager:
 
     def update_script(self) -> None:
         ScriptApplyer().update_script(list(self._gameObjects.values()))
+        self.run_script()
 
     def run_script(self) -> None:
         for obj in self._inputObjects.values():

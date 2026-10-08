@@ -53,6 +53,8 @@ class Script:
         property_name: str | None = None
         expression: str | None = None
         for line in script.splitlines():
+            if line == "":
+                continue
             if line.startswith("this."):
                 match = self.line_data_extraction_pattern.fullmatch(line)
                 if match:
@@ -60,7 +62,7 @@ class Script:
                     expression = match.group(2)
 
             if (not property_name) or (not expression):
-                raise
+                raise Exception(f"line: {line}")
 
             body.append(f"data['{property_name}'] = {expression}")
 

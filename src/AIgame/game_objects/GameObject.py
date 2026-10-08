@@ -1,5 +1,4 @@
-from typing import TYPE_CHECKING, Any, Callable, Protocol, runtime_checkable
-
+from typing import TYPE_CHECKING, Any, Callable, Protocol
 
 if TYPE_CHECKING:
     from pygame.event import Event
@@ -25,10 +24,8 @@ class GameObject(Protocol):
     def contains_point(self, pos: tuple[int, int]) -> bool: ...
 
 
-@runtime_checkable
 class InputObject(GameObject):
     def process_event(self, event: "Event") -> None: ...
 
 
-@runtime_checkable
 class VizObject(GameObject): ...

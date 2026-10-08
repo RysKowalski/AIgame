@@ -6,7 +6,7 @@ from dataclasses import dataclass
 import pygame
 import pygame.freetype
 
-from AIgame.game_objects import GameObject, SquareObject, TextDisplayObject
+from AIgame.game_objects import GameObject, SquareObject, TextDisplayObject, TickObject
 from AIgame.game_objects_manager import GameObjectManager
 from AIgame.resources import Fonts
 from AIgame.widgets.button import ButtonArray
@@ -34,6 +34,7 @@ class AddElementMenu:
         screen: pygame.Surface,
         gameObjects: GameObjectManager,
         settings: AddSettings,
+        trigger_tick: Callable[[], None],
         font: pygame.freetype.Font = Fonts.addMenuFont,
         elements: dict[str, Callable[[], GameObject]] | None = None,
     ) -> None:
@@ -50,6 +51,10 @@ class AddElementMenu:
                 "text": lambda: TextDisplayObject(
                     screen=screen,
                     font=Fonts.uiTextDisplayFont,
+                ),
+                "tick": lambda: TickObject(
+                    screen=screen,
+                    tick=trigger_tick,
                 ),
             }
 

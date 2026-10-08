@@ -33,6 +33,7 @@ def main() -> None:
         screen,
         gameObjects,
         menuSettings,
+        trigger_tick,
     )
 
     editSettings: EditSettings = EditSettings(
@@ -73,6 +74,7 @@ def main() -> None:
                     addElementMenu.show(event.pos)
             addElementMenu.process_event(event)
             editElementMenu.process_event(event)
+            gameObjects.process_event(event)
 
         screen.fill((0, 0, 0))
 
@@ -84,6 +86,10 @@ def main() -> None:
 
         clock.tick(FRAMERATE)
         pygame.display.flip()
+
+
+def trigger_tick() -> None:
+    print("trigger_tick executed")
 
 
 if __name__ == "__main__":

@@ -1,6 +1,7 @@
 from .GameObject import GameObject, InputObject, VizObject
 from .square import SquareObject, ScriptSquareData
 from .text_display import TextDisplayObject, ScriptTextDisplayData
+from .tick import TickObject, ScriptTickData
 
 __all__ = [
     "GameObject",
@@ -10,4 +11,6 @@ __all__ = [
     "ScriptSquareData",
     "TextDisplayObject",
     "ScriptTextDisplayData",
+    "TickObject",
+    "ScriptTickData",
 ]
