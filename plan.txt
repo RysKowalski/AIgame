@@ -17,7 +17,8 @@ obiekty specjalne:
 
   - action:
     pokazuje się jako kwadrat, ma tyle pól edycji co gra ma ruchów
-- tick:
+
+  - tick:
     pokazuje się jako kwadrat, aktywuje tick po kliknięciu aktywuje tick symulacji
 
   - timer_tick:

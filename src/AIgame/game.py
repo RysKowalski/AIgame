@@ -51,10 +51,10 @@ def main() -> None:
         screen, editSettings, gameObjects
     )
 
-    ticks: int = 0
+    global_ticks: int = 0
     running: bool = True
     while running:
-        ticks += 1
+        global_ticks += 1
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from AIgame.game_objects import GameObject
+from AIgame.game_objects import GameObject, InputObject, VizObject
 from AIgame.script_applyer import ScriptApplyer
 
 
@@ -13,21 +13,32 @@ class ObjectDoesNotExistError(Exception):
 class GameObjectManager:
     def __init__(self) -> None:
         self._gameObjects: dict[int, GameObject] = {}
-        self._inputObjects: dict[int, GameObject] = {}
+        self._inputObjects: dict[int, InputObject] = {}
+        self._vizObjects: dict[int, VizObject] = {}
 
         self._idCounter: int = 0
 
     def add(self, gameObject: GameObject) -> None:
         self._idCounter += 1
         gameObject.id = self._idCounter
+
+        if isinstance(gameObject, InputObject):
+            self._inputObjects[self._idCounter] = gameObject
+        if isinstance(gameObject, VizObject):
+            self._vizObjects[self._idCounter] = gameObject
+
         self._gameObjects[self._idCounter] = gameObject
-        print(gameObject.id, type(gameObject))
         self.update_script()
 
     def delete(self, id: int) -> None:
         """throws ObjectDoesNotExistError"""
         try:
+            if isinstance(self._gameObjects[id], InputObject):
+                del self._inputObjects[id]
+            if isinstance(self._gameObjects[id], VizObject):
+                del self._vizObjects[id]
             del self._gameObjects[id]
+
         except KeyError:
             raise ObjectDoesNotExistError(id)
 
@@ -50,3 +61,13 @@ class GameObjectManager:
 
     def update_script(self) -> None:
         ScriptApplyer().update_script(list(self._gameObjects.values()))
+
+    def run_script(self) -> None:
+        for obj in self._inputObjects.values():
+            obj.run_script()
+        for obj in self._vizObjects.values():
+            obj.run_script()
+
+    def process_event(self, event) -> None:
+        for obj in self._inputObjects.values():
+            obj.process_event(event)
