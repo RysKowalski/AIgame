@@ -40,7 +40,6 @@ zmienne:
     - #reward nagroda za poprzedni tick
     - #total_reward suma nagród obecnej próby
     - #level_name nazwa poziomu
-    - #object_count ilość obiektyów
 
   zmienne gracza @name::
     mogą być ustawione w obiektach input

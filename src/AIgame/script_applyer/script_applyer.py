@@ -6,6 +6,39 @@ from AIgame.game_objects import (
 )
 
 
+class Utils:
+    @staticmethod
+    def indent(level: int, lines: list[str] | str) -> list[str]:
+        INDENT: str = "    "
+
+        indented: list[str] = []
+
+        if isinstance(lines, list):
+            for line in lines:
+                indented.append(INDENT * level + line)
+        else:
+            indented.append(INDENT * level + lines)
+
+        return indented
+
+    @staticmethod
+    def _load_number(text: str, start: int) -> int | float:
+        num: str = ""
+
+        while (
+            text[start].isdigit()
+            or text[start] == "."
+            or text[start] == "-"
+            or text[start] == "+"
+            or text[start] == "e"
+        ):
+            num += text[start]
+            start += 1
+
+        fnum = float(num)
+        return int(fnum) if fnum == int(fnum) else fnum
+
+
 class ScriptApplyer:
     def __init__(self) -> None:
         self.line_data_extraction_pattern: re.Pattern[str] = re.compile(
@@ -18,11 +51,11 @@ class ScriptApplyer:
         for obj in gameObjects:
             func: list[str] = []
 
-            func.extend(self._indent(1, self._function_def(str(obj.id))))
-            func.extend(self._indent(2, self._function_base()))
-            func.extend(self._indent(2, self._function_body(obj.script)))
+            func.extend(Utils.indent(1, self._function_def(str(obj.id))))
+            func.extend(Utils.indent(2, self._function_base()))
+            func.extend(Utils.indent(2, self._function_body(obj.script)))
 
-            func += self._indent(2, self._function_return())
+            func += Utils.indent(2, self._function_return())
 
             dynamicClass += "\n".join(func) + "\n"
 
@@ -34,6 +67,8 @@ class ScriptApplyer:
 class Script:
     def __init__(self):
         self.reward = 0
+        self.total_reward = 0
+        self.level_name = ""
         self.inputs = []
         self.outputs = ()
 """
@@ -67,19 +102,6 @@ class Script:
             body.append(f"data['{property_name}'] = {expression}")
 
         return body
-
-    def _indent(self, level: int, lines: list[str] | str) -> list[str]:
-        INDENT: str = "    "
-
-        indented: list[str] = []
-
-        if isinstance(lines, list):
-            for line in lines:
-                indented.append(INDENT * level + line)
-        else:
-            indented.append(INDENT * level + lines)
-
-        return indented
 
     def _interpreted_class(self, dynamicClass: str) -> type:
         namespace: dict[str, Any] = {}
