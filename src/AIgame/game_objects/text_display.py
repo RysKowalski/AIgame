@@ -34,16 +34,16 @@ class TextDisplayObject(VizObject):
 
     name = "Text"
     id = 0
-    script = """this.x = 0
-this.y = 0
-this.value = 0
-this.round_digits = 2
-this.red = 155
-this.green = 155
-this.blue = 155
-this.text_red = 255
-this.text_green = 255
-this.text_blue = 255"""
+    script = """x = 0
+y = 0
+value = 0
+round_digits = 2
+red = 155
+green = 155
+blue = 155
+text_red = 255
+text_green = 255
+text_blue = 255"""
 
     def __init__(
         self,

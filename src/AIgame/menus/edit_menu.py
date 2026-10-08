@@ -244,7 +244,7 @@ class EditElementMenu:
         script: list[str] = []
 
         for option in self.options:
-            script.append("this." + option[0].text + option[1].text)
+            script.append(option[0].text + option[1].text)
         self.currentGameObject.script = "\n".join(script)
         self.gameObjects.update_script()
 
@@ -372,7 +372,7 @@ def get_longest_option(script: str) -> str:
 
 def get_option_name(line: str) -> str:
     try:
-        return line.split()[0].removeprefix("this.")
+        return line.split()[0]
     except IndexError:
         return "empty"
 

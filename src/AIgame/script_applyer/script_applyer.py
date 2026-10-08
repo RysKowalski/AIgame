@@ -42,7 +42,7 @@ class Utils:
 class ScriptApplyer:
     def __init__(self) -> None:
         self.line_data_extraction_pattern: re.Pattern[str] = re.compile(
-            r"this\.(\w+)\s*=\s*(.+)"
+            r"(\w+)\s*=\s*(.+)"
         )
 
     def update_script(self, gameObjects: list[GameObject]) -> None:
@@ -90,11 +90,10 @@ class Script:
         for line in script.splitlines():
             if line == "":
                 continue
-            if line.startswith("this."):
-                match = self.line_data_extraction_pattern.fullmatch(line)
-                if match:
-                    property_name = match.group(1)
-                    expression = match.group(2)
+            match = self.line_data_extraction_pattern.fullmatch(line)
+            if match:
+                property_name = match.group(1)
+                expression = match.group(2)
 
             if (not property_name) or (not expression):
                 raise Exception(f"line: {line}")

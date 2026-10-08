@@ -35,18 +35,18 @@ class SquareObject(VizObject):
 
     name = "Square"
     id = 0
-    script = """this.x = 0
-    this.y = 0
-    this.width = 100
-    this.height = 100
-    this.rotation = 0
-    this.red = 255
-    this.green = 255
-    this.blue = 255
-    this.border_width = 0
-    this.border_red = 0
-    this.border_green = 0
-    this.border_blue = 0"""
+    script = """x = 0
+    y = 0
+    width = 100
+    height = 100
+    rotation = 0
+    red = 255
+    green = 255
+    blue = 255
+    border_width = 0
+    border_red = 0
+    border_green = 0
+    border_blue = 0"""
 
     def __init__(
         self,
