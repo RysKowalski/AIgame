@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Any, Callable, Protocol
+from typing import TYPE_CHECKING, Any, Protocol
 
 if TYPE_CHECKING:
     from pygame.event import Event
@@ -10,16 +10,12 @@ class GameObject(Protocol):
     name: str
     script: str
     screen: "Surface"
-    get_data: Callable[[], Any]
     data: Any
 
     def __init__(self, screen: "Surface") -> None:
         self.screen = screen
 
     def draw(self) -> None: ...
-
-    def run_script(self) -> None:
-        self.data = self.get_data()
 
     def contains_point(self, pos: tuple[int, int]) -> bool: ...
 

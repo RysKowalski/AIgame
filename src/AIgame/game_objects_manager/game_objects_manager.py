@@ -51,7 +51,6 @@ class GameObjectManager:
 
     def draw(self) -> None:
         for gameObject in self._gameObjects.values():
-            gameObject.run_script()
             gameObject.draw()
 
     def get_on_pos(self, pos: tuple[int, int]) -> GameObject | None:
@@ -61,13 +60,6 @@ class GameObjectManager:
 
     def update_script(self) -> None:
         ScriptApplyer().update_script(list(self._gameObjects.values()))
-        self.run_script()
-
-    def run_script(self) -> None:
-        for obj in self._inputObjects.values():
-            obj.run_script()
-        for obj in self._vizObjects.values():
-            obj.run_script()
 
     def process_event(self, event) -> None:
         for obj in self._inputObjects.values():

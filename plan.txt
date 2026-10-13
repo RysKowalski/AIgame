@@ -50,3 +50,5 @@ dostępne funkcje:
   avg(a1, a2 ... an)
   round(a, precision)
 
+
+x = #reward+max($0,$1)/2
