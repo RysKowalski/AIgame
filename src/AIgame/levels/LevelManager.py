@@ -1,3 +1,4 @@
+from AIgame.script_applyer.script_applyer import Context
 from .GameLevel import GameLevel, LevelState
 from .levels import defaultLevels
 
@@ -6,14 +7,17 @@ class LevelManager:
     def __init__(
         self,
         levelName: str,
+        scriptContext: Context,
         levels: dict[str, type[GameLevel]] = defaultLevels,
     ):
+        self.scriptContext = scriptContext
         self.levels: dict[str, type[GameLevel]] = levels
         self.levelNames: list[str] = list(levels.keys())
         self._set_level(levelName)
 
     def tick(self, inputs: tuple[float, ...]):
         self.level.tick(self.levelState, inputs)
+        self.scriptContext.global_variables["reward"] = self.levelState.reward
         if self.levelState.ended:
             self._next_level()
 
@@ -22,6 +26,7 @@ class LevelManager:
         self.levelState: LevelState = LevelState(
             0, 0, [0 for _ in range(self.level.data.inputCount)], False
         )
+        self.scriptContext.level_variables = self.levelState.variables
 
     def _next_level(self) -> None:
         currentIndex: int = self.levelNames.index(self.level.data.name)

@@ -40,8 +40,7 @@ class TickObject(InputObject):
 
     name = "Input"
     id = 0
-    script = """
-x = 0
+    script = """x = 0
 y = 0
 width = 100
 height = 100

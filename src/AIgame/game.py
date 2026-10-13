@@ -1,7 +1,7 @@
 from AIgame.game_objects.GameObject import GameObject
 import pygame
 
-from AIgame import game_objects_manager, levels
+from AIgame import game_objects_manager, levels, script_applyer
 from AIgame.menus import AddElementMenu, AddSettings, EditElementMenu, EditSettings
 
 
@@ -13,11 +13,15 @@ def main() -> None:
     def trigger_tick() -> None:
         print("trigger_tick executed")
         levelManager.tick((0.3, 0.3))
+        gameObjects.update_script()
 
-    levelManager: levels.LevelManager = levels.LevelManager("tutorial1temp")
+    scriptContext: script_applyer.Context = script_applyer.Context()
+    levelManager: levels.LevelManager = levels.LevelManager(
+        "tutorial1temp", scriptContext
+    )
 
     gameObjects: game_objects_manager.GameObjectManager = (
-        game_objects_manager.GameObjectManager()
+        game_objects_manager.GameObjectManager(scriptContext)
     )
 
     menuSettings: AddSettings = AddSettings(

@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from AIgame.game_objects import GameObject, InputObject, VizObject
-from AIgame.script_applyer import ScriptApplyer
+from AIgame.script_applyer import ScriptApplyer, Context
 
 
 class ObjectDoesNotExistError(Exception):
@@ -11,7 +11,10 @@ class ObjectDoesNotExistError(Exception):
 
 
 class GameObjectManager:
-    def __init__(self) -> None:
+    def __init__(self, script_context: Context) -> None:
+        self._script_context = script_context
+        self._script_applyer = ScriptApplyer(script_context)
+
         self._gameObjects: dict[int, GameObject] = {}
         self._inputObjects: dict[int, InputObject] = {}
         self._vizObjects: dict[int, VizObject] = {}
@@ -59,7 +62,7 @@ class GameObjectManager:
                 return obj
 
     def update_script(self) -> None:
-        ScriptApplyer().update_script(list(self._gameObjects.values()))
+        self._script_applyer.update_script(list(self._gameObjects.values()))
 
     def process_event(self, event) -> None:
         for obj in self._inputObjects.values():
