@@ -15,11 +15,8 @@ obiekty specjalne:
   - variables:
     pokazuje obecne zmienne poziomu i zmienne globalne
 
-  - action:
-    pokazuje się jako kwadrat, ma tyle pól edycji co gra ma ruchów
-
   - tick:
-    pokazuje się jako kwadrat, aktywuje tick po kliknięciu aktywuje tick symulacji
+    pokazuje się jako kwadrat, aktywuje tick po kliknięciu aktywuje tick symulacji, ustawia argumenty symulacji
 
   - timer_tick:
     pokazuje się jako text, ustawia się czas, i w pętli odlicza ten czas i aktywuje tick symulacji
@@ -38,7 +35,6 @@ zmienne:
 
   zmienne globalne #name:
     - #reward nagroda za poprzedni tick
-    - #total_reward suma nagród obecnej próby
     - #level_name nazwa poziomu
 
   zmienne gracza @name::

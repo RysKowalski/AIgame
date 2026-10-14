@@ -1,4 +1,3 @@
-from AIgame.game_objects.GameObject import GameObject
 import pygame
 
 from AIgame import game_objects_manager, levels, script_applyer
@@ -73,9 +72,11 @@ def main() -> None:
                     keys: pygame.key.ScancodeWrapper = pygame.key.get_pressed()
                     ctrl_pressed: bool = keys[pygame.K_LCTRL] or keys[pygame.K_RCTRL]
                     if ctrl_pressed:
-                        obj: GameObject | None = gameObjects.get_on_pos(event.pos)
+                        obj: int | None = gameObjects.get_on_pos(event.pos)
                         if obj is not None:
-                            editElementMenu.show(obj, screen.get_rect().center)
+                            editElementMenu.show(
+                                gameObjects.get(obj), screen.get_rect().center
+                            )
                             continue
 
                 if event.button == 2:

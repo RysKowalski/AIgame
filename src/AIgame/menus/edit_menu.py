@@ -1,13 +1,17 @@
+from typing import TYPE_CHECKING
 from collections.abc import Callable
 from dataclasses import dataclass
 
 import pygame
 import pygame.freetype
 
-from AIgame import game_objects, game_objects_manager
 from AIgame.resources import Fonts
 
 from .widgets import Button, ButtonSettings, TextAlign, TextDisplay, TextDisplaySettings
+
+if TYPE_CHECKING:
+    from AIgame.game_objects import GameObject
+    from AIgame.game_objects_manager import GameObjectManager
 
 
 @dataclass
@@ -153,18 +157,18 @@ class EditElementMenu:
         self,
         screen: pygame.Surface,
         settings: EditSettings,
-        gameObjects: game_objects_manager.GameObjectManager,
+        gameObjects: "GameObjectManager",
         font: pygame.freetype.Font = Fonts.editMenuFont,
     ) -> None:
         self.screen: pygame.Surface = screen
         self.font: pygame.freetype.Font = font
         self.settings: EditSettings = settings
-        self.gameObjects: game_objects_manager.GameObjectManager = gameObjects
+        self.gameObjects: "GameObjectManager" = gameObjects
 
         self.visible: bool = False
         self.position: tuple[int, int] = (0, 0)
         self.options: list[tuple[TextDisplay, InputTextBox]] = []
-        self.currentGameObject: game_objects.GameObject
+        self.currentGameObject: "GameObject"
         self.fontHeight: int = font.get_rect("").height
         self.maxOptionWidth: int = 1
 
@@ -174,9 +178,7 @@ class EditElementMenu:
 
         self.deleteButton: Button
 
-    def show(
-        self, gameObject: game_objects.GameObject, position: tuple[int, int]
-    ) -> None:
+    def show(self, gameObject: "GameObject", position: tuple[int, int]) -> None:
         self.visible = True
         self.currentGameObject = gameObject
         self.position = position

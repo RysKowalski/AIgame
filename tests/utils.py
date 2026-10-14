@@ -17,13 +17,22 @@ class ExampleLevel(GameLevel):
 BLANK_DEFAULT_SCRIPT: str = "default script"
 
 
+def get_example_object() -> "ExampleObject":
+    return ExampleObject(example_surface())
+
+
+def example_surface() -> "Surface":
+    return Surface((1, 1))
+
+
 class BlankGameObject(GameObject):
     name = "ExampleObject"
     id = 0
     script = BLANK_DEFAULT_SCRIPT
+    data = {}
 
-    def get_data() -> None:
-        pass
+    def __init__(self, screen: "Surface" = example_surface()) -> None:
+        super().__init__(screen)
 
     def draw(self) -> None:
         pass
@@ -36,11 +45,9 @@ class ExampleObject(GameObject):
     name = "ExampleObject"
     id = 0
     script = ""
+    data = {}
 
-    def get_data() -> None:
-        pass
-
-    def __init__(self, screen: "Surface") -> None:
+    def __init__(self, screen: "Surface" = example_surface()) -> None:
         super().__init__(screen)
         self.draw_call_count: int = 0
         self.contains_point_count: int = 0
@@ -56,11 +63,3 @@ class ExampleObject(GameObject):
 
     def returns_true(self) -> None:
         self.contains_point_returns = True
-
-
-def get_example_object() -> ExampleObject:
-    return ExampleObject(example_surface())
-
-
-def example_surface() -> "Surface":
-    return Surface((1, 1))

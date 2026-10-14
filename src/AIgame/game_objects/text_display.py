@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
+
 import pygame
 
 if TYPE_CHECKING:
@@ -53,7 +54,7 @@ text_blue = 255"""
         super().__init__(screen)
         self.font: "pygame.freetype.Font" = font
         self.rect: pygame.Rect = pygame.Rect(1, 1, 1, 1)
-        self.get_data = lambda: {}
+        self.data = {}
 
     def draw(self) -> None:
         rawValue: float = self.data.get("value", 0)

@@ -1,57 +1,24 @@
-from typing import Callable
+from __future__ import annotations
+from typing import TYPE_CHECKING
 
-from AIgame.game_objects import (
-    GameObject,
-)
+from .utils import Utils
+
+if TYPE_CHECKING:
+    from .context import Context
+    from AIgame.game_objects import GameObject
 
 Token = int | float | str | tuple[str, list["Token"]] | list["Token"]
-
-
-class Utils:
-    @staticmethod
-    def load_number(text: str, pos: int) -> tuple[int, int | float]:
-        num: str = ""
-
-        while text[pos].isdigit() or text[pos] == "." or text[pos] == "-":
-            num += text[pos]
-            pos += 1
-
-        fnum = float(num)
-        return pos, int(fnum) if fnum == int(fnum) else fnum
-
-    @staticmethod
-    def get_name(expression: str, pos: int) -> tuple[int, str]:
-        var = ""
-        while expression[pos] not in "+-/*^%,() ":
-            var += expression[pos]
-            pos += 1
-        pos -= 1
-        return pos, var
-
-
-class Context:
-    global_variables: dict[str, float | str] = {
-        "reward": 10,
-        "total_reward": 100,
-    }
-    level_variables: list[float] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-    functions: dict[str, Callable[..., float]] = {
-        "min": min,
-        "max": max,
-        "avg": lambda args: sum(args) / len(args),
-        "round": round,
-    }
 
 
 class ScriptApplyer:
     def __init__(self, context: Context) -> None:
         self.context: Context = context
 
-    def update_script(self, gameObjects: list[GameObject]) -> None:
+    def update_script(self, gameObjects: list["GameObject"]) -> None:
         for obj in gameObjects:
             obj.data = self._process_obj(obj)
 
-    def _process_obj(self, obj: GameObject) -> dict[str, object]:
+    def _process_obj(self, obj: "GameObject") -> dict[str, object]:
         data: dict[str, object] = {}
         for line in obj.script.splitlines():
             identifier: str = line.split()[0]
@@ -111,7 +78,10 @@ class ScriptApplyer:
                         break
 
                     else:
-                        raise ValueError(f"Expected ',' or ')' at position {pos}")
+                        pos += 1
+                        # raise ValueError(
+                        #     f"Expected ',' or ')' at position {pos} of line:\n{expression}"
+                        # )
                 tokens.append((fname, fargs))
 
         return pos, tokens

@@ -2,14 +2,18 @@ from __future__ import annotations
 
 from collections.abc import Callable
 from dataclasses import dataclass
+from typing import TYPE_CHECKING
 
 import pygame
 import pygame.freetype
 
-from AIgame.game_objects import GameObject, SquareObject, TextDisplayObject, TickObject
-from AIgame.game_objects_manager import GameObjectManager
+from AIgame.game_objects import SquareObject, TextDisplayObject, TickObject
 from AIgame.resources import Fonts
 from AIgame.widgets.button import ButtonArray
+
+if TYPE_CHECKING:
+    from AIgame.game_objects import GameObject
+    from AIgame.game_objects_manager import GameObjectManager
 
 
 @dataclass

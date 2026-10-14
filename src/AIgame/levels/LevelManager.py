@@ -1,5 +1,6 @@
-from AIgame.script_applyer.script_applyer import Context
-from .GameLevel import GameLevel, LevelState
+from AIgame import script_applyer
+
+from .GameLevel import LevelState, GameLevel
 from .levels import defaultLevels
 
 
@@ -7,7 +8,7 @@ class LevelManager:
     def __init__(
         self,
         levelName: str,
-        scriptContext: Context,
+        scriptContext: script_applyer.Context,
         levels: dict[str, type[GameLevel]] = defaultLevels,
     ):
         self.scriptContext = scriptContext

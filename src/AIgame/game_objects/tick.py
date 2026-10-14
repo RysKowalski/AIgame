@@ -40,6 +40,7 @@ class TickObject(InputObject):
 
     name = "Input"
     id = 0
+    data = {}
     script = """x = 0
 y = 0
 width = 100
@@ -58,7 +59,6 @@ border_blue = 0"""
 
     def __init__(self, screen: pygame.Surface, tick: Callable[[], None]) -> None:
         super().__init__(screen)
-        self.get_data = lambda: {}
         self.trigger_tick = tick
 
     def draw(self) -> None:

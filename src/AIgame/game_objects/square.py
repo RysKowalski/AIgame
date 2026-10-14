@@ -35,6 +35,7 @@ class SquareObject(VizObject):
 
     name = "Square"
     id = 0
+    data = {}
     script = """x = 0
     y = 0
     width = 100
@@ -47,13 +48,6 @@ class SquareObject(VizObject):
     border_red = 0
     border_green = 0
     border_blue = 0"""
-
-    def __init__(
-        self,
-        screen: pygame.Surface,
-    ) -> None:
-        super().__init__(screen)
-        self.get_data = lambda: {}
 
     def draw(self) -> None:
         squareData: ScriptSquareData = ScriptSquareData(

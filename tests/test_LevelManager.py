@@ -1,4 +1,5 @@
 from AIgame.levels import GameLevel, LevelData, LevelManager, LevelState
+from AIgame.script_applyer import Context
 
 
 class ExampleLevel(GameLevel):
@@ -38,17 +39,23 @@ testLevels: dict[str, type[GameLevel]] = {
 
 
 def test_load_level() -> None:
-    manager: LevelManager = LevelManager(ExampleLevel.data.name, testLevels)
+    manager: LevelManager = LevelManager(
+        ExampleLevel.data.name, Context(), levels=testLevels
+    )
     assert manager.level.data.name == ExampleLevel.data.name
 
 
 def test_correct_level_state() -> None:
-    manager: LevelManager = LevelManager(ExampleLevel.data.name, testLevels)
+    manager: LevelManager = LevelManager(
+        ExampleLevel.data.name, Context(), levels=testLevels
+    )
     assert manager.levelState == LevelState(0, 0, [0], False)
 
 
 def test_tick_level() -> None:
-    manager: LevelManager = LevelManager(ExampleLevel.data.name, testLevels)
+    manager: LevelManager = LevelManager(
+        ExampleLevel.data.name, Context(), levels=testLevels
+    )
     manager.level = ExampleLevel()
 
     manager.tick((0.0, 1.1))
@@ -57,7 +64,9 @@ def test_tick_level() -> None:
 
 
 def test_next_level() -> None:
-    manager: LevelManager = LevelManager(ExampleLevel.data.name, testLevels)
+    manager: LevelManager = LevelManager(
+        ExampleLevel.data.name, Context(), levels=testLevels
+    )
     manager.levelState.ended = True
     initialLevel: GameLevel = manager.level
 
@@ -67,7 +76,9 @@ def test_next_level() -> None:
 
 
 def test_next_level_wrap_to_start() -> None:
-    manager: LevelManager = LevelManager(ExampleLevelLast.data.name, testLevels)
+    manager: LevelManager = LevelManager(
+        ExampleLevelLast.data.name, Context(), levels=testLevels
+    )
     manager.levelState.ended = True
 
     manager.tick(())
