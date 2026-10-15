@@ -16,5 +16,4 @@ class Utils:
         while expression[pos] not in "+-/*^%,() ":
             var += expression[pos]
             pos += 1
-        pos -= 1
         return pos, var
