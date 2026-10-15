@@ -1,4 +1,3 @@
-from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from .utils import Utils
@@ -11,8 +10,8 @@ Token = int | float | str | tuple[str, list["Token"]] | list["Token"]
 
 
 class ScriptApplyer:
-    def __init__(self, context: Context) -> None:
-        self.context: Context = context
+    def __init__(self, context: "Context") -> None:
+        self._context: "Context" = context
 
     def update_script(self, gameObjects: list["GameObject"]) -> None:
         for obj in gameObjects:
@@ -22,7 +21,7 @@ class ScriptApplyer:
         data: dict[str, object] = {}
         for line in obj.script.splitlines():
             identifier: str = line.split()[0]
-            expression: str = " ".join(line.split()[2:])  # ignoring first part
+            expression: str = " ".join(line.split()[2:])  # ignoring exp =
             expression += " "  # adding padding for tokenizing
             _, tokens = self._tokenize_expression(expression)
 
@@ -42,12 +41,12 @@ class ScriptApplyer:
             elif expression[pos] == "$":
                 pos += 1
                 pos, var = Utils.get_name(expression, pos)
-                tokens.append(self.context.level_variables[int(var)])
+                tokens.append(self._context.level_variables[int(var)])
 
             elif expression[pos] == "#":
                 pos += 1
                 pos, var = Utils.get_name(expression, pos)
-                tokens.append(self.context.global_variables[var])
+                tokens.append(self._context.global_variables[var])
 
             elif expression[pos] in "+-/*^%":
                 tokens.append(expression[pos])
@@ -101,7 +100,7 @@ class ScriptApplyer:
                     last_operator = token
             elif isinstance(token, tuple):
                 fargs: list[float] = [self._run([t]) for t in token[1]]
-                fresult: float = Context.functions[token[0]](fargs)
+                fresult: float = self._context.functions[token[0]](fargs)
                 values.append(fresult)
                 operators.append(last_operator)
 
