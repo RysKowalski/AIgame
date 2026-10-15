@@ -53,7 +53,6 @@ class ActionObject(VizObject):
         screen: pygame.Surface,
     ) -> None:
         super().__init__(screen)
-        self.get_data = lambda: {}
 
     def draw(self) -> None:
         squareData: ScriptActionData = ScriptActionData(
