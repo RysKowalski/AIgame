@@ -68,7 +68,7 @@ class ScriptApplyer:
                 tokens.append(number)
                 continue
 
-            if char in "$#":
+            if char in "$#@":
                 variable_type: str = char
                 pos += 1
 
@@ -85,11 +85,22 @@ class ScriptApplyer:
 
                     tokens.append(self._context.level_variables[index])
 
-                else:
+                elif variable_type == "#":
                     if name not in self._context.global_variables:
                         raise NameError(f"Unknown variable: {name}")
 
                     value = self._context.global_variables[name]
+
+                    if not isinstance(value, (int, float)):
+                        raise TypeError(f"Variable {name} is not numeric")
+
+                    tokens.append(value)
+
+                elif variable_type == "@":
+                    if name not in self._context.user_variables:
+                        raise NameError(f"Unknown variable: {name}")
+
+                    value = self._context.user_variables[name]
 
                     if not isinstance(value, (int, float)):
                         raise TypeError(f"Variable {name} is not numeric")

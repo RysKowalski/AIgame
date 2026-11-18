@@ -1,10 +1,13 @@
 from __future__ import annotations
+
 from typing import TYPE_CHECKING
 
 from AIgame import game_objects
 from AIgame.script_applyer import ScriptApplyer
 
 if TYPE_CHECKING:
+    from pygame.event import Event
+
     from AIgame.script_applyer import Context
 
 
@@ -65,8 +68,9 @@ class GameObjectManager:
                 return obj.id
 
     def update_script(self) -> None:
-        self._script_applyer.update_script(list(self._gameObjects.values()))
+        self._script_applyer.update_script(list(self._inputObjects.values()))
+        self._script_applyer.update_script(list(self._vizObjects.values()))
 
-    def process_event(self, event) -> None:
+    def process_event(self, event: Event) -> None:
         for obj in self._inputObjects.values():
             obj.process_event(event)
