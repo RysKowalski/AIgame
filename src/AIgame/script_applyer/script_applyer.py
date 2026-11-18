@@ -1,12 +1,14 @@
+from collections.abc import Callable
 from typing import TYPE_CHECKING
 
 from .utils import Utils
 
 if TYPE_CHECKING:
-    from .context import Context
     from AIgame.game_objects import GameObject
 
-Token = int | float | str | tuple[str, list["Token"]] | list["Token"]
+    from .context import Context
+
+Token = int | float | str | tuple[str, list[list["Token"]]]
 
 
 class ScriptApplyer:
@@ -19,69 +21,136 @@ class ScriptApplyer:
 
     def _process_obj(self, obj: "GameObject") -> dict[str, object]:
         data: dict[str, object] = {}
-        for line in obj.script.splitlines():
-            identifier: str = line.split()[0]
-            expression: str = " ".join(line.split()[2:])  # ignoring exp =
-            expression += " "  # adding padding for tokenizing
+        for line_number, line in enumerate(obj.script.splitlines()):
+            parts: list[str] = line.split(maxsplit=2)
+
+            if not parts:
+                continue
+
+            if len(parts) != 3 or parts[1] != "=":
+                raise ValueError(f"Invalid assignment at line {line_number}: {line}")
+
+            identifier: str = parts[0]
+            expression: str = parts[2]
+
             _, tokens = self._tokenize_expression(expression)
 
             data[identifier] = self._run(tokens)
         return data
 
     def _tokenize_expression(
-        self, expression: str, pos: int = -1
+        self, expression: str, pos: int = 0
     ) -> tuple[int, list[Token]]:
+
         tokens: list[Token] = []
-        while pos + 1 < len(expression):
-            pos += 1
 
-            if expression[pos] in ",)":
-                return pos, tokens
+        while pos < len(expression):
+            char: str = expression[pos]
 
-            elif expression[pos] == "$":
+            if char.isspace():
                 pos += 1
-                pos, var = Utils.get_name(expression, pos)
-                tokens.append(self._context.level_variables[int(var)])
-
-            elif expression[pos] == "#":
-                pos += 1
-                pos, var = Utils.get_name(expression, pos)
-                tokens.append(self._context.global_variables[var])
-
-            elif expression[pos] in "+-/*^%":
-                tokens.append(expression[pos])
-
-            elif expression[pos].isdigit():
-                pos, n = Utils.load_number(expression, pos)
-                tokens.append(n)
-
-            elif expression[pos] == " ":
                 continue
 
-            else:
-                pos, fname = Utils.get_name(expression, pos)
+            if char == ")":
+                break
+
+            if char == ",":
                 pos += 1
-                fargs: list[Token] = []
-                while pos < len(expression):
-                    if expression[pos] == ")":
-                        break
+                continue
 
-                    pos, farg = self._tokenize_expression(expression, pos)
-                    fargs.extend(farg)
-                    pos -= 1
+            if char in "+-*/^%":
+                tokens.append(char)
+                pos += 1
+                continue
 
-                    if pos < len(expression) and expression[pos] == ",":
-                        pos += 1
+            if char.isdigit() or char == ".":
+                pos, number = Utils.load_number(expression, pos)
+                tokens.append(number)
+                continue
 
-                    elif pos < len(expression) and expression[pos] == ")":
-                        break
+            if char in "$#":
+                variable_type: str = char
+                pos += 1
 
-                    else:
-                        pos += 1
-                        # raise ValueError(
-                        #     f"Expected ',' or ')' at position {pos} of line:\n{expression}"
-                        # )
-                tokens.append((fname, fargs))
+                pos, name = Utils.get_name(expression, pos)
+
+                if not name:
+                    raise ValueError("Expected variable name")
+
+                if variable_type == "$":
+                    index: int = int(name)
+
+                    if not 0 <= index < len(self._context.level_variables):
+                        raise IndexError(f"Invalid level variable: {index}")
+
+                    tokens.append(self._context.level_variables[index])
+
+                else:
+                    if name not in self._context.global_variables:
+                        raise NameError(f"Unknown variable: {name}")
+
+                    value = self._context.global_variables[name]
+
+                    if not isinstance(value, (int, float)):
+                        raise TypeError(f"Variable {name} is not numeric")
+
+                    tokens.append(value)
+
+                continue
+
+            pos, name = Utils.get_name(expression, pos)
+
+            if not name:
+                raise ValueError(f"Unexpected character {char!r} at position {pos}")
+
+            if name not in self._context.functions:
+                raise NameError(f"Unknown function: {name}")
+
+            while pos < len(expression) and expression[pos].isspace():
+                pos += 1
+
+            if pos >= len(expression) or expression[pos] != "(":
+                raise ValueError(f"Expected '(' after function {name}")
+
+            pos += 1
+
+            args: list[list[Token]] = []
+
+            while True:
+                while pos < len(expression) and expression[pos].isspace():
+                    pos += 1
+
+                if pos >= len(expression):
+                    raise ValueError(f"Unclosed function call: {name}")
+
+                if expression[pos] == ")":
+                    pos += 1
+                    break
+
+                pos, arg = self._tokenize_expression(expression, pos)
+
+                if not arg:
+                    raise ValueError(f"Empty argument in function {name}")
+
+                args.append(arg)
+
+                while pos < len(expression) and expression[pos].isspace():
+                    pos += 1
+
+                if pos >= len(expression):
+                    raise ValueError(f"Unclosed function call: {name}")
+
+                if expression[pos] == ")":
+                    pos += 1
+                    break
+
+                if expression[pos] == ",":
+                    pos += 1
+                    break
+
+                raise ValueError(f"Expected ',' or ')' at position {pos}")
+
+            tokens.append((name, args))
 
         return pos, tokens
 
@@ -92,16 +161,25 @@ class ScriptApplyer:
         last_operator: str = "+"
 
         for token in tokens:
-            if isinstance(token, float | int):
+            if isinstance(token, (float, int)):
                 values.append(float(token))
                 operators.append(last_operator)
+
             elif isinstance(token, str):
-                if token in "+-*/^%":
-                    last_operator = token
+                last_operator = token
+
             elif isinstance(token, tuple):
-                fargs: list[float] = [self._run([t]) for t in token[1]]
-                fresult: float = self._context.functions[token[0]](fargs)
-                values.append(fresult)
+                name, args = token
+
+                function: Callable[..., float] = self._context.functions[name]
+
+                print(tokens)
+                print(args)
+                fargs: list[float] = [self._run([arg]) for arg in args[0]]
+
+                result: float = function(fargs)
+
+                values.append(float(result))
                 operators.append(last_operator)
 
         if not values:

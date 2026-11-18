@@ -1,6 +1,6 @@
-from typing import TYPE_CHECKING
 from collections.abc import Callable
 from dataclasses import dataclass
+from typing import TYPE_CHECKING
 
 import pygame
 import pygame.freetype

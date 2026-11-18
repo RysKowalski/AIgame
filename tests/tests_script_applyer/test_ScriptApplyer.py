@@ -6,7 +6,7 @@ from ..utils import ExampleObject
 
 def test_update_script() -> None:
     obj = ExampleObject()
-    obj.script = """ a = 1
+    obj.script = """a = 1
  b = 1 + 1
  c = 2 * 2
  d = 2 / 2

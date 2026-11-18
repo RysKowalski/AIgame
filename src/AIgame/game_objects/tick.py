@@ -1,5 +1,5 @@
+from collections.abc import Callable
 from dataclasses import dataclass
-from typing import Callable
 
 import pygame
 from pygame.event import Event
@@ -143,7 +143,6 @@ border_blue = 0"""
         return rotatedRect.collidepoint(pos)
 
     def process_event(self, event: Event) -> None:
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            if event.button == 1:
-                if self.contains_point(event.pos):
-                    self.trigger_tick()
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+            if self.contains_point(event.pos):
+                self.trigger_tick()
