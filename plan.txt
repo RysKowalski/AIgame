@@ -17,7 +17,7 @@ zobaczyć obiekty help
   - [ ] variables:
     pokazuje obecne zmienne poziomu i zmienne globalne
 
-  - [ ] tick:
+  - [x] tick:
     pokazuje się jako kwadrat, aktywuje tick po kliknięciu aktywuje tick symulacji, ustawia argumenty symulacji
 
   - [ ] timer_tick:
@@ -29,8 +29,8 @@ zobaczyć obiekty help
 
 [ ] obiekty input wykonywane jako pierwsze:
   - [ ] toggle
-  - [ ] set
-  - [ ] slider
+  - [x] set
+  - [x] slider
 
 [ ] zmienne:
   [x] zmienne poziomu $n mają stan poziomu
@@ -39,8 +39,8 @@ zobaczyć obiekty help
     - [x] #reward nagroda za poprzedni tick
     - [ ] #level_name nazwa poziomu
 
-  [ ] zmienne gracza @name::
-    [ ] mogą być ustawione w obiektach input
+  [x] zmienne gracza @name::
+    [x] mogą być ustawione w obiektach input
 
 [x] dostępne funkcje:
  [x] max(a, b)

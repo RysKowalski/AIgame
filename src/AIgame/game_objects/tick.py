@@ -153,10 +153,11 @@ border_blue = 0"""
 
         return rotatedRect.collidepoint(pos)
 
-    def process_event(self, event: Event) -> None:
-        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-            if self.contains_point(event.pos):
-                inputs: list[float] = []
-                for i in range(self.input_count):
-                    inputs.append(self.data.get(f"input{i}", 0.0))
-                self.trigger_tick(inputs)
+    def process_event(self, events: list[Event]) -> None:
+        for event in events:
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                if self.contains_point(event.pos):
+                    inputs: list[float] = []
+                    for i in range(self.input_count):
+                        inputs.append(self.data.get(f"input{i}", 0.0))
+                    self.trigger_tick(inputs)

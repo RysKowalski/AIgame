@@ -3,6 +3,7 @@ from .square import SquareObject
 from .text_display import TextDisplayObject
 from .tick import TickObject
 from .setObj import SetObject
+from .slider import Slider
 
 __all__ = [
     "GameObject",
@@ -12,4 +13,5 @@ __all__ = [
     "TextDisplayObject",
     "TickObject",
     "SetObject",
+    "Slider",
 ]
