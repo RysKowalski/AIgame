@@ -66,12 +66,6 @@ jobs:
 
           cp AppDir/AIgame.desktop AppDir/usr/share/applications/
 
-          # Add your icon if available
-          # cp icon.png AppDir/usr/share/icons/hicolor/256x256/apps/AIgame.png
-          # cp icon.png AppDir/AIgame.png
-
-          cp AppDir/AIgame.desktop AppDir/
-
       - name: Download linuxdeploy
         run: |
           wget -q \
