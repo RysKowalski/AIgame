@@ -2,13 +2,11 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-
 import pygame
-
+import pygame.freetype
 
 if TYPE_CHECKING:
     from AIgame.script_applyer.context import Context
-    import pygame.freetype
 
 from .GameObject import InputObject
 
@@ -43,10 +41,10 @@ name = 0
 value = 0"""
 
     def __init__(
-        self, screen: pygame.Surface, font: "pygame.freetype.Font", context: Context
+        self, screen: pygame.Surface, font: pygame.freetype.Font, context: Context
     ) -> None:
         super().__init__(screen)
-        self.font: "pygame.freetype.Font" = font
+        self.font: pygame.freetype.Font = font
         self.rect: pygame.Rect = pygame.Rect(1, 1, 1, 1)
         self.data = {}
         self.context: Context = context
@@ -62,15 +60,15 @@ value = 0"""
             value = str(round(rawValue))
 
         backgroundColor: tuple[int, int, int] = (
-            self.data.get("red", 155),
-            self.data.get("green", 155),
-            self.data.get("blue", 155),
+            int(self.data.get("red", 155)),
+            int(self.data.get("green", 155)),
+            int(self.data.get("blue", 155)),
         )
 
         textColor: tuple[int, int, int] = (
-            self.data.get("text_red", 255),
-            self.data.get("text_green", 255),
-            self.data.get("text_blue", 255),
+            int(self.data.get("text_red", 255)),
+            int(self.data.get("text_green", 255)),
+            int(self.data.get("text_blue", 255)),
         )
 
         name: str = str(int(self.data.get("name", 0)))

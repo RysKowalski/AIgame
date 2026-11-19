@@ -2,15 +2,14 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-
 import pygame
 
 from AIgame.widgets.slider import Slider
 
-
 if TYPE_CHECKING:
-    from AIgame.script_applyer.context import Context
     from pygame.event import Event
+
+    from AIgame.script_applyer.context import Context
 
 from .GameObject import InputObject
 
@@ -76,5 +75,5 @@ name = 0"""
     def contains_point(self, pos: tuple[int, int]) -> bool:
         return self.slider.contains(pos[0], pos[1])
 
-    def process_event(self, events: list["Event"]) -> None:
+    def process_event(self, events: list[Event]) -> None:
         self.slider.listen(events)

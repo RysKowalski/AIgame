@@ -2,15 +2,14 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-
 import pygame
 
 from AIgame.widgets.toggle import Toggle
 
-
 if TYPE_CHECKING:
-    from AIgame.script_applyer.context import Context
     from pygame.event import Event
+
+    from AIgame.script_applyer.context import Context
 
 from .GameObject import InputObject
 
