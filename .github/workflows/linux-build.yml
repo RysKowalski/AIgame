@@ -59,7 +59,7 @@ jobs:
           Type=Application
           Name=AIgame
           Exec=AIgame
-          Icon=AIgame
+          Icon=icon.png
           Categories=Game;
           Terminal=false
           EOF
