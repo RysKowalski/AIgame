@@ -8,6 +8,7 @@ import pygame
 import pygame.freetype
 
 from AIgame.game_objects import SquareObject, TextDisplayObject, TickObject
+from AIgame.game_objects.setObj import SetObject
 from AIgame.resources import Fonts
 from AIgame.script_applyer.context import Context
 from AIgame.widgets.button import ButtonArray
@@ -62,6 +63,9 @@ class AddElementMenu:
                     screen=screen,
                     tick=trigger_tick,
                     input_count=len(context.level_variables),
+                ),
+                "set": lambda: SetObject(
+                    screen=screen, font=Fonts.uiTextDisplayFont, context=context
                 ),
             }
 
