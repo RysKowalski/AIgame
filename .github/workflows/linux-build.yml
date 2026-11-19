@@ -1,0 +1,103 @@
+name: Build Linux AppImage
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build-linux:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            fuse \
+            file \
+            patchelf \
+            desktop-file-utils
+
+          python -m pip install --upgrade pip
+          pip install pygame pyinstaller
+
+          if [ -f requirements.txt ]; then
+            pip install -r requirements.txt
+          fi
+
+      - name: Build executable
+        run: |
+          pyinstaller \
+            --noconfirm \
+            --clean \
+            --onefile \
+            --windowed \
+            --add-data "src/AIgame/font.ttf:." \
+            --name AIgame \
+            src/AIgame/main.py
+
+      - name: Prepare AppDir
+        run: |
+          mkdir -p AppDir/usr/bin
+          mkdir -p AppDir/usr/share/applications
+          mkdir -p AppDir/usr/share/icons/hicolor/256x256/apps
+
+          cp dist/AIgame AppDir/usr/bin/AIgame
+
+          cat > AppDir/AIgame.desktop << 'EOF'
+          [Desktop Entry]
+          Type=Application
+          Name=AIgame
+          Exec=AIgame
+          Icon=AIgame
+          Categories=Game;
+          Terminal=false
+          EOF
+
+          cp AppDir/AIgame.desktop AppDir/usr/share/applications/
+
+          # Add your icon if available
+          # cp icon.png AppDir/usr/share/icons/hicolor/256x256/apps/AIgame.png
+          # cp icon.png AppDir/AIgame.png
+
+          cp AppDir/AIgame.desktop AppDir/
+
+      - name: Download linuxdeploy
+        run: |
+          wget -q \
+            https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage \
+            -O linuxdeploy.AppImage
+
+          wget -q \
+            https://github.com/linuxdeploy/linuxdeploy-plugin-appimage/releases/download/continuous/linuxdeploy-plugin-appimage-x86_64.AppImage \
+            -O linuxdeploy-plugin-appimage.AppImage
+
+          chmod +x linuxdeploy.AppImage
+          chmod +x linuxdeploy-plugin-appimage.AppImage
+
+      - name: Build AppImage
+        run: |
+          export PATH="$(pwd):$PATH"
+          export APPIMAGE_EXTRACT_AND_RUN=1
+
+          ./linuxdeploy.AppImage \
+            --appdir AppDir \
+            --executable AppDir/usr/bin/AIgame \
+            --desktop-file AppDir/AIgame.desktop \
+            --output appimage
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: pygame-linux-appimage
+          path: "*.AppImage"
