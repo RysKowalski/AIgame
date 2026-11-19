@@ -1,16 +1,19 @@
 from .GameObject import GameObject, InputObject, VizObject
-from .square import SquareObject, ScriptSquareData
-from .text_display import TextDisplayObject, ScriptTextDisplayData
-from .tick import TickObject, ScriptTickData
+from .square import SquareObject
+from .text_display import TextDisplayObject
+from .tick import TickObject
+from .setObj import SetObject
+from .slider import Slider
+from .toggleObj import ToggleObject
 
 __all__ = [
     "GameObject",
     "InputObject",
     "VizObject",
     "SquareObject",
-    "ScriptSquareData",
     "TextDisplayObject",
-    "ScriptTextDisplayData",
     "TickObject",
-    "ScriptTickData",
+    "SetObject",
+    "Slider",
+    "ToggleObject",
 ]

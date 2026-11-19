@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Any, Protocol
+from typing import TYPE_CHECKING, Protocol
 
 if TYPE_CHECKING:
     from pygame.event import Event
@@ -10,7 +10,7 @@ class GameObject(Protocol):
     name: str
     script: str
     screen: "Surface"
-    data: Any
+    data: dict[str, float | int]
 
     def __init__(self, screen: "Surface") -> None:
         self.screen = screen
@@ -21,7 +21,7 @@ class GameObject(Protocol):
 
 
 class InputObject(GameObject):
-    def process_event(self, event: "Event") -> None: ...
+    def process_event(self, events: list["Event"]) -> None: ...
 
 
 class VizObject(GameObject): ...

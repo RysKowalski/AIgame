@@ -1,10 +1,13 @@
 from __future__ import annotations
+
 from typing import TYPE_CHECKING
 
-from AIgame import game_objects
+from AIgame import game_objects, widgets
 from AIgame.script_applyer import ScriptApplyer
 
 if TYPE_CHECKING:
+    from pygame.event import Event
+
     from AIgame.script_applyer import Context
 
 
@@ -56,6 +59,7 @@ class GameObjectManager:
             raise ObjectDoesNotExistError(id)
 
     def draw(self) -> None:
+        self.update_script()
         for gameObject in self._gameObjects.values():
             gameObject.draw()
 
@@ -65,8 +69,10 @@ class GameObjectManager:
                 return obj.id
 
     def update_script(self) -> None:
-        self._script_applyer.update_script(list(self._gameObjects.values()))
+        self._script_applyer.update_script(list(self._inputObjects.values()))
+        self._script_applyer.update_script(list(self._vizObjects.values()))
 
-    def process_event(self, event) -> None:
+    def process_event(self, events: list[Event]) -> None:
+        widgets.update(events)
         for obj in self._inputObjects.values():
-            obj.process_event(event)
+            obj.process_event(events)

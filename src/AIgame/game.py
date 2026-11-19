@@ -1,4 +1,5 @@
 import pygame
+from pygame.event import Event
 
 from AIgame import game_objects_manager, levels, script_applyer
 from AIgame.menus import AddElementMenu, AddSettings, EditElementMenu, EditSettings
@@ -9,9 +10,9 @@ def main() -> None:
     clock: pygame.time.Clock = pygame.time.Clock()
     screen: pygame.Surface = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
 
-    def trigger_tick() -> None:
+    def trigger_tick(args: list[float]) -> None:
         print("trigger_tick executed")
-        levelManager.tick((0.3, 0.3))
+        levelManager.tick(tuple(args))
         gameObjects.update_script()
 
     scriptContext: script_applyer.Context = script_applyer.Context()
@@ -37,10 +38,7 @@ def main() -> None:
     )
 
     addElementMenu: AddElementMenu = AddElementMenu(
-        screen,
-        gameObjects,
-        menuSettings,
-        trigger_tick,
+        screen, gameObjects, menuSettings, trigger_tick, scriptContext
     )
 
     editSettings: EditSettings = EditSettings(
@@ -64,7 +62,8 @@ def main() -> None:
     while running:
         global_ticks += 1
 
-        for event in pygame.event.get():
+        events: list[Event] = pygame.event.get()
+        for event in events:
             if event.type == pygame.QUIT:
                 running = False
             if event.type == pygame.MOUSEBUTTONDOWN:
@@ -83,7 +82,7 @@ def main() -> None:
                     addElementMenu.show(event.pos)
             addElementMenu.process_event(event)
             editElementMenu.process_event(event)
-            gameObjects.process_event(event)
+        gameObjects.process_event(events)
 
         screen.fill((0, 0, 0))
 

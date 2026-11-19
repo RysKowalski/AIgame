@@ -8,7 +8,11 @@ import pygame
 import pygame.freetype
 
 from AIgame.game_objects import SquareObject, TextDisplayObject, TickObject
+from AIgame.game_objects.setObj import SetObject
+from AIgame.game_objects.slider import SliderObject
+from AIgame.game_objects.toggleObj import ToggleObject
 from AIgame.resources import Fonts
+from AIgame.script_applyer.context import Context
 from AIgame.widgets.button import ButtonArray
 
 if TYPE_CHECKING:
@@ -38,7 +42,8 @@ class AddElementMenu:
         screen: pygame.Surface,
         gameObjects: GameObjectManager,
         settings: AddSettings,
-        trigger_tick: Callable[[], None],
+        trigger_tick: Callable[[list[float]], None],
+        context: Context,
         font: pygame.freetype.Font = Fonts.addMenuFont,
         elements: dict[str, Callable[[], GameObject]] | None = None,
     ) -> None:
@@ -59,7 +64,13 @@ class AddElementMenu:
                 "tick": lambda: TickObject(
                     screen=screen,
                     tick=trigger_tick,
+                    input_count=len(context.level_variables),
                 ),
+                "set": lambda: SetObject(
+                    screen=screen, font=Fonts.uiTextDisplayFont, context=context
+                ),
+                "slider": lambda: SliderObject(screen=screen, context=context),
+                "toggle": lambda: ToggleObject(screen=screen, context=context),
             }
 
             self.elements = default
