@@ -1,11 +1,13 @@
+from __future__ import annotations
+
 from collections.abc import Callable
 from typing import TYPE_CHECKING
 
 import pygame
+import pygame.freetype
 
 if TYPE_CHECKING:
     from pygame.event import Event
-    import pygame.freetype
 
 from .GameObject import InputObject
 
@@ -21,17 +23,16 @@ class TimerTickObject(InputObject):
     text_red
     text_green
     text_blue
-    time
+    ticks
     """
 
     name = "timer tick"
     id = 0
-    data = {}
 
     def __init__(
         self,
         screen: pygame.Surface,
-        font: "pygame.freetype.Font",
+        font: pygame.freetype.Font,
         tick: Callable[[list[float]], None],
         input_count: int,
     ) -> None:
@@ -44,22 +45,34 @@ blue = 155
 text_red = 255
 text_green = 255
 text_blue = 255
-time = 10"""
+ticks = 60
+active = 0"""
 
         super().__init__(screen)
-        self.font: "pygame.freetype.Font" = font
+        self.font: pygame.freetype.Font = font
         self.rect: pygame.Rect = pygame.Rect(1, 1, 1, 1)
         self.data = {}
 
         self.trigger_tick = tick
         self.input_count: int = input_count
 
+        self.remaining_ticks: int = 60
+
         for i in range(input_count):
             self.script += f"\ninput{i} = 0"
 
     def draw(self) -> None:
+        active: bool = bool(self.data.get("active", 0))
+        self.remaining_ticks -= active
 
-        time_remaining: str = "time remaining"
+        time_remaining: str = str(self.remaining_ticks) + "t"
+
+        if self.remaining_ticks < 1:
+            self.remaining_ticks = int(self.data.get("ticks", 60))
+            inputs: list[float] = []
+            for i in range(self.input_count):
+                inputs.append(self.data.get(f"input{i}", 0.0))
+            self.trigger_tick(inputs)
 
         self.font.render_to(
             self.screen,

@@ -1,8 +1,8 @@
 from typing import TYPE_CHECKING, Protocol
 
 if TYPE_CHECKING:
-    from pygame.event import Event
     from pygame import Surface
+    from pygame.event import Event
 
 
 class GameObject(Protocol):

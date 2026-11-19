@@ -10,6 +10,7 @@ import pygame.freetype
 from AIgame.game_objects import SquareObject, TextDisplayObject, TickObject
 from AIgame.game_objects.setObj import SetObject
 from AIgame.game_objects.slider import SliderObject
+from AIgame.game_objects.timer_tick import TimerTickObject
 from AIgame.game_objects.toggleObj import ToggleObject
 from AIgame.resources import Fonts
 from AIgame.script_applyer.context import Context
@@ -63,6 +64,12 @@ class AddElementMenu:
                 ),
                 "tick": lambda: TickObject(
                     screen=screen,
+                    tick=trigger_tick,
+                    input_count=len(context.level_variables),
+                ),
+                "tick_timer": lambda: TimerTickObject(
+                    screen=screen,
+                    font=Fonts.uiTextDisplayFont,
                     tick=trigger_tick,
                     input_count=len(context.level_variables),
                 ),

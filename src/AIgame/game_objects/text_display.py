@@ -1,11 +1,8 @@
 from dataclasses import dataclass
-from typing import TYPE_CHECKING
-
 
 import pygame
 
-if TYPE_CHECKING:
-    import pygame.freetype
+import pygame.freetype
 
 from .GameObject import VizObject
 
