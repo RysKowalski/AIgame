@@ -4,6 +4,7 @@ from .text_display import TextDisplayObject
 from .tick import TickObject
 from .setObj import SetObject
 from .slider import Slider
+from .toggleObj import ToggleObject
 
 __all__ = [
     "GameObject",
@@ -14,4 +15,5 @@ __all__ = [
     "TickObject",
     "SetObject",
     "Slider",
+    "ToggleObject",
 ]

@@ -10,7 +10,6 @@ from AIgame.widgets.slider import Slider
 
 if TYPE_CHECKING:
     from AIgame.script_applyer.context import Context
-    import pygame.freetype
     from pygame.event import Event
 
 from .GameObject import InputObject
@@ -35,11 +34,8 @@ right = 20
 width = 100
 name = 0"""
 
-    def __init__(
-        self, screen: pygame.Surface, font: "pygame.freetype.Font", context: Context
-    ) -> None:
+    def __init__(self, screen: pygame.Surface, context: Context) -> None:
         super().__init__(screen)
-        self.font: "pygame.freetype.Font" = font
         self.data = {}
         self.context: Context = context
 

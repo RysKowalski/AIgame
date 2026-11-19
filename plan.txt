@@ -27,8 +27,8 @@ zobaczyć obiekty help
   - [x] kwadrat
   - [x] text
 
-[ ] obiekty input wykonywane jako pierwsze:
-  - [ ] toggle
+[x] obiekty input wykonywane jako pierwsze:
+  - [x] toggle
   - [x] set
   - [x] slider
 
