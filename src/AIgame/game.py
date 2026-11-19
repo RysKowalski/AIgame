@@ -9,9 +9,9 @@ def main() -> None:
     clock: pygame.time.Clock = pygame.time.Clock()
     screen: pygame.Surface = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
 
-    def trigger_tick() -> None:
+    def trigger_tick(args: list[float]) -> None:
         print("trigger_tick executed")
-        levelManager.tick((0.3, 0.3))
+        levelManager.tick(tuple(args))
         gameObjects.update_script()
 
     scriptContext: script_applyer.Context = script_applyer.Context()
@@ -37,10 +37,7 @@ def main() -> None:
     )
 
     addElementMenu: AddElementMenu = AddElementMenu(
-        screen,
-        gameObjects,
-        menuSettings,
-        trigger_tick,
+        screen, gameObjects, menuSettings, trigger_tick, scriptContext
     )
 
     editSettings: EditSettings = EditSettings(

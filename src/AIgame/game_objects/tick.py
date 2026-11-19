@@ -21,27 +21,34 @@ class ScriptTickData:
 
 class TickObject(InputObject):
     """
-    this.x
-    this.y
-    this.width
-    this.height
-    this.rotation
-    this.red
-    this.green
-    this.blue
-    this.hover_red
-    this.hover_green
-    this.hover_blue
-    this.border_width
-    this.border_red
-    this.border_green
-    this.border_blue
+    x
+    y
+    width
+    height
+    rotation
+    red
+    green
+    blue
+    hover_red
+    hover_green
+    hover_blue
+    border_width
+    border_red
+    border_green
+    border_blue
     """
 
     name = "Input"
     id = 0
     data = {}
-    script = """x = 0
+
+    def __init__(
+        self,
+        screen: pygame.Surface,
+        tick: Callable[[list[float]], None],
+        input_count: int,
+    ) -> None:
+        self.script = """x = 0
 y = 0
 width = 100
 height = 100
@@ -57,9 +64,13 @@ border_red = 0
 border_green = 0
 border_blue = 0"""
 
-    def __init__(self, screen: pygame.Surface, tick: Callable[[], None]) -> None:
         super().__init__(screen)
+
         self.trigger_tick = tick
+        self.input_count: int = input_count
+
+        for i in range(input_count):
+            self.script += f"\ninput{i} = 0"
 
     def draw(self) -> None:
         squareData: ScriptTickData = ScriptTickData(
@@ -145,4 +156,7 @@ border_blue = 0"""
     def process_event(self, event: Event) -> None:
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             if self.contains_point(event.pos):
-                self.trigger_tick()
+                inputs: list[float] = []
+                for i in range(self.input_count):
+                    inputs.append(self.data.get(f"input{i}", 0.0))
+                self.trigger_tick(inputs)
