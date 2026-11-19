@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
 
@@ -12,15 +11,6 @@ if TYPE_CHECKING:
     import pygame.freetype
 
 from .GameObject import InputObject
-
-
-@dataclass(frozen=True)
-class ScriptSetData:
-    x: float
-    y: float
-    backgroundColor: tuple[int, int, int]
-    textColor: tuple[int, int, int]
-    value: str
 
 
 class SetObject(InputObject):
@@ -71,20 +61,16 @@ value = 0"""
         else:
             value = str(round(rawValue))
 
-        textDisplayData: ScriptSetData = ScriptSetData(
-            x=self.data.get("x", 0),
-            y=self.data.get("y", 0),
-            backgroundColor=(
-                self.data.get("red", 155),
-                self.data.get("green", 155),
-                self.data.get("blue", 155),
-            ),
-            textColor=(
-                self.data.get("text_red", 255),
-                self.data.get("text_green", 255),
-                self.data.get("text_blue", 255),
-            ),
-            value=value,
+        backgroundColor: tuple[int, int, int] = (
+            self.data.get("red", 155),
+            self.data.get("green", 155),
+            self.data.get("blue", 155),
+        )
+
+        textColor: tuple[int, int, int] = (
+            self.data.get("text_red", 255),
+            self.data.get("text_green", 255),
+            self.data.get("text_blue", 255),
         )
 
         name: str = str(int(self.data.get("name", 0)))
@@ -92,15 +78,15 @@ value = 0"""
 
         self.font.render_to(
             self.screen,
-            (textDisplayData.x, textDisplayData.y),
-            f"{name} = {textDisplayData.value}",
-            textDisplayData.textColor,
-            textDisplayData.backgroundColor,
+            (self.data.get("x", 0), self.data.get("y", 0)),
+            f"{name} = {value}",
+            textColor,
+            backgroundColor,
         )
 
-        fontRect: pygame.Rect = self.font.get_rect(f"{name} = {textDisplayData.value}")
-        self.rect.x = int(textDisplayData.x)
-        self.rect.y = int(textDisplayData.y)
+        fontRect: pygame.Rect = self.font.get_rect(f"{name} = {value}")
+        self.rect.x = int(self.data.get("x", 0))
+        self.rect.y = int(self.data.get("y", 0))
         self.rect.width = fontRect.width
         self.rect.height = fontRect.height
 
