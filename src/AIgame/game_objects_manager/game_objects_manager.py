@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from AIgame import game_objects, widgets
+from AIgame import game_objects
 from AIgame.script_applyer import ScriptApplyer
 
 if TYPE_CHECKING:
@@ -73,6 +73,5 @@ class GameObjectManager:
         self._script_applyer.update_script(list(self._vizObjects.values()))
 
     def process_event(self, events: list[Event]) -> None:
-        widgets.update(events)
         for obj in self._inputObjects.values():
             obj.process_event(events)

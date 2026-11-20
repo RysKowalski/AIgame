@@ -5,6 +5,7 @@ from typing import Any, Literal, cast
 import pygame
 import pyperclip
 from pygame.event import Event
+from pygame.freetype import Font
 
 from .mouse import Mouse, MouseState
 from .widget import WidgetBase
@@ -23,6 +24,7 @@ class TextBox(WidgetBase):
         y: int,
         width: int,
         height: int,
+        font: Font,
         isSubWidget: bool = False,
         *,
         borderThickness: int = 3,
@@ -36,7 +38,6 @@ class TextBox(WidgetBase):
         textColour: tuple[int, int, int] = (0, 0, 0),
         highlightColour: tuple[int, int, int] = (166, 210, 255),
         fontSize: int = 20,
-        font: pygame.font.Font | None = None,
         tabSpaces: int = 4,
         onSubmit: Callable[..., None] | None = None,
         onSubmitParams: tuple[Any, ...] = (),
@@ -82,9 +83,7 @@ class TextBox(WidgetBase):
         self.highlightColour: tuple[int, int, int] = highlightColour
 
         self.fontSize: int = fontSize
-        self.font: pygame.font.Font = (
-            font if font is not None else pygame.font.SysFont("calibri", self.fontSize)
-        )
+        self.font: Font = font
 
         self.tabSpaces: int = tabSpaces
 
@@ -500,24 +499,21 @@ class TextBox(WidgetBase):
             colour = self.placeholderTextColour
 
         for lineIndex, line in enumerate(text):
-            x = [self._x + self.textOffsetLeft]
+            x: int = self._x + self.textOffsetLeft
+            y: int = self._y + self.fontSize * (lineIndex + 1) + self.textOffsetTop
+
             for char in line:
                 if self.isSpecialChar(char):
                     continue
-                charRender = self.font.render(
+
+                charRender, textRect = self.font.render(
                     char,
-                    True,
-                    colour,
+                    fgcolor=colour,
                 )
-                textRect = charRender.get_rect(
-                    bottomleft=(
-                        x[-1],
-                        self._y + self.fontSize * (lineIndex + 1) + self.textOffsetTop,
-                    )
-                )
+                textRect.bottomleft = (x, y)
 
                 self.win.blit(charRender, textRect)
-                x.append(x[-1] + charRender.get_width())
+                x += textRect.width
 
     def drawCursor(self) -> None:
         if (
@@ -552,22 +548,25 @@ class TextBox(WidgetBase):
 
     def drawHighlight(self) -> None:
         def drawRect(line: int, start: int, end: int) -> None:
-            shift = 0
+            shift: int = 0
             lineWidth = self.getLineWidth(line)
+
             for charIndex in range(start, end):
                 char = self.text[line][charIndex]
+
                 if self.isSpecialChar(char):
                     char = " "
                     shift += 1
-                charRender = self.font.render(char, True, self.highlightColour)
-                rect = charRender.get_rect(
-                    bottomleft=(
-                        lineWidth[charIndex - shift],
-                        self._y
-                        + self.fontSize * (line - self.firstVisibleLine + 1)
-                        + self.textOffsetTop,
-                    )
+
+                _, rect = self.font.render(char, fgcolor=self.highlightColour)
+
+                rect.bottomleft = (
+                    int(lineWidth[charIndex - shift]),
+                    self._y
+                    + self.fontSize * (line - self.firstVisibleLine + 1)
+                    + self.textOffsetTop,
                 )
+
                 pygame.draw.rect(self.win, self.highlightColour, rect)
 
         startLine = min(self.highlightStartLine, self.highlightEndLine)
@@ -793,8 +792,8 @@ class TextBox(WidgetBase):
 
     def getCharWidth(self, char: str) -> int:
         if char not in self._charWidthCache:
-            charRender = self.font.render(char, True, self.textColour)
-            self._charWidthCache[char] = charRender.get_width()
+            _, rect = self.font.render(char, fgcolor=self.textColour)
+            self._charWidthCache[char] = rect.width
         return self._charWidthCache[char]
 
     def getLineWidth(self, line: int) -> list[float]:
@@ -887,43 +886,3 @@ class TextBox(WidgetBase):
 
     def getText(self) -> str:
         return "".join("".join(line) for line in self.text)
-
-
-if __name__ == "__main__":
-    import AIgame.widgets
-
-    def output():
-        print(textbox.getText())
-        print(len(textbox.getText()))
-        textbox.setText("")
-
-    pygame.init()
-    window = pygame.display.set_mode((1000, 600))
-
-    textbox = TextBox(
-        window,
-        100,
-        100,
-        800,
-        400,
-        fontSize=75,
-        borderColour=(255, 0, 0),
-        textColour=(0, 200, 0),
-        onSubmit=output,
-        radius=10,
-        borderThickness=5,
-        placeholderText="Enter something:",
-    )
-
-    run = True
-    while run:
-        outerEvents = pygame.event.get()
-        for outerEvent in outerEvents:
-            if outerEvent.type == pygame.QUIT:
-                pygame.quit()
-                run = False
-                quit()
-
-        window.fill((255, 255, 255))
-        AIgame.widgets.update(outerEvents)
-        pygame.display.update()

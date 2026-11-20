@@ -1,7 +1,7 @@
 import pygame
 from pygame.event import Event
 
-from AIgame import game_objects_manager, levels, script_applyer
+from AIgame import game_objects_manager, levels, script_applyer, widgets
 from AIgame.menus import AddElementMenu, AddSettings, EditElementMenu, EditSettings
 
 
@@ -82,6 +82,8 @@ def main() -> None:
                     addElementMenu.show(event.pos)
             addElementMenu.process_event(event)
             editElementMenu.process_event(event)
+
+        widgets.update(events)
         gameObjects.process_event(events)
 
         screen.fill((0, 0, 0))
