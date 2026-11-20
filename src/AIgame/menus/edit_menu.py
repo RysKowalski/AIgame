@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from collections.abc import Callable
 from dataclasses import dataclass
 from typing import TYPE_CHECKING
@@ -38,7 +40,7 @@ class InputTextBox:
         rect: pygame.Rect,
         text: str,
         applyFunc: Callable[[], None],
-        textBoxes: list["InputTextBox"],
+        textBoxes: list[InputTextBox],
         padding: int,
     ) -> None:
         self.screen: pygame.Surface = screen
@@ -157,18 +159,18 @@ class EditElementMenu:
         self,
         screen: pygame.Surface,
         settings: EditSettings,
-        gameObjects: "GameObjectManager",
+        gameObjects: GameObjectManager,
         font: pygame.freetype.Font = Fonts.editMenuFont,
     ) -> None:
         self.screen: pygame.Surface = screen
         self.font: pygame.freetype.Font = font
         self.settings: EditSettings = settings
-        self.gameObjects: "GameObjectManager" = gameObjects
+        self.gameObjects: GameObjectManager = gameObjects
 
         self.visible: bool = False
         self.position: tuple[int, int] = (0, 0)
         self.options: list[tuple[TextDisplay, InputTextBox]] = []
-        self.currentGameObject: "GameObject"
+        self.currentGameObject: GameObject
         self.fontHeight: int = font.get_rect("").height
         self.maxOptionWidth: int = 1
 
@@ -178,7 +180,7 @@ class EditElementMenu:
 
         self.deleteButton: Button
 
-    def show(self, gameObject: "GameObject", position: tuple[int, int]) -> None:
+    def show(self, gameObject: GameObject, position: tuple[int, int]) -> None:
         self.visible = True
         self.currentGameObject = gameObject
         self.position = position
@@ -293,7 +295,7 @@ class EditElementMenu:
             self.font,
             "delete",
             ButtonSettings(
-                x=self.options[0][0].rect.right - 150,
+                x=self.options[0][0].rect.left,
                 y=self.options[-1][0].rect.bottom + self.settings.bottomPadding,
                 width=150,
                 height=31,
