@@ -42,6 +42,8 @@ jobs:
             --clean \
             --onefile \
             --windowed \
+            --paths src \
+            --collect-submodules AIgame \
             --add-data "src/AIgame/font.ttf:." \
             --name AIgame \
             src/AIgame/main.py
