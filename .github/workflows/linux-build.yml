@@ -22,14 +22,12 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y \
-            fuse \
-            file \
-            patchelf \
-            desktop-file-utils
+          sudo apt-get install -y fuse file patchelf desktop-file-utils
 
           python -m pip install --upgrade pip
           pip install pygame pyinstaller
+
+          pip install -e .
 
           if [ -f requirements.txt ]; then
             pip install -r requirements.txt
@@ -42,7 +40,6 @@ jobs:
             --clean \
             --onefile \
             --windowed \
-            --paths src \
             --collect-submodules AIgame \
             --add-data "src/AIgame/font.ttf:." \
             --name AIgame \
