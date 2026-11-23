@@ -6,16 +6,16 @@ from .GameObject import VizObject
 
 class TextDisplayObject(VizObject):
     """
-    this.x
-    this.y
-    this.value
-    this.round_digits
-    this.red
-    this.green
-    this.blue
-    this.text_red
-    this.text_green
-    this.text_blue
+    x
+    y
+    value
+    round_digits
+    red
+    green
+    blue
+    text_red
+    text_green
+    text_blue
     """
 
     name = "Text"

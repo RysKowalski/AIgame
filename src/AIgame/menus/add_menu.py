@@ -12,6 +12,7 @@ from AIgame.game_objects.setObj import SetObject
 from AIgame.game_objects.slider import SliderObject
 from AIgame.game_objects.timer_tick import TimerTickObject
 from AIgame.game_objects.toggleObj import ToggleObject
+from AIgame.game_objects.variables import VariablesObject
 from AIgame.resources import Fonts
 from AIgame.script_applyer.context import Context
 from AIgame.widgets.button import ButtonArray
@@ -78,6 +79,9 @@ class AddElementMenu:
                 ),
                 "slider": lambda: SliderObject(screen=screen, context=context),
                 "toggle": lambda: ToggleObject(screen=screen, context=context),
+                "variables": lambda: VariablesObject(
+                    screen=screen, font=Fonts.uiTextDisplayFont, context=context
+                ),
             }
 
             self.elements = default
