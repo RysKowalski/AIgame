@@ -24,9 +24,9 @@ class TextDisplayObject(VizObject):
 y = 0
 value = 0
 round_digits = 2
-red = 155
-green = 155
-blue = 155
+red = 10
+green = 10
+blue = 10
 text_red = 255
 text_green = 255
 text_blue = 255"""
