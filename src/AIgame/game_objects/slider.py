@@ -25,7 +25,6 @@ class SliderObject(InputObject):
     """
 
     name = "Slider"
-    id = 0
     script = """x = 1
 y = 1
 left = 10
@@ -35,7 +34,6 @@ name = 0"""
 
     def __init__(self, screen: pygame.Surface, context: Context) -> None:
         super().__init__(screen)
-        self.data = {}
         self.context: Context = context
 
         self.slider: Slider = Slider(

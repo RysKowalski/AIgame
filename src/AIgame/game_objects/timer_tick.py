@@ -27,7 +27,6 @@ class TimerTickObject(InputObject):
     """
 
     name = "timer tick"
-    id = 0
 
     def __init__(
         self,
@@ -51,7 +50,6 @@ active = 0"""
         super().__init__(screen)
         self.font: pygame.freetype.Font = font
         self.rect: pygame.Rect = pygame.Rect(1, 1, 1, 1)
-        self.data = {}
 
         self.trigger_tick = tick
         self.input_count: int = input_count

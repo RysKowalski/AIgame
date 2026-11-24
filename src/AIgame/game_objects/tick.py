@@ -26,8 +26,6 @@ class TickObject(InputObject):
     """
 
     name = "Input"
-    id = 0
-    data = {}
 
     def __init__(
         self,

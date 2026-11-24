@@ -23,7 +23,6 @@ class VariablesObject(VizObject):
     """
 
     name = "Variables"
-    id = 0
     script = """x = 0
 y = 0
 width = 300
@@ -42,7 +41,6 @@ text_blue = 255"""
         super().__init__(screen)
         self.font: pygame.freetype.Font = font
         self.context: Context = context
-        self.data = {}
 
         self.backgroundRect: Rect
 

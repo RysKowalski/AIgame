@@ -27,7 +27,6 @@ class SetObject(InputObject):
     """
 
     name = "Set"
-    id = 0
     script = """x = 0
 y = 0
 round_digits = 2
@@ -46,7 +45,6 @@ value = 0"""
         super().__init__(screen)
         self.font: pygame.freetype.Font = font
         self.rect: pygame.Rect = pygame.Rect(1, 1, 1, 1)
-        self.data = {}
         self.context: Context = context
 
     def draw(self) -> None:

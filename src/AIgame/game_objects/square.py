@@ -20,8 +20,6 @@ class SquareObject(VizObject):
     """
 
     name = "Square"
-    id = 0
-    data = {}
     script = """x = 0
     y = 0
     width = 100

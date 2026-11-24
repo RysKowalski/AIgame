@@ -20,7 +20,6 @@ class ActionObject(VizObject):
     """
 
     name = "Action"
-    id = 0
     script = """x = 0
 y = 0
 width = 100

@@ -19,7 +19,6 @@ class TextDisplayObject(VizObject):
     """
 
     name = "Text"
-    id = 0
     script = """x = 0
 y = 0
 value = 0
@@ -39,7 +38,6 @@ text_blue = 255"""
         super().__init__(screen)
         self.font: pygame.freetype.Font = font
         self.rect: pygame.Rect = pygame.Rect(1, 1, 1, 1)
-        self.data = {}
 
     def draw(self) -> None:
         rawValue: float = self.data.get("value", 0)

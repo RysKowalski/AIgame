@@ -14,6 +14,8 @@ class GameObject(Protocol):
 
     def __init__(self, screen: "Surface") -> None:
         self.screen = screen
+        self.data = {}
+        self.id = 0
 
     def draw(self) -> None: ...
 

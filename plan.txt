@@ -14,8 +14,8 @@ zobaczyć obiekty help
       oraz co oznaczają edytowalne pola
     - [ ] help2 pokazuje jak użyć prostych zmiennych
 
-  - [ ] variables:
-    pokazuje obecne zmienne poziomu i zmienne globalne
+  - [x] variables:
+    pokazuje obecne zmienne globalne, poziomu i gracza
 
   - [x] tick:
     pokazuje się jako kwadrat, aktywuje tick po kliknięciu aktywuje tick symulacji, ustawia argumenty symulacji
