@@ -7,6 +7,7 @@ from .tick import TickObject
 from .timer_tick import TimerTickObject
 from .toggleObj import ToggleObject
 from .variables import VariablesObject
+from .help import HelpObject
 
 __all__ = [
     "GameObject",
@@ -20,4 +21,5 @@ __all__ = [
     "ToggleObject",
     "VizObject",
     "VariablesObject",
+    "HelpObject",
 ]

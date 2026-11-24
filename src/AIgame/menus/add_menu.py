@@ -8,6 +8,7 @@ import pygame
 import pygame.freetype
 
 from AIgame.game_objects import SquareObject, TextDisplayObject, TickObject
+from AIgame.game_objects.help import HelpObject
 from AIgame.game_objects.setObj import SetObject
 from AIgame.game_objects.slider import SliderObject
 from AIgame.game_objects.timer_tick import TimerTickObject
@@ -58,6 +59,7 @@ class AddElementMenu:
 
         if elements is None:
             default: dict[str, Callable[[], GameObject]] = {
+                "help": lambda: HelpObject(screen=screen, font=Fonts.uiTextDisplayFont),
                 "square": lambda: SquareObject(screen=screen),
                 "text": lambda: TextDisplayObject(
                     screen=screen,
