@@ -8,7 +8,6 @@ class HelpObject(VizObject):
     """
     x
     y
-    round_digits
     red
     green
     blue
@@ -21,7 +20,6 @@ class HelpObject(VizObject):
     name = "Help"
     script = """x = 0
 y = 0
-round_digits = 2
 red = 10
 green = 10
 blue = 10
@@ -29,6 +27,28 @@ text_red = 255
 text_green = 255
 text_blue = 255
 page = 0"""
+
+    pages: list[str] = [
+        """
+        help page
+        0
+        """,
+        """
+        help page
+        1
+        looooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong
+        1
+        2
+        3
+        4
+        5
+        6
+        7
+        8
+        9
+        10
+        """,
+    ]
 
     def __init__(
         self,
@@ -65,6 +85,9 @@ page = 0"""
         self.rect.y = int(y)
         self.rect.width = fontRect.width
         self.rect.height = fontRect.height
+
+    def render(self, text: str) -> None:
+        pass
 
     def contains_point(self, pos: tuple[int, int]) -> bool:
         return self.rect.collidepoint(pos)
