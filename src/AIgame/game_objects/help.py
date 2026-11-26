@@ -8,6 +8,9 @@ class HelpObject(VizObject):
     """
     x
     y
+    width
+    padding
+    gap
     red
     green
     blue
@@ -20,6 +23,9 @@ class HelpObject(VizObject):
     name = "Help"
     script = """x = 0
 y = 0
+width = 300
+padding = 10
+gap = 0
 red = 10
 green = 10
 blue = 10
@@ -60,34 +66,45 @@ page = 0"""
         self.rect: pygame.Rect = pygame.Rect(1, 1, 1, 1)
 
     def draw(self) -> None:
-        x = self.data.get("x", 0)
-        y = self.data.get("y", 0)
-        value = "help " + str(int(self.data.get("page", 0)))
+        lines: list[str] = self.pages[int(self.data.get("page", 0))].splitlines()
+        line_height: int = self.font.get_rect("").height
 
-        self.font.render_to(
-            self.screen,
-            (x, y),
-            value,
-            (
-                int(self.data.get("text_red", 255)),
-                int(self.data.get("text_green", 255)),
-                int(self.data.get("text_blue", 255)),
-            ),
-            (
-                int(self.data.get("red", 155)),
-                int(self.data.get("green", 155)),
-                int(self.data.get("blue", 155)),
-            ),
+        x: int = int(self.data.get("x", 0))
+        y: int = int(self.data.get("y", 0))
+        padding: int = int(self.data.get("padding", 30))
+        gap: int = int(self.data.get("gap", 10))
+        width: int = int(self.data.get("width", 300))
+
+        self.rect = pygame.Rect(
+            x,
+            y,
+            width + padding * 2,
+            int(line_height * len(lines) + gap * (len(lines) - 1) + padding * 2),
         )
 
-        fontRect: pygame.Rect = self.font.get_rect(value)
-        self.rect.x = int(x)
-        self.rect.y = int(y)
-        self.rect.width = fontRect.width
-        self.rect.height = fontRect.height
+        pygame.draw.rect(
+            self.screen,
+            (
+                int(self.data.get("red", 255)),
+                int(self.data.get("green", 255)),
+                int(self.data.get("blue", 255)),
+            ),
+            self.rect,
+        )
 
-    def render(self, text: str) -> None:
-        pass
+        color = (
+            int(self.data.get("text_red", 255)),
+            int(self.data.get("text_green", 255)),
+            int(self.data.get("text_blue", 255)),
+        )
+
+        x += padding
+        y += padding
+
+        for line in lines:
+            print(x)
+            self.font.render_to(self.screen, (x, y), line, color)
+            y += line_height + gap
 
     def contains_point(self, pos: tuple[int, int]) -> bool:
         return self.rect.collidepoint(pos)
