@@ -27,9 +27,7 @@ def example_surface() -> "Surface":
 
 class BlankGameObject(GameObject):
     name = "ExampleObject"
-    id = 0
     script = BLANK_DEFAULT_SCRIPT
-    data = {}
 
     def __init__(self, screen: "Surface" = example_surface()) -> None:
         super().__init__(screen)
@@ -43,9 +41,7 @@ class BlankGameObject(GameObject):
 
 class ExampleObject(GameObject):
     name = "ExampleObject"
-    id = 0
     script = ""
-    data = {}
 
     def __init__(self, screen: "Surface" = example_surface()) -> None:
         super().__init__(screen)

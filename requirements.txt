@@ -1,2 +1,2 @@
-pygame==2.6.1
+pygame-ce
 pyperclip==1.11.0
